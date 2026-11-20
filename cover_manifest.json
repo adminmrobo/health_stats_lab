@@ -1,0 +1,106 @@
+{
+  "series_ko": "연구실 해설 대시보드 · 보건통계 01",
+  "title_ko": "신약은 어떤 숫자로 허가받는가",
+  "site_title": "신약은 어떤 숫자로 허가받는가 — 임상시험의 통계와 AI",
+  "site_url": "",
+  "domain": ["stats", "ai"],
+  "anchor_type": "B",
+  "duel_result": "C",
+  "ontology": {
+    "pages": [
+      {
+        "path": "01_clinical_stats_ai.html",
+        "kg": true,
+        "export": true,
+        "nodes": 52,
+        "edges": 60,
+        "references": 10
+      }
+    ],
+    "files": []
+  },
+  "i18n": {
+    "langs": ["ko"],
+    "pages": { "ko": 1 },
+    "readme_langs": ["ko"]
+  },
+  "languages": ["ko"],
+  "items": [
+    {
+      "id": "cover_01",
+      "role": "cover",
+      "path": "assets/img/cover_01.webp",
+      "embedded_in": "01_clinical_stats_ai.html",
+      "key": "figure[data-img=cover_01]",
+      "size": [1600, 900],
+      "characters": ["doc", "asst", "fly", "jupanbot"],
+      "robot": "jupanbot-v2",
+      "prompt_en": "16-bit RPG pixel art, bold dark outlines, 16:9 wide composition, a sunlit measuring room beside a bright white laboratory, a ring toss game on the floor with one wooden peg and many thin glowing rings some encircling the peg and some missing it, four characters gathered centre-right, height order scientist > girl researcher > boxy CRT robot > fruit fly, lower-left quarter left simple, no text, no letters, no numbers, no logos, bright daytime palette",
+      "source_of": null,
+      "status": "to-draw"
+    },
+    {
+      "id": "bg_01",
+      "role": "background",
+      "path": "assets/img/bg_01.webp",
+      "embedded_in": "01_clinical_stats_ai.html",
+      "key": "canvas[data-img=bg_01]",
+      "size": [1920, 720],
+      "characters": [],
+      "robot": null,
+      "prompt_en": "16-bit RPG pixel art, 8:3 ultra-wide background, no characters, a bright white laboratory measuring room in daytime, left 45% mostly empty wall and floor, right side a workbench with a brass balance scale, three graduated cylinders, a tape measure and a blank grid board covered with scattered dots, no text, no numbers, no logos",
+      "source_of": null,
+      "status": "to-draw",
+      "fallback": "procedural-pixel-canvas"
+    },
+    {
+      "id": "sc_01_outro",
+      "role": "scene",
+      "path": "assets/img/sc_01_outro.webp",
+      "embedded_in": "01_clinical_stats_ai.html",
+      "key": "figure[data-img=sc_01_outro]",
+      "size": [1200, 800],
+      "characters": ["doc", "asst", "fly", "jupanbot"],
+      "robot": "jupanbot-v2",
+      "prompt_en": "16-bit RPG pixel art, 3:2 composition, inside a bright daytime laboratory, four characters in a loose half circle facing a large blank board showing only two plain horizontal bars of different length with no text, neither rival placed in front of the other, faces within the upper 62% of the frame, no text, no letters, no numbers, no logos",
+      "source_of": null,
+      "status": "to-draw",
+      "fallback": "css-placeholder"
+    },
+    {
+      "id": "thumb_01",
+      "role": "thumb",
+      "path": "assets/img/thumb_01.webp",
+      "size": [600, 400],
+      "characters": ["doc", "asst", "fly", "jupanbot"],
+      "robot": "jupanbot-v2",
+      "prompt_en": null,
+      "source_of": "cover_01",
+      "status": "to-draw"
+    },
+    {
+      "id": "og_01",
+      "role": "og",
+      "path": "assets/img/og_01.webp",
+      "size": [1200, 630],
+      "characters": ["doc", "asst", "fly", "jupanbot"],
+      "robot": "jupanbot-v2",
+      "prompt_en": null,
+      "source_of": "cover_01",
+      "status": "to-draw"
+    }
+  ],
+  "reused_expressions": [
+    "doc_think", "doc_front", "doc_board", "doc_magic",
+    "asst_smile", "asst_report", "asst_firm", "asst_spark",
+    "fly_clip", "fly_point", "fly_magnify", "fly_coffee", "fly_arms",
+    "robo_coin", "robo_calc", "robo_meh"
+  ],
+  "character_pack": {
+    "repo": "adminmrobo/fruitfly-lab-expressions",
+    "commit": "86d04ac",
+    "size": 96,
+    "embedded_kb": 86
+  },
+  "updated": "2026-11-20"
+}
