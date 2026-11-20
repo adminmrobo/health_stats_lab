@@ -1,0 +1,494 @@
+
+<section class="level" id="lv4a">
+  <div class="wrap">
+    <div class="lvhead">
+      <div class="hexno">4<small>탐색</small></div>
+      <h2>④-1 · 쪼개 보기의 함정 — 다중 비교</h2>
+      <p class="sub"><span class="lvtag g">방법: 다중 비교 보정</span><span class="lvtag s">연구실: 스무 번 던진 다트</span></p>
+    </div>
+
+<div class="guide"><img data-who="sia" data-mood="guide" alt="">
+  <div class="g"><b>인턴 시아</b><span class="step">6 / 10</span> 한 번의 판정을 배웠습니다. 같은 판정을 여러 번 하면 무엇이 망가지는지 봅니다.</div></div>
+<div class="comic" data-src="assets/img/comic_lv4a.webp">
+  <div class="ch"><b>스무 번 던진 다트</b><span>과녁을 나중에 그리면 실력이 아니다</span></div>
+  <div class="cuts">
+    <div class="cut" data-i="1"><div class="art"></div><span class="no">1</span>
+      <div class="ph"><div><img data-who="robo" data-mood="coin" alt=""><div class="d">주판봇이 스무 개 집단 표에서 한 줄에 동그라미를 친다</div></div></div>
+      <div class="bub robo tl"><b>주판봇</b>스무 집단 중 한 집단에서 유의하게 나왔다! 발견이다.</div>
+    </div>
+    <div class="cut" data-i="2"><div class="art"></div><span class="no">2</span>
+      <div class="ph"><div><img data-who="fly" data-mood="clip" alt=""><div class="d">초파리가 나머지 열아홉 줄을 손가락으로 쓸어 내린다</div></div></div>
+      <div class="bub fly tr"><b>초파리 연구원</b>나머지 열아홉은? 그건 왜 안 보여 주냐.</div>
+    </div>
+    <div class="cut" data-i="3"><div class="art"></div><span class="no">3</span>
+      <div class="ph"><div><img data-who="doc" data-mood="verdict" alt=""><div class="d">다트 스무 발이 벽에 꽂혀 있고, 박사가 그중 한 발 주위에 과녁을 그린다</div></div></div>
+      <div class="bub doc bl"><b>박사</b>던지고 나서 과녁을 그리면, 그건 실력이 아닙니다.</div>
+    </div>
+    <div class="cut" data-i="4"><div class="art"></div><span class="no">4</span>
+      <div class="ph"><div><img data-who="asst" data-mood="report" alt=""><div class="d">하루가 0.64라고 적힌 쪽지를 들어 보인다</div></div></div>
+      <div class="bub asst br"><b>조수 하루</b>효과가 하나도 없어도 스무 번 보면 열 번 중 여섯 번은 ‘발견’이 생겨요.</div>
+    </div>
+  </div>
+  <div class="cap">인턴 시아 — 1 → 2 → 3 → 4 순서로 보시면 돼요. 좁은 화면에서는 네 장면이 세로로 쌓입니다.</div>
+</div>
+<div class="threeline"><b class="t">이 단계 3줄</b><ol><li>같은 자료를 여러 번 쪼개 보면, 효과가 없어도 우연한 ‘발견’이 생긴다.</li><li>20개 집단을 보면 하나 이상 유의할 확률이 <b>약 64%</b>까지 올라간다.</li><li>그래서 쪼개 볼 집단은 자료를 열기 전에 미리 정하고, 기준을 엄하게 보정한다.</li></ol></div>
+    <div class="recap full">
+      <h4>30초 복습</h4>
+      <p>③단계에서 집단 하나의 평균을 구간으로 보고했습니다. 실제 보고서는 거기서 멈추지 않고 연령별·용량별·변이별로 쪼개 봅니다. 쪼개는 횟수가 늘면 ‘우연히 유의한’ 결과가 반드시 섞여 들어옵니다.</p>
+    </div>
+
+    <details class="more full"><summary>자세히 — 연구실 장면과 업무로 옮겨 보기</summary><div class="min">
+    <div class="pair">
+      <div><div class="tag fly">연구실에서는</div><p>다트를 스무 번 던지면 그중 하나는 우연히 과녁에 꽂힙니다. 그 한 번만 사진으로 찍어 보여 주면 실력처럼 보입니다. 하위집단을 스무 개로 쪼개 보고 가장 좋은 하나를 보고하는 일이 그와 같습니다.</p></div>
+      <div><div class="tag nn">통계로는</div><p>차이가 전혀 없는 세계에서도 검정을 k번 하면 적어도 하나가 유의할 확률은 1 − (1 − α)<sup>k</sup>입니다. α = 0.05, k = 20이면 <b>0.64</b>입니다. 그래서 미리 정한 주 평가변수 하나로 판정하고, 나머지는 ‘탐색적’이라고 적습니다.</p></div>
+    </div>
+
+    </div></details>
+
+    <div class="why2 full">
+      <div class="whybox">
+        <h4>왜 보정을 하나</h4>
+        <ol>
+          <li><b>문제 상황</b> — 전체에서는 효과가 보이지 않았는데, 60대 남성에서만 유의했습니다. 보고해도 될까요.</li>
+          <li><b>앞 방법의 한계</b> — ②단계의 검정은 한 번 쓰도록 설계된 규칙입니다. 같은 자료에 여러 번 쓰면 설계한 5%가 지켜지지 않습니다.</li>
+          <li><b>해법</b> — 검정 횟수를 세어 기준을 좁히거나(본페로니: α를 k로 나눈다), 그 결과를 결론이 아니라 <b>다음 연구의 가설</b>로 돌립니다.</li>
+        </ol>
+        <p class="easy"><b>쉽게 말하면</b> 과녁을 먼저 그리고 던져야 실력이고, 던진 뒤에 꽂힌 자리에 과녁을 그리면 실력이 아닙니다.</p>
+      </div>
+      <div class="mathbox">
+        <h4>수학 수식을 어려워하는 조수가 대신 물어봅니다</h4>
+        <p class="ask"><b>조수 하루</b> “1 빼기 0.95의 20제곱이요? 왜 빼기부터 하나요?”</p>
+        <p class="school">학교 수학으로 보면 — 중학교 확률의 ‘여사건’입니다. “적어도 하나”를 바로 세기 어려울 때 “하나도 없을 확률”을 구해 1에서 빼던 그 방법입니다.</p>
+        <div class="eq">P(적어도 하나 유의) = 1 − ( 1 − <em>α</em> )<sup><i>k</i></sup></div>
+        <div class="tw"><table class="tb">
+          <thead><tr><th>식 조각</th><th>읽는 법</th><th>뜻</th></tr></thead>
+          <tbody>
+            <tr><td><em>α</em></td><td>알파</td><td>검정 한 번에서 거짓 양성이 날 확률 (보통 0.05)</td></tr>
+            <tr><td>1 − <em>α</em></td><td>일 마이너스 알파</td><td>검정 한 번이 조용히 지나갈 확률 (0.95)</td></tr>
+            <tr><td><i>k</i></td><td>케이</td><td>들여다본 하위집단 또는 검정의 수</td></tr>
+            <tr><td>( 1 − <em>α</em> )<sup><i>k</i></sup></td><td>0.95의 k제곱</td><td>k번 모두 조용할 확률</td></tr>
+          </tbody>
+        </table></div>
+        <div class="hand"><b>숫자로 한 번 해 보기</b>
+          <ol>
+            <li>0.95<sup>5</sup> = 0.7738 → 적어도 하나 유의 = <b>0.226</b></li>
+            <li>0.95<sup>10</sup> = 0.5987 → <b>0.401</b></li>
+            <li>0.95<sup>20</sup> = 0.3585 → <b>0.641</b></li>
+            <li>스무 개를 쪼개 보면 효과가 하나도 없어도 <b>세 번 중 두 번</b>은 ‘발견’이 생깁니다.</li>
+          </ol>
+        </div>
+        <p class="ask" style="margin-top:10px"><b>조수 하루</b> “무섭네요. 그럼 보고서에 하위집단 결과가 있으면 몇 개를 봤는지부터 확인해야 하는 거예요.”</p>
+      </div>
+    </div>
+
+    <section class="panel">
+      <h3>다트 모형 — 효과가 없는데도 생기는 ‘발견’</h3>
+      <div class="cwrap"><canvas id="c4" height="250" aria-label="하위집단마다 나온 p값을 점으로 찍은 그림. 기준선 아래로 내려간 점이 유의 판정이다."></canvas></div>
+      <div class="ctrl">
+        <div class="group">
+          <span class="glabel">하위집단 수 k <span class="val" id="v4k">20</span></span>
+          <input type="range" id="s4k" min="1" max="40" step="1" value="20">
+        </div>
+        <div class="group">
+          <span class="glabel">참 효과 <span class="val" id="v4d">0.00</span></span>
+          <input type="range" id="s4d" min="0" max="0.8" step="0.05" value="0">
+        </div>
+        <div class="group">
+          <button class="bt" id="b4bon" aria-pressed="false">본페로니 보정</button>
+        </div>
+        <div class="group">
+          <button class="bt primary" id="b4run">▶ 다시 던지기</button>
+        </div>
+      </div>
+      <h3>행동으로 보기 — 던진 다트와 고른 다트</h3>
+      <div class="cwrap"><canvas id="c4b" class="wide" height="190" aria-label="과녁에 다트가 흩어져 꽂히고, 그중 우연히 가운데 들어간 하나만 강조되는 모습."></canvas></div>
+      <section class="kpis" id="k4"></section>
+      <div class="eq" id="eq4"></div>
+      <div class="insight" id="ins4" aria-live="polite"></div>
+    </section>
+
+    <div class="quiz" data-quiz="lv4a"></div>
+  </div>
+</section>
+
+<section class="level" id="lv4b">
+  <div class="wrap">
+    <div class="lvhead">
+      <div class="hexno">4<small>바탕</small></div>
+      <h2>④-2 · 양성이 나왔다면 — 바탕 비율</h2>
+      <p class="sub"><span class="lvtag g">방법: 사람 수로 세어 보는 조건부 확률</span><span class="lvtag s">연구실: 1,000명을 줄 세우기</span></p>
+    </div>
+
+<div class="guide"><img data-who="sia" data-mood="guide" alt="">
+  <div class="g"><b>인턴 시아</b><span class="step">7 / 10</span> 쪼개 보기의 짝이 되는 함정입니다. 여기도 숫자를 사람 수로 바꿔 봅니다.</div></div>
+<div class="comic" data-src="assets/img/comic_lv4b.webp">
+  <div class="ch"><b>1,000명을 세워 본다</b><span>드문 병에서는 양성 대부분이 거짓이다</span></div>
+  <div class="cuts">
+    <div class="cut" data-i="1"><div class="art"></div><span class="no">1</span>
+      <div class="ph"><div><img data-who="robo" data-mood="calc" alt=""><div class="d">주판봇이 99%라고 적힌 큰 숫자를 띄운다</div></div></div>
+      <div class="bub robo tl"><b>주판봇</b>정확도 99% 검사다. 양성이면 환자인 거지.</div>
+    </div>
+    <div class="cut" data-i="2"><div class="art"></div><span class="no">2</span>
+      <div class="ph"><div><img data-who="fly" data-mood="magnify" alt=""><div class="d">초파리가 ‘1,000명 중 10명’이라고 적힌 줄을 가리킨다</div></div></div>
+      <div class="bub fly tr"><b>초파리 연구원</b>이 병, 1,000명 중 몇 명이 걸리는데?</div>
+    </div>
+    <div class="cut" data-i="3"><div class="art"></div><span class="no">3</span>
+      <div class="ph"><div><img data-who="doc" data-mood="board" alt=""><div class="d">박사 앞에 사람 1,000명이 줄지어 서 있고, 그중 열 명만 색이 다르다</div></div></div>
+      <div class="bub doc bl"><b>박사</b>1,000명을 실제로 세워 보면 답이 바뀝니다.</div>
+    </div>
+    <div class="cut" data-i="4"><div class="art"></div><span class="no">4</span>
+      <div class="ph"><div><img data-who="asst" data-mood="report" alt=""><div class="d">하루가 양성 60명 중 10명만 색칠된 그림을 든다</div></div></div>
+      <div class="bub asst br"><b>조수 하루</b>양성 60명 중 환자는 10명 — 양성이어도 환자일 확률은 약 17%네요.</div>
+    </div>
+  </div>
+  <div class="cap">인턴 시아 — 1 → 2 → 3 → 4 순서로 보시면 돼요. 좁은 화면에서는 네 장면이 세로로 쌓입니다.</div>
+</div>
+<div class="threeline"><b class="t">이 단계 3줄</b><ol><li>검사 성능이 좋아도, 병이 드물면 양성의 대부분은 거짓 양성이다.</li><li>같은 검사로도 <b>바탕 비율</b>(유병률)이 낮으면 양성의 뜻이 약해진다.</li><li>비율로 듣고 헷갈릴 때는 1,000명을 실제 사람 수로 세워 보면 바로 보인다.</li></ol></div>
+    <h3>곁들여 — 양성이 나왔을 때 실제로 환자일 확률</h3>
+    <p class="lede" style="font-size:14.5px">하위집단 함정과 짝을 이루는 함정이 하나 더 있습니다. 검사 성능이 좋아도 드문 병에서는 양성의 대부분이 거짓일 수 있습니다. 쪼개 보기와 마찬가지로, <b>바탕 비율</b>을 빼고 숫자를 읽으면 결론이 뒤집힙니다.</p>
+    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:34%">조건 <span class="lvtag">예시값</span></th><th style="width:22%">값</th><th>1,000명을 검사하면</th></tr></thead>
+      <tbody>
+        <tr><td>유병률</td><td class="num">1%</td><td>실제 환자 10명, 아닌 사람 990명</td></tr>
+        <tr><td>민감도 (환자를 잡아내는 비율)</td><td class="num">99%</td><td>환자 10명 중 <b>9.9명</b> 양성</td></tr>
+        <tr><td>특이도 (아닌 사람을 통과시키는 비율)</td><td class="num">95%</td><td>아닌 990명 중 <b>49.5명</b>이 거짓 양성</td></tr>
+        <tr><td><b>양성일 때 실제 환자일 확률</b></td><td class="num"><b>약 17%</b></td><td>9.9 ÷ (9.9 + 49.5) = 0.167</td></tr>
+      </tbody>
+    </table></div>
+    <div class="say" data-who="asst">
+      <img class="who" data-who="asst" data-mood="report" alt="" aria-hidden="true">
+      <div><b class="name">조수 하루</b><p>민감도 99%인데 양성의 83%가 거짓이라는 게 이상해 보이지만, 아닌 사람이 99배 많아서 그렇습니다. 5%의 작은 비율이 큰 집단에 걸리면 절대 수가 커집니다.</p></div>
+    </div>
+
+    <div class="quiz" data-quiz="lv4b"></div>
+  </div>
+</section>
+
+<section class="level" id="lv4c">
+  <div class="wrap">
+    <div class="lvhead">
+      <div class="hexno">4<small>탐색</small></div>
+      <h2>④-3 · 정답표 없이 찾기 — 라벨 없는 자료</h2>
+      <p class="sub"><span class="lvtag g">방법: 군집화 · 자기지도 학습</span><span class="lvtag s">연구실: 멀어진 무리</span><span class="lvtag">AI 보조</span></p>
+    </div>
+
+<div class="guide"><img data-who="sia" data-mood="guide" alt="">
+  <div class="g"><b>인턴 시아</b><span class="step">8 / 10</span> 여기부터 AI가 맡는 자리입니다. 사람이 목록을 못 만드는 곳입니다.</div></div>
+<div class="comic" data-src="assets/img/comic_lv4c.webp">
+  <div class="ch"><b>라벨 없이 찾기</b><span>정답표가 없어도 멀어진 무리는 보인다</span></div>
+  <div class="cuts">
+    <div class="cut" data-i="1"><div class="art"></div><span class="no">1</span>
+      <div class="ph"><div><img data-who="robo" data-mood="smile" alt=""><div class="d">주판봇이 빈 상자를 내민다</div></div></div>
+      <div class="bub robo tl"><b>주판봇</b>새 변이 목록을 주면 분류기를 만들어 주지.</div>
+    </div>
+    <div class="cut" data-i="2"><div class="art"></div><span class="no">2</span>
+      <div class="ph"><div><img data-who="fly" data-mood="point" alt=""><div class="d">초파리가 700만이라고 적힌 칠판을 두드린다</div></div></div>
+      <div class="bub fly tr"><b>초파리 연구원</b>목록이 없어. 두 자리만 바뀌어도 700만 가지야.</div>
+    </div>
+    <div class="cut" data-i="3"><div class="art"></div><span class="no">3</span>
+      <div class="ph"><div><img data-who="doc" data-mood="magic" alt=""><div class="d">점이 흩어진 지도에서 한 무리가 본체에서 떨어져 나간다</div></div></div>
+      <div class="bub doc bl"><b>박사</b>정답표가 없어도, 멀어진 무리는 보입니다.</div>
+    </div>
+    <div class="cut" data-i="4"><div class="art"></div><span class="no">4</span>
+      <div class="ph"><div><img data-who="asst" data-mood="board" alt=""><div class="d">하루가 떨어져 나간 무리에 물음표를 붙인다</div></div></div>
+      <div class="bub asst br"><b>조수 하루</b>다만 여기까지가 ‘다르다’예요. ‘면역을 회피한다’는 다른 이야기고요.</div>
+    </div>
+  </div>
+  <div class="cap">인턴 시아 — 1 → 2 → 3 → 4 순서로 보시면 돼요. 좁은 화면에서는 네 장면이 세로로 쌓입니다.</div>
+</div>
+<div class="threeline"><b class="t">이 단계 3줄</b><ol><li>변이는 가짓수가 너무 많아 정답표를 미리 만들 수 없다.</li><li>그래서 라벨 없이 자료의 구조만으로 <b>떨어져 나간 무리</b>를 찾는다(비지도 학습).</li><li>이 방법이 말해 주는 것은 “다르다”까지다 — 위험한지는 실험으로 따로 확인한다.</li></ol></div>
+    <h3>라벨 없는 자료에서 새 무리를 찾는다 <span class="lvtag">여기부터 AI 보조</span></h3>
+    <p class="lede">쪼개 보려면 쪼갤 목록이 있어야 합니다. 그런데 바이러스 변이는 목록이 미리 없습니다. 아미노산 자리 201곳에서 한 자리만 바뀌는 경우도 201 × 19 = 3,819가지이고, 동시에 두 자리가 바뀌면 7,256,100가지입니다 <sup>[계산]</sup>. 정답표를 만들어 놓고 배우는 방식은 쓸 수 없습니다. 그래서 <b>라벨 없이</b> 자료의 구조만으로 무리를 찾는 방법을 씁니다.</p>
+
+    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:17%">학습 방식</th><th style="width:28%">무엇을 배우나</th><th>이 주제에서의 쓰임</th></tr></thead>
+      <tbody>
+        <tr><td><b>지도학습</b></td><td>입력과 정답의 짝</td><td>실험으로 성질을 측정한 소수의 변이로 분류기를 만든다. 측정된 것이 적어 범위가 좁다</td></tr>
+        <tr><td><b>비지도학습</b></td><td>정답 없는 자료의 구조</td><td>수백만 서열을 거리 기준으로 묶어 계통 지도를 만들고, 기존 무리에서 멀리 떨어진 것을 새 계통 후보로 띄운다</td></tr>
+        <tr><td><b>자기지도학습</b></td><td>자료 자체에서 만든 과제 (가린 부분 복원)</td><td>서열을 문장처럼 읽어 ‘있을 수 있는 서열’의 분포를 배운다. 정답표 없이 학습한다</td></tr>
+        <tr><td><b>생성 모델</b></td><td>자료의 확률분포</td><td>변이의 그럴듯함을 점수로 매기거나, 새 단백질 골격을 설계한다</td></tr>
+      </tbody>
+    </table></div>
+
+    <section class="panel">
+      <h3>서열 지도 모형 — 정답표 없이 새 무리가 보인다</h3>
+      <div class="cwrap"><canvas id="c5" height="300" aria-label="서열을 두 축으로 펼친 지도. 기존 무리들과, 변이가 쌓여 떨어져 나가는 새 무리가 보인다."></canvas></div>
+      <div class="ctrl">
+        <div class="group">
+          <span class="glabel">쌓인 변이 수 <span class="val" id="v5m">0</span></span>
+          <input type="range" id="s5m" min="0" max="24" step="1" value="0">
+        </div>
+        <div class="group">
+          <span class="glabel">새 무리로 볼 거리 <span class="val" id="v5t">2.4</span></span>
+          <input type="range" id="s5t" min="1.2" max="4" step="0.1" value="2.4">
+        </div>
+        <div class="group">
+          <button class="bt primary" id="b5run">▶ 서열 다시 모으기</button>
+        </div>
+      </div>
+      <h3>행동으로 보기 — 신규 계통 후보 깃발</h3>
+      <div class="cwrap"><canvas id="c5b" class="wide" height="180" aria-label="시간에 따라 각 무리의 점유율이 바뀌는 띠 그림. 새 무리가 나타나면 깃발이 선다."></canvas></div>
+      <section class="kpis" id="k5"></section>
+      <div class="eq" id="eq5"></div>
+      <div class="insight" id="ins5" aria-live="polite"></div>
+    </section>
+
+    <section class="panel">
+      <h3>가린 자리 복원 — 자기지도 학습은 정답표 없이 무엇을 배우나</h3>
+      <p class="note" style="font-size:13.5px;color:var(--muted);margin:0 0 10px">서열에서 한 자리를 가리고 그 자리를 맞혀 보게 합니다. 정답은 <b>가려진 글자 자신</b>이므로 사람이 라벨을 달아 줄 필요가 없습니다. 이것이 자기지도 학습이 ‘스스로 과제를 만든다’는 말의 뜻입니다.</p>
+      <div class="cwrap"><canvas id="c7" height="250" aria-label="서열 한 줄에서 한 자리가 가려져 있고, 그 자리에 올 수 있는 글자들의 확률이 막대로 표시된 그림."></canvas></div>
+      <div class="ctrl">
+        <div class="group">
+          <span class="glabel">가릴 자리 <span class="val" id="v7i">6</span>번</span>
+          <input type="range" id="s7i" min="1" max="12" step="1" value="6">
+        </div>
+        <div class="group">
+          <span class="glabel">앞뒤 문맥을 보는 폭 <span class="val" id="v7w">2</span></span>
+          <input type="range" id="s7w" min="0" max="4" step="1" value="2">
+        </div>
+        <div class="group">
+          <button class="bt primary" id="b7run">▶ 가린 자리 맞혀 보기</button>
+        </div>
+      </div>
+      <section class="kpis" id="k7"></section>
+      <div class="eq" id="eq7"></div>
+      <div class="insight" id="ins7" aria-live="polite"></div>
+    </section>
+
+    <div class="explain full">
+      <h4>풀이 — 라벨이 없어도 보이는 것과, 보이지 않는 것</h4>
+      <ol>
+        <li>‘쌓인 변이 수’를 올리면 점 하나가 기존 무리에서 멀어지고, 거리 기준을 넘으면 <b>새 무리</b>로 표시됩니다. 이 판정에 정답표는 한 번도 쓰이지 않았습니다 — 비지도학습의 전형적인 모습입니다.</li>
+        <li>거리 기준을 1.2로 내려 보세요. 무리가 잘게 쪼개져 ‘새 계통’이 남발됩니다. 반대로 4.0으로 올리면 진짜 새 무리도 묶여 버립니다. <b>기준값을 정하는 일 자체가 사람의 판단</b>입니다.</li>
+        <li>여기서 찾은 것은 “기존과 다른 무리가 생겼다”입니다. “이 무리가 면역을 회피한다”는 전혀 다른 주장이고, 이 그림만으로는 말할 수 없습니다.</li>
+        <li>실제 감시 체계도 같은 구조로 작동합니다. 공개된 서열을 계통으로 분류하고 새 변이체를 띄우는 도구들이 상시 돌아갔습니다 <sup>[6][7]</sup>.</li>
+      </ol>
+      <div class="lim"><b>이 단계의 한계</b> — 새 무리를 찾는 것과 <b>다음에 무엇이 올지 맞히는 것</b>은 다른 문제입니다. 맞혔다고 주장하려면 채점 방법이 필요하고, 그것이 마지막 단계입니다.</div>
+    </div>
+
+    <details class="more full"><summary>자세히 — 현장으로 옮겨 보기</summary><div class="min">
+    <div class="bridge field">
+      <h4>현장에 옮기면</h4>
+      군집 결과를 ‘발견’으로 보고하기 전에 세 가지를 적습니다 — 어떤 거리 기준을 왜 썼는지, 기준을 바꾸면 결과가 얼마나 달라지는지, 그리고 자료가 어디서 왔는지. 세 번째가 가장 자주 빠지고 가장 크게 결론을 바꿉니다.
+      <span class="limit">비유의 한계: 이 모형의 점은 설명용으로 만든 좌표이며 실제 서열 자료가 아닙니다.</span>
+    </div>
+
+        </div></details>
+
+<div class="quiz" data-quiz="lv4c"></div>
+  </div>
+</section>
+
+<section class="level" id="lv5a">
+  <div class="wrap">
+    <div class="lvhead">
+      <div class="hexno">5<small>분석</small></div>
+      <h2>⑤-1 · 사전 정보만으로 채점하기 — 봉인된 시험지</h2>
+      <p class="sub"><span class="lvtag g">방법: 사전 정보만으로 채점하기</span><span class="lvtag s">연구실: 봉인된 시험지</span></p>
+    </div>
+
+<div class="guide"><img data-who="sia" data-mood="guide" alt="">
+  <div class="g"><b>인턴 시아</b><span class="step">9 / 10</span> AI가 찾아낸 것을 어떻게 채점해야 믿을 수 있는지 봅니다.</div></div>
+<div class="comic" data-src="assets/img/comic_lv5a.webp">
+  <div class="ch"><b>봉인된 시험지</b><span>답을 본 뒤의 점수는 점수가 아니다</span></div>
+  <div class="cuts">
+    <div class="cut" data-i="1"><div class="art"></div><span class="no">1</span>
+      <div class="ph"><div><img data-who="robo" data-mood="coin" alt=""><div class="d">주판봇이 100점이 적힌 성적표를 흔든다</div></div></div>
+      <div class="bub robo tl"><b>주판봇</b>우리 모형, 지난 변이를 전부 맞혔다. 100점이다.</div>
+    </div>
+    <div class="cut" data-i="2"><div class="art"></div><span class="no">2</span>
+      <div class="ph"><div><img data-who="fly" data-mood="clip" alt=""><div class="d">초파리가 성적표 날짜와 자료 날짜를 나란히 가리킨다</div></div></div>
+      <div class="bub fly tr"><b>초파리 연구원</b>그 변이 자료로 학습했잖아. 시험지를 미리 본 거지.</div>
+    </div>
+    <div class="cut" data-i="3"><div class="art"></div><span class="no">3</span>
+      <div class="ph"><div><img data-who="doc" data-mood="verdict" alt=""><div class="d">박사가 봉인한 봉투에 도장을 찍어 금고에 넣는다</div></div></div>
+      <div class="bub doc bl"><b>박사</b>유행 전 자료까지만 쓰고, 그 뒤의 답은 봉인합니다.</div>
+    </div>
+    <div class="cut" data-i="4"><div class="art"></div><span class="no">4</span>
+      <div class="ph"><div><img data-who="asst" data-mood="report" alt=""><div class="d">하루가 봉인을 뜯고 두 점수를 나란히 적는다</div></div></div>
+      <div class="bub asst br"><b>조수 하루</b>봉인하고 채점하니 상위 10%에서 55%였어요. 100점이 아니고요.</div>
+    </div>
+  </div>
+  <div class="cap">인턴 시아 — 1 → 2 → 3 → 4 순서로 보시면 돼요. 좁은 화면에서는 네 장면이 세로로 쌓입니다.</div>
+</div>
+<div class="threeline"><b class="t">이 단계 3줄</b><ol><li>학습에 쓴 자료로 채점하면 점수가 올라간다 — 시험지를 미리 본 셈이다.</li><li>그래서 <b>어느 시점까지</b>의 자료만 쓰고, 그 뒤에 일어난 일은 봉인해 두고 채점한다.</li><li>봉인 채점에서 남는 점수만 “미리 알아낼 수 있었다”는 근거가 된다.</li></ol></div>
+
+    <details class="more full"><summary>자세히 — 30초 복습과 연구실 장면</summary><div class="min">
+    <div class="recap">
+      <h4>30초 복습</h4>
+      <p>①에서 관문을, ②에서 판정 규칙을, ③에서 추정을, ④에서 쪼개 보기의 함정과 라벨 없는 탐색을 봤습니다. 이제 “AI를 넣으면 이 과정이 얼마나 간단해지나”에 답할 재료가 모였습니다.</p>
+    </div>
+
+    <div class="pair">
+      <div><div class="tag fly">연구실에서는</div><p>예측이 맞았다고 주장하려면 <b>시험지를 미리 봉인</b>해야 합니다. 어떤 변이가 실제로 문제가 됐는지 이미 아는 상태에서 모델을 만들면, 그 모델이 잘 맞히는 것은 당연합니다. 그래서 시계를 과거로 돌려 그때 가진 정보만 넣고 채점합니다.</p></div>
+      <div><div class="tag nn">통계로는</div><p>학습에 쓴 자료로 성능을 재지 않는다는 원칙입니다. 한 발 더 나아가, 평가 자료가 <b>학습 시점보다 미래</b>여야 합니다. 보고된 연구는 2020년 2월까지의 정보만 넣어 그 이후의 회피 변이를 얼마나 앞서 지목하는지를 확인했습니다 <sup>[4][5]</sup>.</p></div>
+    </div>
+
+    </div></details>
+
+    <details class="hidebox full">
+      <summary>눌러서 보기 — 임상에서 ‘봉인’을 맡는 사람들은 누구인가</summary>
+      <div class="hin">
+        <p style="margin:0 0 10px;font-size:14.5px">임상시험에서도 같은 봉인을 씁니다. 사건(사망·입원·재발)이 정말 사건이었는지 판정하는 일을 연구자가 직접 하면, 어느 쪽이 약을 받았는지 아는 상태에서 판정하게 됩니다. 그래서 <b>누가 어느 군에 속했는지 모르는 외부 평가자</b>가 같은 기록을 보고 판정합니다. 연구자도 이들이 누구인지 모르는 경우가 많습니다.</p>
+        <div class="anon">
+          <figure><img data-who="x1" data-mood="hint" alt=""><figcaption>외부 평가자 ①<span class="vo">(…)</span></figcaption></figure>
+          <figure><img data-who="x2" data-mood="hint" alt=""><figcaption>외부 평가자 ②<span class="vo">(…)</span></figcaption></figure>
+          <figure><img data-who="x3" data-mood="hint" alt=""><figcaption>외부 평가자 ③<span class="vo">(반짝)</span></figcaption></figure>
+        </div>
+        <p style="margin:10px 0 0;font-size:13.5px;color:var(--muted)">판정 기준은 자료를 열기 전에 글로 정해 둡니다. 세 사람의 판정이 갈리면 기준대로 다수 또는 재검토로 처리하고, 그 규칙도 미리 적어 둡니다. AI가 기록을 모아 주더라도 <b>이 판정 자리는 사람에게 남습니다</b>.</p>
+      </div>
+    </details>
+
+    <section class="panel">
+      <h3>봉인 채점 모형 — 무엇을 곱하면 적중률이 올라가나</h3>
+      <div class="cwrap"><canvas id="c6" height="280" aria-label="변이 200개의 점수 분포와, 상위 몇 퍼센트 안에 실제 문제 변이가 몇 개 들어왔는지를 보여 주는 그림."></canvas></div>
+      <div class="ctrl">
+        <div class="group"><button class="bt primary" id="b6a" aria-pressed="true">① 서열 적합도</button></div>
+        <div class="group"><button class="bt" id="b6b" aria-pressed="false">② 항체 접근 자리</button></div>
+        <div class="group"><button class="bt" id="b6c" aria-pressed="false">③ 결합 교란</button></div>
+        <div class="group">
+          <span class="glabel">상위 몇 %를 보나 <span class="val" id="v6p">10%</span></span>
+          <input type="range" id="s6p" min="2" max="30" step="1" value="10">
+        </div>
+        <div class="group"><button class="bt" id="b6run">▶ 봉인 열고 채점</button></div>
+      </div>
+      <h3>행동으로 보기 — 봉인된 시험지를 꺼내 채점한다</h3>
+      <div class="cwrap"><canvas id="c6b" class="wide" height="190" aria-label="봉인된 상자에서 시험지를 꺼내 채점하며 적중률 막대가 올라가는 모습."></canvas></div>
+      <section class="kpis" id="k6"></section>
+      <div class="eq" id="eq6"></div>
+      <div class="insight" id="ins6" aria-live="polite"></div>
+    </section>
+
+    <div class="explain">
+      <h4>풀이 — 세 요소를 곱한다는 말의 뜻</h4>
+      <ol>
+        <li>상위 10%를 무작위로 고르면 평균 10%가 맞습니다. 그 선이 <b>기준선</b>입니다. 요소를 하나만 켜면 적중률이 기준선보다 조금 높은 수준에 머물고, 둘을 켜면 그 중간, 셋을 다 켜면 크게 올라갑니다.</li>
+        <li>세 요소를 모두 켜면 적중률이 기준선 위로 뚜렷하게 올라갑니다. 보고된 연구의 구조가 이것으로, 변이가 ① 기능을 유지할 확률 × ② 항체가 닿는 자리일 확률 × ③ 결합을 깨뜨릴 확률의 결합으로 점수를 만듭니다 <sup>[4]</sup>.</li>
+        <li>적중률에 붙은 구간을 보세요. 문제 변이의 수가 적으면 구간이 넓어서 두 조건의 차이를 단정하기 어려워집니다 — ③단계에서 본 것과 같은 이야기입니다.</li>
+        <li>반대 근거도 함께 봅니다. 서열의 ‘의미 변화’ 하나만으로 회피를 짚겠다는 접근은 여러 방법으로 다시 평가한 연구에서 유용하다는 설득력 있는 근거를 찾지 못했다고 보고됐습니다 <sup>[8]</sup>. 개념이 널리 인용된 것과 재현이 확인된 것은 다릅니다.</li>
+      <li><b>이 모형이 보여 주는 것과 보여 주지 못하는 것</b> — 이 모형의 숨은 정답은 세 성질의 결합으로 만들었습니다. 그러므로 <b>세 요소를 곱한 점수가 유리한 것은 설계상 당연하며, 이 적중률은 어떤 연구의 성능 수치도 아닙니다.</b> 모형이 보여 주는 것은 “여러 조건을 함께 걸면 한 조건만 거는 것보다 좁혀진다”는 구조 하나이고, 실제 연구가 얼마나 맞혔는지는 원문을 보아야 합니다 <sup>[4]</sup>. 점수에 쓰이지 않는 네 번째 숨은 성질을 넣어 둔 것도 그래서입니다 — 재지 못한 것이 있으면 적중률에 천장이 생기고, 실제 연구도 같은 사정에 놓입니다.</li>
+      </ol>
+      <div class="lim"><b>이 단계의 한계</b> — 채점에 쓰는 ‘실제 문제 변이’ 목록 자체가 감시 자료에서 나옵니다. 서열 제출이 적은 지역에서 생긴 변이는 늦게 보이므로, 모델 성능과 별개로 늦게 채점됩니다.</div>
+    </div>
+
+    <div class="quiz" data-quiz="lv5a"></div>
+  </div>
+</section>
+
+<section class="level" id="lv5b">
+  <div class="wrap">
+    <div class="lvhead">
+      <div class="hexno">5<small>분석</small></div>
+      <h2>⑤-2 · AI를 넣으면 어디가 단순해지고 어디가 그대로인가</h2>
+      <p class="sub"><span class="lvtag g">방법: 단계별로 줄어드는 자리 가려 보기</span><span class="lvtag s">연구실: 줄어드는 막대와 안 줄어드는 막대</span></p>
+    </div>
+
+<div class="guide"><img data-who="sia" data-mood="guide" alt="">
+  <div class="g"><b>인턴 시아</b><span class="step">10 / 10</span> 마지막입니다. 지금까지 본 규칙으로 AI 이야기의 과장과 사실을 가릅니다.</div></div>
+<div class="comic" data-src="assets/img/comic_lv5b.webp">
+  <div class="ch"><b>줄어드는 자리와 남는 자리</b><span>사람에게서 사건을 세는 시간은 줄지 않는다</span></div>
+  <div class="cuts">
+    <div class="cut" data-i="1"><div class="art"></div><span class="no">1</span>
+      <div class="ph"><div><img data-who="robo" data-mood="coin" alt=""><div class="d">주판봇이 ‘개발기간 10년 → 1년’이라고 적힌 큰 화살표를 띄운다</div></div></div>
+      <div class="bub robo tl"><b>주판봇</b>AI를 넣으면 10년이 1년이다. 전부 줄어든다.</div>
+    </div>
+    <div class="cut" data-i="2"><div class="art"></div><span class="no">2</span>
+      <div class="ph"><div><img data-who="fly" data-mood="point" alt=""><div class="d">초파리가 3상이라고 적힌 가장 긴 막대를 가리킨다</div></div></div>
+      <div class="bub fly tr"><b>초파리 연구원</b>3상은? 사람한테서 사건이 쌓이는 건 뭘로 줄여.</div>
+    </div>
+    <div class="cut" data-i="3"><div class="art"></div><span class="no">3</span>
+      <div class="ph"><div><img data-who="doc" data-mood="board" alt=""><div class="d">박사가 막대 다섯 개 중 앞 두 개만 짧게 줄여 보인다</div></div></div>
+      <div class="bub doc bl"><b>박사</b>앞쪽은 줄고, 사람에게서 기다리는 시간은 그대로입니다.</div>
+    </div>
+    <div class="cut" data-i="4"><div class="art"></div><span class="no">4</span>
+      <div class="ph"><div><img data-who="asst" data-mood="report" alt=""><div class="d">하루가 전체 기간이 조금만 짧아진 그림을 든다</div></div></div>
+      <div class="bub asst br"><b>조수 하루</b>그래서 전체는 조금만 줄어요. 가장 긴 자리가 안 줄었으니까요.</div>
+    </div>
+  </div>
+  <div class="cap">인턴 시아 — 1 → 2 → 3 → 4 순서로 보시면 돼요. 좁은 화면에서는 네 장면이 세로로 쌓입니다.</div>
+</div>
+<div class="threeline"><b class="t">이 단계 3줄</b><ol><li>AI는 후보 찾기·자료 정리·서류 작성처럼 <b>계산으로 끝나는 자리</b>를 크게 줄인다.</li><li>사람에게서 사건이 쌓이기를 기다리는 시간(특히 3상)은 거의 줄지 않는다.</li><li>전체 기간은 가장 긴 자리가 정하므로, 앞쪽만 줄면 전체는 조금만 줄어든다.</li></ol></div>
+    <h3>단계별 분석 — AI가 줄이는 자리와 남는 자리</h3>
+    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:13%">단계</th><th style="width:25%">지금 시간을 쓰는 일</th><th style="width:27%">AI를 넣으면</th><th>그래도 남는 것</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><b>후보 찾기</b></td>
+          <td>표적을 고르고 화합물 수천~수만 개를 걸러낸다. 1~2년</td>
+          <td><b>크게 줄어든다.</b> 생성 모델과 가상 선별로 수주~수개월. 표적부터 사람 첫 투여까지 30개월 안에 간 사례가 보고됐다 <sup>[1]</sup></td>
+          <td>예측이 틀린 후보를 걸러내는 실험은 그대로 필요하다</td>
+        </tr>
+        <tr>
+          <td><b>구조 확보</b></td>
+          <td>단백질 구조를 실험으로 푼다</td>
+          <td><b>크게 줄어든다.</b> 서열에서 예측 구조를 바로 얻는다. 2020년 3월에 코로나 관련 단백질 6종의 예측 구조가 공개됐다 <sup>[9]</sup></td>
+          <td>예측 구조는 출발점이고, 결합의 세부는 실험으로 확인한다</td>
+        </tr>
+        <tr>
+          <td><b>설계·최적화</b></td>
+          <td>서열을 경험적으로 다듬는다</td>
+          <td><b>크게 줄어든다.</b> 안정성과 코돈을 동시에 최적화하는 알고리즘이 스파이크 기준 11분에 답을 낸다 <sup>[10]</sup></td>
+          <td>생쥐에서 항체가 128배라는 결과도 사람에서 확인이 필요하다 <sup>[10]</sup></td>
+        </tr>
+        <tr>
+          <td><b>자료 정리·감시</b></td>
+          <td>서열 수백만 건을 분류하고 새 변이를 찾는다</td>
+          <td><b>사람이 할 수 없던 일이 된다.</b> 계통 분류와 신규 변이 탐지가 상시로 돌아간다 <sup>[6][7]</sup></td>
+          <td>자료가 적은 지역의 변이는 늦게 보인다. 편향은 알고리즘으로 지워지지 않는다</td>
+        </tr>
+        <tr>
+          <td><b>임상 설계</b></td>
+          <td>참여 기관·모집 계획을 정한다</td>
+          <td><b>부분적으로 줄어든다.</b> 발생률이 높은 지역·집단을 추정해 모집 기간을 단축한다</td>
+          <td>필요한 사건 수는 ②단계의 검정력 계산이 정한다. 모형이 바꿀 수 없다</td>
+        </tr>
+        <tr>
+          <td><b>임상 1상</b></td>
+          <td>안전을 확인한다</td>
+          <td><b>통과율이 높게 보고된다.</b> 1상 완료 24개 중 21개 성공 <sup>[1]</sup></td>
+          <td>“깨지지 않는 분자를 잘 만든다”는 뜻에 가깝다. 효과의 증거는 아니다</td>
+        </tr>
+        <tr>
+          <td><b>임상 2·3상</b></td>
+          <td>환자에서 효과를 확인한다. 수개월~수년</td>
+          <td><b>거의 줄지 않는다.</b> AI로 찾은 약물의 2상 실패율은 비AI와 비슷하다 <sup>[2]</sup></td>
+          <td>사건이 쌓이기를 기다리는 시간. 계산으로 대체되는 부분이 없다</td>
+        </tr>
+        <tr>
+          <td><b>제조·품질</b></td>
+          <td>품질 검사를 사람이 검토한다</td>
+          <td><b>크게 줄어든다.</b> 검사 자동화와 공정 최적화 <sup>[11]</sup></td>
+          <td>규제 요건은 그대로 충족해야 한다</td>
+        </tr>
+      </tbody>
+    </table></div>
+
+    <div class="talk">
+      <div class="say" data-who="robo">
+        <img class="who" data-who="robo" data-mood="calc" alt="" aria-hidden="true">
+        <div><b class="name">주판봇</b><p>앞쪽이 다 빨라졌으니 전체 개발 기간도 그만큼 줄어든 거다. 투자 가치가 올랐어.</p></div>
+      </div>
+      <div class="say" data-who="doc">
+        <img class="who" data-who="doc" data-mood="think" alt="" aria-hidden="true">
+        <div><b class="name">박사</b><p>①단계의 곱셈을 다시 보세요. 앞쪽 통과율만 올리면 전체가 얼마나 움직였습니까. 숫자가 그럴듯한지 확인하는 습관이 여기서 쓰입니다.</p></div>
+      </div>
+      <div class="say" data-who="asst">
+        <img class="who" data-who="asst" data-mood="report" alt="" aria-hidden="true">
+        <div><b class="name">조수 하루</b><p>표를 세어 보면 ‘크게 줄어든다’가 네 자리, ‘거의 줄지 않는다’가 한 자리인데, 그 한 자리가 기간과 비용의 대부분을 쓰는 자리예요.</p></div>
+      </div>
+    </div>
+
+    <details class="more full"><summary>자세히 — AI로 옮겨 보기</summary><div class="min">
+    <div class="bridge ai">
+      <h4>AI 모델로 치면</h4>
+      모델을 평가할 때 시간 순서를 지키는 일과 같습니다. 과거·미래 자료를 섞어 무작위로 나누면 성능이 실제보다 높게 나옵니다. 시점을 기준으로 나누는 것이 이 단계의 ‘봉인’에 해당합니다.
+      <span class="limit">비유의 한계: 임상에서는 봉인을 풀어 다시 실험할 수 없습니다. 모델 평가와 달리 시도 횟수가 제한됩니다.</span>
+    </div>
+
+        </div></details>
+
+<div class="rest"><img data-who="moa" data-mood="cheer" alt="">
+  <p><b>모아</b> — 열 단계 모두 지나셨어요. 수고하셨습니다!</p></div>
+<div class="quiz" data-quiz="lv5b"></div>
+  </div>
+</section>

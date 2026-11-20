@@ -1,0 +1,404 @@
+<script>
+/* =====================================================================
+   연구실 해설 대시보드 · 공용 모듈
+   외부 라이브러리 없음 · 브라우저 저장소 사용 없음
+   ===================================================================== */
+(function(){
+'use strict';
+var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+window.LAB = {reduce:reduce};
+
+/* ---------- 도우미 ---------- */
+function rng(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);
+  t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};}
+function gauss(r){var u=0;while(!u)u=r();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*r());}
+function erf(x){var s=x<0?-1:1;x=Math.abs(x);
+  var a1=0.254829592,a2=-0.284496736,a3=1.421413741,a4=-1.453152027,a5=1.061405429,p=0.3275911;
+  var t=1/(1+p*x), y=1-(((((a5*t+a4)*t)+a3)*t+a2)*t+a1)*t*Math.exp(-x*x);
+  return s*y;}
+function Phi(z){return 0.5*(1+erf(z/Math.SQRT2));}
+var ZC={0.90:1.6448536,0.95:1.9599640,0.99:2.5758293};
+/* Cornish–Fisher 전개로 t 임계값 근사 (자유도 4 이상에서 소수 셋째 자리까지 일치) */
+function tcrit(conf,df){
+  var z=ZC[conf]||1.959964;
+  if(df>=5000) return z;
+  var z2=z*z,z3=z2*z,z5=z3*z2,z7=z5*z2;
+  return z + (z3+z)/(4*df) + (5*z5+16*z3+3*z)/(96*df*df) + (3*z7+19*z5+17*z3-15*z)/(384*df*df*df);
+}
+function fit(c,h){var d=window.devicePixelRatio||1,
+  w=c.clientWidth||(c.parentElement&&c.parentElement.clientWidth)||600;
+  if(c.width!==Math.round(w*d)||c.height!==Math.round(h*d)){
+    c.width=Math.round(w*d);c.height=Math.round(h*d);c.style.height=h+'px';}
+  var x=c.getContext('2d');x.setTransform(d,0,0,d,0,0);x.clearRect(0,0,w,h);return w;}
+function stamp(ctx,W,txt){ctx.save();
+  ctx.font='700 11px "IBM Plex Sans KR",system-ui,sans-serif';
+  var tw=ctx.measureText(txt).width+16,x=W-tw-8,y=8;
+  ctx.fillStyle='rgba(163,92,0,.08)';ctx.strokeStyle='rgba(163,92,0,.7)';ctx.lineWidth=1;
+  ctx.beginPath();
+  if(ctx.roundRect)ctx.roundRect(x,y,tw,20,10);else ctx.rect(x,y,tw,20);
+  ctx.fill();ctx.stroke();
+  ctx.fillStyle='#a35c00';ctx.textAlign='left';ctx.textBaseline='middle';
+  ctx.fillText(txt,x+8,y+10);ctx.restore();}
+function num(n,d){return n.toLocaleString('ko-KR',{minimumFractionDigits:d===undefined?0:d,maximumFractionDigits:d===undefined?0:d});}
+function kpi(el,items){el.innerHTML=items.map(function(i){
+  return '<div class="kpi '+(i.c||'')+'"><div class="k">'+i.k+'</div><div class="v">'+i.v+'</div>'+
+         (i.n?'<div class="n">'+i.n+'</div>':'')+'</div>';}).join('');}
+window.LAB.rng=rng;window.LAB.gauss=gauss;window.LAB.Phi=Phi;window.LAB.tcrit=tcrit;
+window.LAB.fit=fit;window.LAB.stamp=stamp;window.LAB.num=num;window.LAB.kpi=kpi;
+
+/* ---------- 보이는 캔버스만 그리는 루프 ---------- */
+var mods=[],vis=new Set();
+var io=('IntersectionObserver' in window)?new IntersectionObserver(function(es){
+  es.forEach(function(e){e.isIntersecting?vis.add(e.target):vis.delete(e.target);});
+},{rootMargin:'120px'}):null;
+function addMod(el,fn){mods.push({el:el,fn:fn});if(io)io.observe(el);else vis.add(el);}
+window.LAB.addMod=addMod;
+var last=0;
+function loop(ts){var dt=last?Math.min(0.05,(ts-last)/1000):0.016;last=ts;
+  for(var i=0;i<mods.length;i++){var m=mods[i];if(vis.has(m.el)){try{m.fn(dt);}catch(e){}}}
+  requestAnimationFrame(loop);}
+window.LAB.redraw=function(){mods.forEach(function(m){try{m.fn(0);}catch(e){}});};
+window.LAB.start=function(){
+  mods.forEach(function(m){try{m.fn(0);}catch(e){}});
+  requestAnimationFrame(loop);
+  window.addEventListener('resize',function(){mods.forEach(function(m){try{m.fn(0);}catch(e){}});});
+};
+
+/* ---------- 캐릭터 ---------- */
+/*SPRITE_INJECT*/
+var Cast=(function(){
+  var DEF={doc:'doc_front',asst:'asst_smile',fly:'fly_clip',robo:'robo_smile',
+           sia:'sia_guide',moa:'moa_tea',x1:'x1_hint',x2:'x2_hint',x3:'x3_hint'};
+  var A=(typeof SPRITE_ALIAS!=='undefined')?SPRITE_ALIAS:{};
+  var S=(typeof SPRITE!=='undefined')?SPRITE:{};
+  function src(who,mood){
+    var k=who+'_'+(mood||'');
+    if(A[k]&&S[A[k]])return S[A[k]];
+    if(S[k])return S[k];
+    var d=DEF[who];
+    if(d&&A[d]&&S[A[d]])return S[A[d]];
+    for(var key in S){if(key.indexOf(who+'_')===0)return S[key];}
+    return '';
+  }
+  function fill(root){
+    var sc=root||document;
+    Array.prototype.forEach.call(sc.querySelectorAll('img[data-who]'),function(i){
+      var u=src(i.dataset.who,i.dataset.mood);
+      if(u)i.src=u;else i.style.visibility='hidden';
+    });
+  }
+  function set(img,who,mood){
+    if(!img)return;var u=src(who,mood);if(!u)return;
+    if(reduce){img.src=u;return;}
+    img.style.transition='opacity .2s';img.style.opacity=0;
+    setTimeout(function(){img.src=u;img.style.opacity=1;},200);
+  }
+  return {src:src,fill:fill,set:set};
+})();
+window.LAB.Cast=Cast;
+
+/* ---------- 용어 말풍선 ---------- */
+var GL={
+ '귀무가설':['귀무가설','검정','차이가 없다는 기본 가정. 검정은 이 가정을 버릴 만한 증거가 있는지를 묻는다.'],
+ 'p값':['p값','검정','귀무가설이 참이라고 할 때, 관측된 결과만큼 또는 더 극단적인 결과가 나올 확률. 귀무가설이 참일 확률이 아니다.'],
+ '검정력':['검정력','검정','참 효과가 있을 때 그것을 유의하다고 판정할 확률. 1에서 제2종 오류 확률을 뺀 값.'],
+ '유의수준':['유의수준 α','검정','제1종 오류를 허용할 상한. 보통 0.05로 두고 자료를 보기 전에 정한다.'],
+ '신뢰구간':['신뢰구간','추정','같은 방법으로 구간을 반복해 만들면 그중 정해진 비율이 모수를 포함하도록 만든 범위.'],
+ '표준오차':['표준오차','추정','표본평균이 표본마다 흔들리는 폭. 표본표준편차를 표본 크기의 제곱근으로 나눈 값.'],
+ '자유도':['자유도','추정','표본표준편차를 구할 때 평균을 이미 썼으므로 자유롭게 움직이는 값이 하나 줄어 n−1이 된다.'],
+ 't 분포':['t 분포','분포','표본표준편차를 쓸 때의 흔들림을 반영해 정규분포보다 꼬리가 두꺼운 분포. 자유도가 커지면 정규분포에 가까워진다.'],
+ '효과 크기':['효과 크기','검정','두 집단의 차이를 퍼짐으로 나눈 값. 단위가 없어 서로 다른 연구를 비교할 때 쓴다.'],
+ '다중 비교':['다중 비교','검정','같은 자료에 검정을 여러 번 하면 거짓 양성이 쌓여, 한 번용으로 설계한 유의수준이 지켜지지 않는 문제.'],
+ '본페로니':['본페로니 보정','검정','검정 횟수 k로 유의수준을 나눠 기준을 좁히는 가장 단순한 다중 비교 보정.'],
+ '비지도학습':['비지도학습','학습','정답표 없이 자료 자체의 구조만으로 무리를 찾거나 차원을 줄이는 학습 방식.'],
+ '자기지도학습':['자기지도학습','학습','자료의 일부를 가리고 복원하게 하는 식으로, 자료에서 스스로 과제를 만들어 학습하는 방식.'],
+ '계통':['계통','감시','같은 조상에서 갈라져 나온 서열 무리. 감시 체계는 서열을 계통으로 분류해 변화를 본다.'],
+ '전임상':['전임상','임상','사람에게 쓰기 전 세포와 동물에서 효과와 독성을 확인하는 단계.'],
+ '설명용 값':['설명용 값','표기','출처가 있는 측정값이 아니라, 계산을 보여 주기 위해 이 페이지에서 정한 숫자.'],
+ '단위':['단위','표기','µg/L는 리터당 마이크로그램. 이 페이지에서 붙인 표기이며 문제에는 단위가 없었다.'],
+ '정규분포':['정규분포','분포','가운데가 높고 양쪽으로 대칭으로 낮아지는 종 모양 분포.'],
+ '모수':['모수','추정','모집단의 참값. 표본에서 추정할 대상이며, 추정하는 동안 변하지 않는다고 본다.']
+};
+var Gloss=(function(){
+  var tip=document.getElementById('tip'),mode=1,core=['귀무가설','p값','검정력','신뢰구간','표준오차','자유도','t 분포','다중 비교','비지도학습','계통'];
+  function show(el,key){
+    var g=GL[key];if(!g)return;
+    tip.innerHTML='<b>'+g[0]+'</b><span class="cat">'+g[1]+'</span><p style="margin:6px 0 0">'+g[2]+'</p>';
+    tip.style.display='block';
+    var r=el.getBoundingClientRect(),tw=tip.offsetWidth,th=tip.offsetHeight;
+    var x=Math.min(Math.max(8,r.left+window.scrollX),window.innerWidth-tw-8+window.scrollX);
+    var y=r.top+window.scrollY-th-10;
+    if(y<window.scrollY+8)y=r.bottom+window.scrollY+10;
+    tip.style.left=x+'px';tip.style.top=y+'px';
+  }
+  function hide(){tip.style.display='none';}
+  function mark(){
+    var scope=document.querySelectorAll('section.level p, section.level li, section.level td, header.hero p, .first li');
+    Array.prototype.forEach.call(document.querySelectorAll('.jt[data-done]'),function(e){
+      e.replaceWith(document.createTextNode(e.textContent));});
+    if(mode===0){bind();return;}
+    var keys=Object.keys(GL).filter(function(k){return mode===1?core.indexOf(k)>=0:true;});
+    keys.sort(function(a,b){return b.length-a.length;});
+    /* 섹션(또는 히어로) 단위로 첫 등장에만 밑줄을 긋는다 */
+    var seenBy={};
+    Array.prototype.forEach.call(scope,function(p){
+      if(p.closest('#kg')||p.closest('#export')||p.closest('.mathbox table')||p.closest('#tip'))return;
+      var host=p.closest('section.level')||p.closest('header.hero')||document.body;
+      var hid=host.id||'body';
+      var seen=seenBy[hid]||(seenBy[hid]={});
+      keys.forEach(function(k){
+        if(seen[k])return;
+        var walker=document.createTreeWalker(p,NodeFilter.SHOW_TEXT,null);
+        var node,hit=null,idx=-1;
+        while((node=walker.nextNode())){
+          if(node.parentElement&&node.parentElement.classList.contains('jt'))continue;
+          idx=node.nodeValue.indexOf(k);
+          if(idx>=0){hit=node;break;}
+        }
+        if(!hit)return;
+        var after=hit.splitText(idx),rest=after.splitText(k.length);
+        var sp=document.createElement('span');
+        sp.className='jt';sp.dataset.g=k;sp.dataset.done='1';sp.tabIndex=0;sp.textContent=k;
+        after.replaceWith(sp);seen[k]=1;
+      });
+    });
+    bind();
+  }
+  function bind(){
+    Array.prototype.forEach.call(document.querySelectorAll('.jt'),function(e){
+      var key=e.dataset.g||e.textContent;
+      if(e.dataset.bound)return;e.dataset.bound='1';
+      e.addEventListener('mouseenter',function(){show(e,key);});
+      e.addEventListener('mouseleave',hide);
+      e.addEventListener('focus',function(){show(e,key);});
+      e.addEventListener('blur',hide);
+      e.addEventListener('click',function(ev){ev.preventDefault();show(e,key);});
+    });
+  }
+  window.addEventListener('scroll',hide,{passive:true});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')hide();});
+  return {mark:mark,set:function(m){mode=m;mark();},mode:function(){return mode;}};
+})();
+window.LAB.Gloss=Gloss;
+
+/* ---------- 확인 퀴즈 + 학습 도우미 ---------- */
+var QUIZ={
+ lv1:[
+  {q:'단계 통과율이 0.5 · 0.4 · 0.5라면 전체 통과율은?',o:['0.10','0.20','1.40','0.47'],a:0,
+   why:'0.5 × 0.4 × 0.5 = 0.10입니다. 곱이므로 단계가 늘면 빠르게 작아집니다.',hint:'더하지 말고 곱해 보세요.'},
+  {q:'앞단계 통과율만 크게 올렸는데 최종 허가 기대 수가 거의 그대로였습니다. 가장 그럴듯한 이유는?',
+   o:['전체가 곱이라 가장 낮은 단계가 결과를 좌우한다','앞단계는 중요하지 않다','확률 계산이 잘못됐다','후보 수가 적었다'],a:0,
+   why:'병목이 있는 구조입니다. 가장 낮은 통과율을 올리지 않으면 전체가 거의 움직이지 않습니다.',hint:'①단계 모형에서 2상 통과율만 올려 보세요.'}
+ ],
+ lv2a:[
+  {q:'p = 0.03이 뜻하는 것은?',
+   o:['귀무가설이 참일 확률이 3%','귀무가설이 참이라고 할 때 이만큼 극단적인 결과가 나올 확률이 3%','대립가설이 참일 확률이 97%','효과 크기가 3%'],a:1,
+   why:'p값은 가정을 전제로 계산한 자료의 확률이고, 가정이 참일 확률이 아닙니다.',hint:'무엇을 전제로 계산한 확률인지 보세요.'}
+ ],
+ lv2b:[
+  {q:'“유의하지 않았다”는 결과를 바르게 읽은 것은?',
+   o:['효과가 없음이 증명됐다','이 자료로는 효과를 확인하지 못했다','검정이 잘못됐다','표본을 더 줄여야 한다'],a:1,
+   why:'인원이 적어 못 잡았을 수도 있습니다. 그래서 검정력을 함께 봅니다.',hint:'제2종 오류를 떠올려 보세요.'}
+ ],
+ lv3a:[
+  {q:'n = 10, 표본평균 37.66, 표본표준편차 7.09일 때 표준오차는? (√10 ≈ 3.1623)',
+   o:['0.709','2.242','7.090','22.42'],a:1,
+   why:'7.09 ÷ 3.1623 = 2.2421입니다.',hint:'표준편차를 √n으로 나눕니다.'},
+  {q:'같은 자료에서 95%를 99%로 바꾸면 신뢰구간은?',
+   o:['좁아진다','넓어진다','그대로다','가운데가 움직인다'],a:1,
+   why:'기준값이 2.262에서 3.250으로 커지므로 폭이 10.14에서 14.57로 넓어집니다. 가운데는 그대로입니다.',hint:'더 안전하게 말하려면 덜 구체적으로 말해야 합니다.'}
+ ],
+ lv3b:[
+  {q:'“95% 신뢰구간에 모평균이 있을 확률이 95%”라는 문장은?',
+   o:['맞다','틀리다 — 모수는 고정이고 구간이 움직인다','표본이 크면 맞다','정규분포면 맞다'],a:1,
+   why:'바른 해석은 같은 방법을 반복할 때 약 95%의 구간이 모수를 포함한다는 것입니다.',hint:'말뚝과 고리를 떠올려 보세요.'}
+ ],
+ lv4a:[
+  {q:'효과가 전혀 없는데 하위집단 10개를 각각 α = 0.05로 검정하면, 적어도 하나가 유의할 확률은?',
+   o:['0.05','0.10','약 0.40','약 0.95'],a:2,
+   why:'1 − 0.95¹⁰ = 1 − 0.5987 = 0.401입니다.',hint:'“하나도 없을 확률”을 먼저 구해 1에서 빼세요.'}
+ ],
+ lv4b:[
+  {q:'유병률 1%, 민감도 99%, 특이도 95%인 검사에서 양성이 나왔습니다. 실제 환자일 확률에 가장 가까운 값은?',
+   o:['99%','95%','약 17%','약 1%'],a:2,
+   why:'1,000명 중 참 양성 9.9명, 거짓 양성 49.5명이므로 9.9 ÷ 59.4 ≈ 0.167입니다.',hint:'아닌 사람이 99배 많다는 점을 생각하세요.'}
+ ],
+ lv4c:[
+  {q:'군집화로 새 무리를 찾았습니다. 이 결과만으로 말할 수 있는 것은?',
+   o:['그 무리가 면역을 회피한다','기존과 다른 무리가 생겼다','그 무리가 더 위험하다','백신을 바꿔야 한다'],a:1,
+   why:'거리로 묶은 결과는 “다르다”까지입니다. 성질에 대한 주장은 별도의 근거가 필요합니다.',hint:'비지도학습이 쓴 정보가 무엇이었는지 보세요.'}
+ ],
+ lv5a:[
+  {q:'모델이 변이를 앞서 지목했다고 주장하려면 반드시 지켜야 할 것은?',
+   o:['학습 자료를 최대한 많이 쓴다','평가 자료가 학습 시점보다 미래여야 한다','정확도를 한 숫자로 보고한다','하위집단을 많이 본다'],a:1,
+   why:'미래 정보가 섞이면 잘 맞히는 것이 당연해집니다. 시점을 기준으로 봉인해야 합니다.',hint:'봉인된 시험지를 떠올려 보세요.'}
+ ],
+ lv5b:[
+  {q:'AI 도입으로 가장 줄지 않는 자리는?',
+   o:['후보 물질 찾기','단백질 구조 확보','임상 2·3상','제조 품질 검토'],a:2,
+   why:'사람에게서 사건이 쌓이기를 기다리는 시간은 계산으로 대체되지 않습니다. 보고된 2상 실패율도 비AI와 비슷했습니다.',hint:'①단계의 병목과 같은 자리입니다.'}
+ ],
+};
+var Study=(function(){
+  var total=0,got=0,answered={};
+  function render(){
+    Array.prototype.forEach.call(document.querySelectorAll('.quiz[data-quiz]'),function(box){
+      var key=box.dataset.quiz,items=QUIZ[key];if(!items)return;
+      total+=items.length;
+      var h='<h4>확인 퀴즈</h4>';
+      items.forEach(function(it,i){
+        h+='<div class="qit" data-k="'+key+'" data-i="'+i+'"><div class="qq">'+(i+1)+'. '+it.q+'</div><div class="qo">';
+        it.o.forEach(function(o,j){h+='<button type="button" data-j="'+j+'">'+o+'</button>';});
+        h+='</div><div class="fb" hidden></div></div>';
+      });
+      box.innerHTML=h;
+      box.addEventListener('click',function(e){
+        var b=e.target.closest('button[data-j]');if(!b)return;
+        var it0=b.closest('.qit'),k=it0.dataset.k,i=+it0.dataset.i,j=+b.dataset.j;
+        var item=QUIZ[k][i],id=k+'_'+i;
+        var fb=it0.querySelector('.fb');
+        if(j===item.a){
+          b.classList.add('ok');
+          fb.hidden=false;fb.innerHTML='<b style="color:var(--gfp)">맞았습니다.</b> '+item.why;
+          if(!answered[id]){answered[id]=1;got++;upd();}
+          Array.prototype.forEach.call(it0.querySelectorAll('button'),function(x){x.disabled=true;});
+        }else{
+          b.classList.add('no');
+          fb.hidden=false;fb.innerHTML='<b style="color:var(--eye)">다시 보겠습니다.</b> '+(item.hint||item.why);
+          if(!answered[id])answered[id]=0;
+        }
+      });
+    });
+    upd();
+  }
+  function upd(){var e=document.getElementById('stQuiz');if(e)e.textContent='퀴즈 '+got+'/'+total;}
+  return {render:render};
+})();
+
+/* ---------- 진행 막대 ---------- */
+(function(){
+  var bar=document.getElementById('prog'),rd=document.getElementById('stRead');
+  function on(){
+    var h=document.documentElement,
+        p=h.scrollHeight>h.clientHeight?(h.scrollTop||document.body.scrollTop)/(h.scrollHeight-h.clientHeight):0;
+    p=Math.max(0,Math.min(1,p));
+    bar.style.width=(p*100).toFixed(1)+'%';
+    if(rd)rd.textContent='읽은 곳 '+Math.round(p*100)+'%';
+  }
+  window.addEventListener('scroll',on,{passive:true});window.addEventListener('resize',on);on();
+})();
+
+/* ---------- 히어로 픽셀아트 (그림 파일 없이 절차적으로) ---------- */
+(function(){
+  var c=document.getElementById('heroArt');if(!c)return;
+  function draw(){
+    var h=c.parentElement.offsetHeight||420,W=fit(c,h),x=c.getContext('2d');
+    x.imageSmoothingEnabled=false;
+    var px=Math.max(5,Math.round(W/150));
+    function blk(gx,gy,gw,gh,col){x.fillStyle=col;x.fillRect(gx*px,gy*px,gw*px,gh*px);}
+    var baseY=Math.round(h/px)-10;
+    /* 창 */
+    blk(Math.round(W/px)-34,3,26,16,'#eef4fb');
+    blk(Math.round(W/px)-34,3,26,1,'#cdd9e8');
+    blk(Math.round(W/px)-21,3,1,16,'#cdd9e8');
+    blk(Math.round(W/px)-34,10,26,1,'#cdd9e8');
+    /* 작업대 */
+    blk(4,baseY,Math.round(W/px)-8,1,'#c8d2dd');
+    /* 눈금 실린더 세 개 */
+    var cols=['#9b3fb5','#13733a','#4a6a96'];
+    for(var i=0;i<3;i++){
+      var gx=8+i*7,ht=5+i*2;
+      blk(gx,baseY-ht,3,ht,'#ffffff');
+      blk(gx,baseY-ht,3,1,'#c8d2dd');
+      blk(gx,baseY-Math.round(ht/2),3,Math.round(ht/2),cols[i]);
+      blk(gx-1,baseY-1,5,1,'#c8d2dd');
+    }
+    /* 점 찍힌 모눈판 */
+    var bx=Math.round(W/px)-30,by=baseY-16;
+    blk(bx,by,20,12,'#ffffff');
+    x.fillStyle='#d5dbe2';
+    for(var r=1;r<12;r+=2)for(var q=1;q<20;q+=2)x.fillRect((bx+q)*px,(by+r)*px,px,px);
+    x.fillStyle='#4a6a96';
+    var seed=rng(7);
+    for(var k=0;k<22;k++){
+      var qq=1+Math.floor(seed()*18),rr=1+Math.floor(seed()*10);
+      x.fillRect((bx+qq)*px,(by+rr)*px,px*1.4,px*1.4);
+    }
+    /* 저울 */
+    var sx=Math.round(W/px/2)-2;
+    blk(sx,baseY-7,1,7,'#8e99a6');
+    blk(sx-5,baseY-8,11,1,'#8e99a6');
+    blk(sx-6,baseY-6,3,1,'#a35c00');
+    blk(sx+4,baseY-6,3,1,'#a35c00');
+  }
+  addMod(c,function(){draw();});
+})();
+
+/* ---------- 시작 ---------- */
+function initComics(){
+  /* 만화 그림은 한 장(2x2)으로 받아 CSS로 잘라 쓴다. 없으면 자리와 말풍선만 보인다. */
+  Array.prototype.forEach.call(document.querySelectorAll('.comic[data-src]'),function(c){
+    var im=new Image();
+    im.onload=function(){
+      Array.prototype.forEach.call(c.querySelectorAll('.art'),function(a){
+        a.style.backgroundImage='url("'+c.dataset.src+'")';});
+      c.classList.add('has-img');
+    };
+    im.onerror=function(){};
+    if('IntersectionObserver' in window){
+      var io=new IntersectionObserver(function(es){
+        es.forEach(function(e){ if(e.isIntersecting){ im.src=c.dataset.src; io.disconnect(); } });
+      },{rootMargin:'400px'});
+      io.observe(c);
+    } else { im.src=c.dataset.src; }
+  });
+}
+function initMode(){
+  var b=document.getElementById('modeBt'),lab=document.getElementById('modeLab');
+  if(!b)return;
+  b.addEventListener('click',function(){
+    var on=document.body.classList.toggle('comicfirst');
+    b.setAttribute('aria-pressed',on?'true':'false');
+    b.textContent=on?'전체 읽기로 돌아가기':'만화 우선으로 보기';
+    lab.textContent=on?'지금은 만화 우선 — 만화와 3줄, 직접 만지는 모형만 남깁니다'
+                      :'지금은 전체 읽기 — 설명을 모두 보여 줍니다';
+    if(window.LAB&&window.LAB.redraw)window.LAB.redraw();
+  });
+}
+function loadShots(){
+  Array.prototype.forEach.call(document.querySelectorAll('img[data-src]'),function(im){
+    var host=im.closest('figure')||im.closest('header');
+    im.addEventListener('load',function(){ if(host)host.classList.add('has-img'); });
+    im.addEventListener('error',function(){ im.remove(); });
+    im.src=im.dataset.src;
+  });
+}
+document.addEventListener('DOMContentLoaded',function(){
+  loadShots();
+  initComics();
+  initMode();
+  (function(){
+    var b=document.getElementById('castBt'),mm=document.getElementById('castMore');
+    if(!b||!mm)return;
+    b.addEventListener('click',function(){
+      var on=mm.hasAttribute('hidden');
+      if(on){mm.removeAttribute('hidden');}else{mm.setAttribute('hidden','');}
+      b.setAttribute('aria-expanded',on?'true':'false');
+      b.textContent=on?'인턴 두 사람 접기':'순서를 챙기는 인턴 두 사람 보기';
+      if(on)Cast.fill(mm);
+    });
+  })();
+  Cast.fill();
+  Gloss.mark();
+  Study.render();
+  var g=document.getElementById('stGloss');
+  if(g)g.addEventListener('click',function(){
+    var m=(Gloss.mode()+1)%3;Gloss.set(m);
+    g.textContent='밑줄: '+(m===0?'끄기':m===1?'핵심':'전체');
+  });
+  if(window.LAB.initPanels)window.LAB.initPanels();
+  if(window.LAB.initKG)window.LAB.initKG();
+  window.LAB.start();
+});
+})();
+</script>

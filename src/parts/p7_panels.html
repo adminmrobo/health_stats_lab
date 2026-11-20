@@ -1,0 +1,772 @@
+<script>
+/* =====================================================================
+   페이지 스크립트 — 여섯 모형과 대결
+   모든 모의실험 자료는 시드 고정 난수 (설명용 모형)
+   ===================================================================== */
+(function(){
+'use strict';
+var L=window.LAB,rng=L.rng,gauss=L.gauss,Phi=L.Phi,tcrit=L.tcrit,fit=L.fit,stamp=L.stamp,num=L.num,kpi=L.kpi;
+var INK='#16212b',MUT='#5b6874',RULE='#d5dbe2',GFP='#13733a',EYE='#c9302c',AMB='#a35c00',
+    STA='#9b3fb5',INFO='#1e55c8',ACC='#4a6a96';
+function F(ctx,w,h,px,py){ctx.font='700 '+px+'px "IBM Plex Sans KR",system-ui,sans-serif';ctx.textAlign='left';ctx.textBaseline='alphabetic';}
+function txt(x,s,px,py,col,size,al,bold){x.fillStyle=col;x.font=(bold?'700 ':'500 ')+(size||12)+'px "IBM Plex Sans KR",system-ui,sans-serif';
+  x.textAlign=al||'left';x.textBaseline='middle';x.fillText(s,px,py);}
+function line(x,a,b,c,d,col,w){x.strokeStyle=col;x.lineWidth=w||1;x.beginPath();x.moveTo(a,b);x.lineTo(c,d);x.stroke();}
+
+/* ===================== ① 관문 통과 모형 ===================== */
+var P1=(function(){
+  var STAGES=[
+    {n:'후보 발굴',r:1.00,m:18,mAI:6},
+    {n:'전임상',r:0.35,m:24,mAI:16},
+    {n:'임상 1상',r:0.55,rAI:0.85,m:14,mAI:12},
+    {n:'임상 2상',r:0.40,m:24,mAI:24},
+    {n:'임상 3상',r:0.60,m:36,mAI:36},
+    {n:'허가',r:0.90,m:12,mAI:12}
+  ];
+  var ai=false,N=1000,p2=0.40,t=0,play=false,parts=[];
+  function counts(){
+    var out=[],cur=N;
+    for(var i=0;i<STAGES.length;i++){
+      var s=STAGES[i],r=s.r;
+      if(i===2&&ai)r=s.rAI;
+      if(i===3)r=p2;
+      cur=cur*r;out.push(cur);
+    }
+    return out;
+  }
+  function months(){var m=0;for(var i=0;i<STAGES.length;i++)m+=ai?STAGES[i].mAI:STAGES[i].m;return m;}
+  function toClinic(){return (ai?STAGES[0].mAI+STAGES[1].mAI:STAGES[0].m+STAGES[1].m);}
+  function drawMain(){
+    var c=document.getElementById('c1');if(!c)return;
+    var W=fit(c,260),x=c.getContext('2d'),cs=counts();
+    var padL=52,padR=16,padB=36,padT=22,bw=(W-padL-padR)/STAGES.length;
+    var maxv=Math.max.apply(null,cs);
+    for(var g=0;g<=4;g++){var yy=padT+(260-padT-padB)*g/4;line(x,padL,yy,W-padR,yy,'#eef2f6',1);}
+    cs.forEach(function(v,i){
+      var hh=(260-padT-padB)*(v/maxv),bx=padL+i*bw+bw*0.16,bwx=bw*0.68;
+      var col=i===3?EYE:(ai&&i<3?GFP:ACC);
+      x.fillStyle=col;x.globalAlpha=i===3?0.95:0.85;
+      x.fillRect(bx,260-padB-hh,bwx,hh);x.globalAlpha=1;
+      txt(x,v>=10?num(v,0):v.toFixed(1),bx+bwx/2,260-padB-hh-10,INK,11.5,'center',true);
+      txt(x,STAGES[i].n,bx+bwx/2,260-padB+14,MUT,10.5,'center');
+    });
+    txt(x,'남은 후보 수',padL,12,MUT,11,'left',true);
+    stamp(x,W,'설명용 모형 · 실제 데이터 아님');
+  }
+  function drawBelt(dt){
+    var c=document.getElementById('c1b');if(!c)return;
+    var W=fit(c,200),x=c.getContext('2d'),H=200;
+    var gates=STAGES.length,gx=[];
+    for(var i=0;i<gates;i++)gx.push(60+(W-120)*i/(gates-1));
+    line(x,40,H/2,W-40,H/2,RULE,2);
+    gx.forEach(function(px,i){
+      line(x,px,H/2-26,px,H/2+26,'#e4e9ee',2);
+      txt(x,STAGES[i].n,px,H/2+42,MUT,10,'center');
+    });
+    if(play){t+=dt;
+      if(parts.length<70&&Math.random()<0.5)parts.push({p:0,y:(Math.random()-0.5)*22,dead:-1,r:Math.random()});
+      parts.forEach(function(q){
+        if(q.dead>=0){q.vy=(q.vy||0)+180*dt;q.y+=q.vy*dt;return;}
+        q.p+=dt*0.13;
+        var seg=Math.floor(q.p*(gates-1));
+        if(seg>q.lastSeg){
+          q.lastSeg=seg;
+          var r=STAGES[Math.min(seg,gates-1)].r;
+          if(seg===2&&ai)r=STAGES[2].rAI;
+          if(seg===3)r=p2;
+          if(q.r>r&&seg>0){q.dead=seg;}
+        }
+        if(q.p>1)q.p=1;
+      });
+      parts=parts.filter(function(q){return q.y<120&&q.p<=1;});
+    }
+    parts.forEach(function(q){
+      var px=40+(W-80)*q.p,py=H/2+q.y;
+      x.fillStyle=q.dead>=0?'rgba(201,48,44,.75)':'rgba(19,115,58,.8)';
+      x.fillRect(px-4,py-4,8,8);
+    });
+    txt(x,'초록 = 통과, 빨강 = 탈락',44,18,MUT,11,'left',true);
+    stamp(x,W,'설명용 모형 · 실제 데이터 아님');
+  }
+  function upd(){
+    var cs=counts(),tot=cs[cs.length-1]/N;
+    kpi(document.getElementById('k1'),[
+      {k:'임상 진입까지',v:toClinic()+'개월',c:'s',n:ai?'AI 도입 시':'기존'},
+      {k:'허가까지 전체',v:months()+'개월',c:'a',n:'설명용 값'},
+      {k:'허가 기대 수',v:cs[5].toFixed(1)+'개',c:'g',n:'시작 '+num(N)+'개'},
+      {k:'전체 통과율',v:(tot*100).toFixed(2)+'%',c:'r',n:'단계 통과율의 곱'}
+    ]);
+    document.getElementById('eq1').innerHTML='<b>P<sub>전체</sub></b> = 0.35 × '+(ai?'<b>0.85</b>':'0.55')+
+      ' × <em>'+p2.toFixed(2)+'</em> × 0.60 × 0.90 = <b>'+(tot).toFixed(4)+'</b>';
+    var ins=document.getElementById('ins1'),h='';
+    if(ai)h+='<p class="g">AI 도입을 켰습니다. 임상 진입까지 '+(STAGES[0].m+STAGES[1].m)+'개월 → '+toClinic()+'개월, 1상 통과율 0.55 → 0.85로 두었습니다. 1상 성적은 보고값을 참고한 것입니다.</p>';
+    if(p2<=0.45)h+='<p class="r">2상 통과율이 '+p2.toFixed(2)+'입니다. 앞단계를 아무리 개선해도 허가 기대 수는 이 값에 거의 비례해 묶입니다 — 이것이 병목입니다.</p>';
+    else h+='<p class="m">2상 통과율을 '+p2.toFixed(2)+'까지 올렸습니다. 다른 어떤 조작보다 허가 기대 수가 크게 움직였습니다.</p>';
+    if(ai&&p2<=0.45)h+='<p class="a">앞단계만 좋아졌을 때 전체 기간은 '+(110-months())+'개월 줄었지만, 허가 기대 수는 거의 그대로입니다. “기간 단축”과 “성공률 개선”은 다른 이야기입니다.</p>';
+    ins.innerHTML=h;
+  }
+  function init(){
+    var sn=document.getElementById('s1n'),sp=document.getElementById('s1p'),
+        ba=document.getElementById('b1ai'),bp=document.getElementById('b1play');
+    sn.addEventListener('input',function(){N=+sn.value;document.getElementById('v1n').textContent=num(N);drawMain();upd();});
+    sp.addEventListener('input',function(){p2=+sp.value;document.getElementById('v1p').textContent=p2.toFixed(2);drawMain();upd();});
+    ba.addEventListener('click',function(){ai=!ai;ba.setAttribute('aria-pressed',ai?'true':'false');drawMain();upd();});
+    bp.addEventListener('click',function(){play=!play;parts=[];bp.textContent=play?'■ 멈춤':'▶ 후보 흘려보내기';});
+    if(L.reduce)play=false;
+    L.addMod(document.getElementById('c1'),function(){drawMain();});
+    L.addMod(document.getElementById('c1b'),function(dt){drawBelt(dt);});
+    upd();
+  }
+  return {init:init};
+})();
+
+/* ===================== ② 판정 모형 ===================== */
+var P2=(function(){
+  var d=0.5,n=64,al=0.05,obs=null,seed=11,tilt=0,showAlt=false;
+  function z(){return (al===0.05)?1.959964:(al<=0.02?2.5758293:(al>=0.09?1.6954:tcrit(1-al,5000)));}
+  function zc(){ // 양측 임계값
+    var p=1-al/2;
+    // 정규 역함수 근사 (Acklam 간이판)
+    var a=[-3.969683028665376e+01,2.209460984245205e+02,-2.759285104469687e+02,1.383577518672690e+02,-3.066479806614716e+01,2.506628277459239e+00];
+    var b=[-5.447609879822406e+01,1.615858368580409e+02,-1.556989798598866e+02,6.680131188771972e+01,-1.328068155288572e+01];
+    var c=[-7.784894002430293e-03,-3.223964580411365e-01,-2.400758277161838e+00,-2.549732539343734e+00,4.374664141464968e+00,2.938163982698783e+00];
+    var dd=[7.784695709041462e-03,3.224671290700398e-01,2.445134137142996e+00,3.754408661907416e+00];
+    var pl=0.02425,q,r;
+    if(p<pl){q=Math.sqrt(-2*Math.log(p));return (((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((dd[0]*q+dd[1])*q+dd[2])*q+dd[3])*q+1);}
+    if(p<=1-pl){q=p-0.5;r=q*q;return (((((a[0]*r+a[1])*r+a[2])*r+a[3])*r+a[4])*r+a[5])*q/(((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1);}
+    q=Math.sqrt(-2*Math.log(1-p));return -(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((dd[0]*q+dd[1])*q+dd[2])*q+dd[3])*q+1);
+  }
+  function ncp(){return d*Math.sqrt(n/2);}
+  function power(){var k=zc();return 1-Phi(k-ncp())+Phi(-k-ncp());}
+  function need(){var k=zc(),zb=0.8416212;return Math.ceil(2*Math.pow((k+zb)/Math.max(d,0.01),2));}
+  function run(){var r=rng(seed++);obs=ncp()+gauss(r);}
+  function draw(){
+    var c=document.getElementById('c2');if(!c)return;
+    var W=fit(c,280),x=c.getContext('2d'),H=280,padL=40,padR=16,padB=42,padT=24;
+    var lo=-4.2,hi=Math.max(4.2,ncp()+3.4);
+    function X(v){return padL+(W-padL-padR)*(v-lo)/(hi-lo);}
+    var pk=0.3989,sc=(H-padT-padB)/pk;
+    function Y(dv){return H-padB-dv*sc;}
+    function pdf(v,mu){return 0.3989*Math.exp(-0.5*(v-mu)*(v-mu));}
+    line(x,padL,H-padB,W-padR,H-padB,RULE,1);
+    for(var v=Math.ceil(lo);v<=hi;v++){line(x,X(v),H-padB,X(v),H-padB+4,RULE,1);txt(x,String(v),X(v),H-padB+15,MUT,10,'center');}
+    var k=zc();
+    /* 꼬리 넓이 */
+    x.fillStyle='rgba(201,48,44,.16)';
+    x.beginPath();x.moveTo(X(k),H-padB);
+    for(var vv=k;vv<=hi;vv+=0.04)x.lineTo(X(vv),Y(pdf(vv,0)));
+    x.lineTo(X(hi),H-padB);x.closePath();x.fill();
+    x.beginPath();x.moveTo(X(lo),H-padB);
+    for(var v2=lo;v2<=-k;v2+=0.04)x.lineTo(X(v2),Y(pdf(v2,0)));
+    x.lineTo(X(-k),H-padB);x.closePath();x.fill();
+    /* 대립 분포 */
+    if(d>0&&showAlt){
+      x.strokeStyle='rgba(74,106,150,.55)';x.lineWidth=1.5;x.setLineDash([4,3]);x.beginPath();
+      for(var v3=lo;v3<=hi;v3+=0.03){var yy=Y(pdf(v3,ncp()));if(v3===lo)x.moveTo(X(v3),yy);else x.lineTo(X(v3),yy);}
+      x.stroke();x.setLineDash([]);
+    }
+    /* 귀무 분포 */
+    x.strokeStyle=INK;x.lineWidth=2;x.beginPath();
+    for(var v4=lo;v4<=hi;v4+=0.03){var y4=Y(pdf(v4,0));if(v4===lo)x.moveTo(X(v4),y4);else x.lineTo(X(v4),y4);}
+    x.stroke();
+    line(x,X(k),padT-6,X(k),H-padB,EYE,1);line(x,X(-k),padT-6,X(-k),H-padB,EYE,1);
+    txt(x,'기준값 ±'+k.toFixed(2),X(k)+6,padT+2,EYE,10.5,'left',true);
+    if(obs!==null){
+      line(x,X(obs),padT-10,X(obs),H-padB,GFP,2.5);
+      txt(x,'관측 z '+obs.toFixed(2),X(obs)+6,padT-4,GFP,11,'left',true);
+    }
+    txt(x,showAlt?'차이가 없는 세계 (실선) · 참 효과가 있는 세계 (점선)':'차이가 없는 세계의 분포 (실선)',padL,12,MUT,11,'left',true);
+    stamp(x,W,'설명용 모형 · 실제 데이터 아님');
+  }
+  function drawCourt(dt){
+    var c=document.getElementById('c2b');if(!c)return;
+    var W=fit(c,190),x=c.getContext('2d'),H=190,cx=W/2,cy=72;
+    var k=zc(),target=obs===null?0:Math.max(-1,Math.min(1,(Math.abs(obs)-k)/k));
+    tilt+=(target-tilt)*Math.min(1,dt*4||1);
+    var ang=tilt*0.3;
+    line(x,cx,cy,cx,cy+66,'#8e99a6',3);
+    line(x,cx-62,cy+66,cx+62,cy+66,'#8e99a6',3);
+    x.save();x.translate(cx,cy);x.rotate(ang);
+    line(x,-70,0,70,0,'#8e99a6',3);
+    x.fillStyle='rgba(74,106,150,.25)';x.strokeStyle=ACC;x.lineWidth=1.5;
+    x.beginPath();x.arc(-70,16,15,0,Math.PI);x.fill();x.stroke();
+    x.fillStyle='rgba(163,92,0,.25)';x.strokeStyle=AMB;
+    x.beginPath();x.arc(70,16,15,0,Math.PI);x.fill();x.stroke();
+    x.restore();
+    txt(x,'귀무가설',cx-70,cy+34,ACC,10.5,'center',true);
+    txt(x,'증거',cx+70,cy+34,AMB,10.5,'center',true);
+    var sig=obs!==null&&Math.abs(obs)>k;
+    txt(x,obs===null?'‘한 번 더 실험’을 누르면 판정합니다':(sig?'증거가 기준을 넘었다 — 귀무가설을 버린다':'증거 불충분 — 이 자료로는 확인하지 못했다'),
+      cx,H-22,sig?GFP:MUT,12.5,'center',true);
+    stamp(x,W,'설명용 모형 · 실제 데이터 아님');
+  }
+  function upd(){
+    var k=zc(),p=obs===null?null:2*(1-Phi(Math.abs(obs)));
+    kpi(document.getElementById('k2'),[
+      {k:'관측 z (정규근사)',v:obs===null?'—':obs.toFixed(2),c:'g',n:'표준오차 몇 배'},
+      {k:'p값',v:p===null?'—':(p<0.001?'<0.001':p.toFixed(3)),c:p!==null&&p<al?'r':'m',n:'기준 α = '+al.toFixed(2)},
+      {k:'검정력',v:(power()*100).toFixed(0)+'%',c:'a',n:'효과 '+d.toFixed(2)+', 인원 '+n},
+      {k:'검정력 80% 필요 인원',v:d<0.05?'—':num(need())+'명',c:'s',n:'집단별'}
+    ]);
+    document.getElementById('eq2').innerHTML='<b>검정력</b> ≈ 1 − Φ( <i>'+k.toFixed(3)+'</i> − <em>'+d.toFixed(2)+'</em>×√('+n+'/2) ) = 1 − Φ('+(k-ncp()).toFixed(3)+') = <b>'+power().toFixed(3)+'</b>';
+    var ins=document.getElementById('ins2'),h='';
+    if(d===0)h+='<p class="r">참 효과를 0으로 두었습니다. 이제 유의하다고 나오는 것은 모두 제1종 오류입니다. ‘한 번 더 실험’을 스무 번 눌러 보면 대략 한 번 나옵니다.</p>';
+    if(power()<0.5&&d>0)h+='<p class="a">검정력이 '+(power()*100).toFixed(0)+'%입니다. 참 효과가 있어도 절반 넘게 놓칩니다. 이 상태의 “유의하지 않음”은 효과가 없다는 뜻이 아닙니다.</p>';
+    if(power()>=0.78&&power()<=0.84&&d>0)h+='<p class="g">검정력이 0.8 근처입니다. 임상에서 표본 크기를 정할 때 흔히 쓰는 목표값입니다.</p>';
+    if(obs!==null&&Math.abs(obs)>zc()&&d===0)h+='<p class="m">지금 판정은 “유의”로 나왔지만 참 효과는 0입니다. 한 번의 유의한 결과가 발견을 뜻하지 않는 이유입니다.</p>';
+    ins.innerHTML=h;
+  }
+  function init(){
+    var sd=document.getElementById('s2d'),sn=document.getElementById('s2n'),sa=document.getElementById('s2a'),br=document.getElementById('b2run');
+    var ba=document.getElementById('b2alt');
+    ba.addEventListener('click',function(){showAlt=!showAlt;ba.setAttribute('aria-pressed',showAlt?'true':'false');
+      ba.textContent=showAlt?'점선 끄기 (실선만 보기)':'점선(효과 있는 세계) 함께 보기';draw();});
+    sd.addEventListener('input',function(){d=+sd.value;document.getElementById('v2d').textContent=d.toFixed(2);obs=null;draw();upd();});
+    sn.addEventListener('input',function(){n=+sn.value;document.getElementById('v2n').textContent=n;obs=null;draw();upd();});
+    sa.addEventListener('input',function(){al=+sa.value;document.getElementById('v2a').textContent=al.toFixed(2);draw();upd();});
+    br.addEventListener('click',function(){run();draw();upd();});
+    L.addMod(document.getElementById('c2'),function(){draw();});
+    L.addMod(document.getElementById('c2b'),function(dt){drawCourt(dt);});
+    upd();
+  }
+  return {init:init};
+})();
+
+/* ===================== ③ 고리 던지기 모형 ===================== */
+var P3=(function(){
+  var CONF=[0.90,0.95,0.99],ci=1,n=10,sg=7.09,MU=37.66,seed=3,res=null,anim=0;
+  function build(){
+    var conf=CONF[ci],r=rng(seed),k=tcrit(conf,n-1),out=[],hit=0,wsum=0;
+    for(var i=0;i<100;i++){
+      var xs=[],m=0;
+      for(var j=0;j<n;j++){var v=MU+sg*gauss(r);xs.push(v);m+=v;}
+      m/=n;
+      var ss=0;for(var j2=0;j2<n;j2++)ss+=(xs[j2]-m)*(xs[j2]-m);
+      var s=Math.sqrt(ss/(n-1)),se=s/Math.sqrt(n),h=k*se;
+      var ok=(MU>=m-h&&MU<=m+h);if(ok)hit++;
+      wsum+=2*h;
+      out.push({m:m,h:h,ok:ok});
+    }
+    res={conf:conf,k:k,arr:out,hit:hit,w:wsum/100};
+  }
+  function draw(){
+    var c=document.getElementById('c3');if(!c)return;
+    var W=fit(c,300),x=c.getContext('2d'),H=300,padL=44,padR=14,padT=22,padB=30;
+    if(!res)build();
+    var lo=MU-3.2*sg,hi=MU+3.2*sg;
+    function Y(v){return padT+(H-padT-padB)*(hi-v)/(hi-lo);}
+    for(var g=0;g<=4;g++){var vv=lo+(hi-lo)*g/4;line(x,padL,Y(vv),W-padR,Y(vv),'#eef2f6',1);txt(x,vv.toFixed(0),padL-6,Y(vv),MUT,10,'right');}
+    line(x,padL,Y(MU),W-padR,Y(MU),ACC,2);
+    txt(x,'참 평균 '+MU,W-padR-4,Y(MU)-10,ACC,11,'right',true);
+    var bw=(W-padL-padR)/100;
+    res.arr.forEach(function(q,i){
+      var px=padL+i*bw+bw/2;
+      x.strokeStyle=q.ok?'rgba(19,115,58,.75)':EYE;x.lineWidth=Math.max(1.4,bw*0.42);
+      x.beginPath();x.moveTo(px,Y(q.m-q.h));x.lineTo(px,Y(q.m+q.h));x.stroke();
+      x.fillStyle=q.ok?GFP:EYE;x.fillRect(px-1,Y(q.m)-1,2,2);
+    });
+    txt(x,'구간 100개 · 빨강 = 참 평균을 놓친 구간',padL,12,MUT,11,'left',true);
+    stamp(x,W,'설명용 모형 · 실제 데이터 아님');
+  }
+  function drawRing(dt){
+    var c=document.getElementById('c3b');if(!c)return;
+    var W=fit(c,200),x=c.getContext('2d'),H=200,px=W/2,gy=H-34;
+    if(!L.reduce)anim+=dt;
+    line(x,40,gy,W-40,gy,RULE,2);
+    x.fillStyle='#8e99a6';x.fillRect(px-3,gy-58,6,58);
+    txt(x,'말뚝 = 참 평균 (고정)',px,gy+18,ACC,11,'center',true);
+    if(!res)build();
+    for(var i=0;i<12;i++){
+      var q=res.arr[i],ph=(anim*0.5+i*0.33)%1;
+      var off=(q.m-MU)/(3.2*sg)*(W/2-60);
+      var ry=gy-54+Math.sin(ph*Math.PI)*-30;
+      x.strokeStyle=q.ok?'rgba(19,115,58,.8)':'rgba(201,48,44,.8)';x.lineWidth=2.5;
+      x.beginPath();x.ellipse(px+off,ry,22,7,0,0,Math.PI*2);x.stroke();
+    }
+    txt(x,'고리 = 구간 (던질 때마다 움직인다)',px,22,MUT,11.5,'center',true);
+    stamp(x,W,'설명용 모형 · 실제 데이터 아님');
+  }
+  function upd(){
+    if(!res)build();
+    var k95=tcrit(0.95,9),se=7.09/Math.sqrt(10),h=k95*se;
+    kpi(document.getElementById('k3'),[
+      {k:'참 평균을 포함한 구간',v:res.hit+' / 100',c:res.hit>=90&&res.hit<=99?'g':'a',n:'신뢰수준 '+(res.conf*100).toFixed(0)+'%'},
+      {k:'평균 구간 폭',v:res.w.toFixed(2),c:'s',n:'n = '+n+', σ = '+sg.toFixed(2)},
+      {k:'기준값 t',v:res.k.toFixed(3),c:'m',n:'자유도 '+(n-1)},
+      {k:'문제의 답 (n=10)',v:'32.59 ~ 42.73',c:'g',n:'37.66 ± '+h.toFixed(2)}
+    ]);
+    document.getElementById('eq3').innerHTML='<em>x̄</em> ± <b>t</b><sub>'+((1-res.conf)/2).toFixed(3)+', '+(n-1)+'</sub> × ( <em>s</em> ÷ √'+n+' ) &nbsp;→&nbsp; 기준값 <b>'+res.k.toFixed(3)+'</b>, 평균 폭 <i>'+res.w.toFixed(2)+'</i>';
+    var ins=document.getElementById('ins3'),hh='';
+    hh+='<p class="g">100번 중 '+res.hit+'번이 참 평균을 포함했습니다. 신뢰수준 '+(res.conf*100).toFixed(0)+'%의 뜻은 이 <b>장기 비율</b>이고, 특정 한 구간이 맞을 확률이 아닙니다.</p>';
+    if(res.conf===0.99)hh+='<p class="a">99%로 올리니 놓치는 구간은 줄었지만 폭이 '+res.w.toFixed(2)+'로 넓어졌습니다. 안전함과 구체성은 함께 가질 수 없습니다.</p>';
+    if(n>=40)hh+='<p class="m">n을 '+n+'으로 올렸습니다. 폭이 √n에 반비례하므로, 폭을 절반으로 줄이려면 표본을 네 배로 늘려야 합니다.</p>';
+    if(n<=8)hh+='<p class="r">표본이 '+n+'개입니다. 자유도가 작아 기준값이 '+res.k.toFixed(2)+'까지 커지고, 구간도 그만큼 넓어집니다.</p>';
+    ins.innerHTML=hh;
+  }
+  function init(){
+    var sc=document.getElementById('s3c'),sn=document.getElementById('s3n'),ss=document.getElementById('s3s'),br=document.getElementById('b3run');
+    sc.addEventListener('input',function(){ci=+sc.value;document.getElementById('v3c').textContent=(CONF[ci]*100).toFixed(0)+'%';build();draw();upd();});
+    sn.addEventListener('input',function(){n=+sn.value;document.getElementById('v3n').textContent=n;build();draw();upd();});
+    ss.addEventListener('input',function(){sg=+ss.value;document.getElementById('v3s').textContent=sg.toFixed(2);build();draw();upd();});
+    br.addEventListener('click',function(){seed++;build();draw();upd();});
+    L.addMod(document.getElementById('c3'),function(){draw();});
+    L.addMod(document.getElementById('c3b'),function(dt){drawRing(dt);});
+    upd();
+  }
+  return {init:init};
+})();
+
+/* ===================== ④-1 다트 모형 ===================== */
+var P4=(function(){
+  var k=20,d=0,bon=false,seed=21,ps=[],NG=40;
+  function build(){
+    var r=rng(seed);ps=[];
+    for(var i=0;i<k;i++){
+      var zz=d*Math.sqrt(NG/2)+gauss(r);
+      ps.push({z:zz,p:2*(1-Phi(Math.abs(zz)))});
+    }
+  }
+  function thr(){return bon?0.05/k:0.05;}
+  function draw(){
+    var c=document.getElementById('c4');if(!c)return;
+    var W=fit(c,250),x=c.getContext('2d'),H=250,padL=48,padR=16,padT=22,padB=34;
+    if(!ps.length)build();
+    function Y(p){var v=Math.max(p,0.0005);return padT+(H-padT-padB)*(1-(Math.log10(v)+3.5)/3.5);}
+    [1,0.1,0.05,0.01,0.001].forEach(function(v){
+      var yy=Y(v);line(x,padL,yy,W-padR,yy,v===0.05?'#f0c6c6':'#eef2f6',1);
+      txt(x,v===0.05?'0.05':String(v),padL-6,yy,v===0.05?EYE:MUT,10,'right');
+    });
+    var t=thr(),ty=Y(t);
+    line(x,padL,ty,W-padR,ty,EYE,2);
+    txt(x,'기준 '+(t<0.01?t.toExponential(1):t.toFixed(3)),W-padR-4,ty-10,EYE,11,'right',true);
+    var bw=(W-padL-padR)/Math.max(k,1);
+    ps.forEach(function(q,i){
+      var px=padL+i*bw+bw/2,sig=q.p<t;
+      x.fillStyle=sig?EYE:ACC;
+      x.beginPath();x.arc(px,Y(q.p),sig?5.5:4,0,Math.PI*2);x.fill();
+      if(sig){x.strokeStyle=EYE;x.lineWidth=1;x.beginPath();x.arc(px,Y(q.p),9,0,Math.PI*2);x.stroke();}
+    });
+    txt(x,'하위집단별 p값 (아래로 갈수록 작다)',padL,12,MUT,11,'left',true);
+    stamp(x,W,'설명용 모형 · 실제 데이터 아님');
+  }
+  function drawDart(){
+    var c=document.getElementById('c4b');if(!c)return;
+    var W=fit(c,190),x=c.getContext('2d'),H=190,cx=W/2,cy=H/2-6,R=62;
+    if(!ps.length)build();
+    [[R,'#f3f6f9'],[R*0.72,'#e7eef6'],[R*0.44,'#d8e3ef'],[R*0.2,'#f0c6c6']].forEach(function(a){
+      x.fillStyle=a[1];x.beginPath();x.arc(cx,cy,a[0],0,Math.PI*2);x.fill();
+    });
+    x.strokeStyle=RULE;x.lineWidth=1;x.beginPath();x.arc(cx,cy,R,0,Math.PI*2);x.stroke();
+    var r=rng(seed*7+1),t=thr(),nsig=0;
+    ps.forEach(function(q){
+      var ang=r()*Math.PI*2,sig=q.p<t;
+      var rad=sig?R*0.12*r():R*0.3+R*0.65*r();
+      var px=cx+Math.cos(ang)*rad,py=cy+Math.sin(ang)*rad;
+      x.fillStyle=sig?EYE:'#8e99a6';
+      x.beginPath();x.arc(px,py,sig?4.5:3,0,Math.PI*2);x.fill();
+      if(sig){nsig++;x.strokeStyle=EYE;x.lineWidth=1.2;x.beginPath();x.arc(px,py,8,0,Math.PI*2);x.stroke();}
+    });
+    txt(x,nsig?('가운데 들어간 '+nsig+'개만 골라 보고하면 ‘발견’이 된다'):'가운데 들어간 다트가 없다',cx,H-14,nsig?EYE:MUT,11.5,'center',true);
+    stamp(x,W,'설명용 모형 · 실제 데이터 아님');
+  }
+  function upd(){
+    if(!ps.length)build();
+    var t=thr(),sig=ps.filter(function(q){return q.p<t;}).length;
+    var any=1-Math.pow(0.95,k);
+    kpi(document.getElementById('k4'),[
+      {k:'‘유의’로 나온 수',v:sig+' / '+k,c:sig?'r':'g',n:bon?'본페로니 보정 적용':'보정 없음'},
+      {k:'적어도 하나 유의할 확률',v:any.toFixed(3),c:'a',n:'효과가 0일 때 · 보정 없음'},
+      {k:'쓰는 기준',v:t<0.01?t.toExponential(1):t.toFixed(3),c:'m',n:bon?'0.05 ÷ '+k:'0.05'},
+      {k:'참 효과',v:d.toFixed(2),c:'s',n:d===0?'없음':'있음'}
+    ]);
+    document.getElementById('eq4').innerHTML='P(적어도 하나 유의) = 1 − ( 1 − <em>0.05</em> )<sup><i>'+k+'</i></sup> = 1 − '+Math.pow(0.95,k).toFixed(4)+' = <b>'+any.toFixed(3)+'</b>';
+    var ins=document.getElementById('ins4'),h='';
+    if(d===0&&sig>0&&!bon)h+='<p class="r">참 효과가 0인데 '+sig+'개가 ‘유의’로 나왔습니다. 이 중 하나만 골라 보고하면 없는 효과를 발견으로 만듭니다.</p>';
+    if(d===0&&bon)h+='<p class="g">보정을 켜니 기준이 '+t.toExponential(1)+'로 좁아졌습니다. 거짓 발견은 줄지만, 참 효과가 있을 때 놓칠 위험(제2종 오류)은 커집니다.</p>';
+    if(k>=20)h+='<p class="a">하위집단을 '+k+'개 보면, 효과가 하나도 없어도 ‘발견’이 생길 확률이 '+(any*100).toFixed(0)+'%입니다.</p>';
+    h+='<p class="m">이 모형은 하위집단을 서로 <b>독립</b>으로 만들었습니다. 실제 하위집단은 같은 참가자를 나눈 것이어서 상관이 있고, 그러면 1 − 0.95<sup>k</sup>는 상한에 가까운 값이 됩니다.</p>';
+    if(d>0&&bon)h+='<p class="m">참 효과가 있는 상태에서 보정을 켰습니다. 기준이 좁아져 실제 효과도 함께 걸러질 수 있다는 점이 보정의 대가입니다.</p>';
+    ins.innerHTML=h;
+  }
+  function init(){
+    var sk=document.getElementById('s4k'),sd=document.getElementById('s4d'),bb=document.getElementById('b4bon'),br=document.getElementById('b4run');
+    sk.addEventListener('input',function(){k=+sk.value;document.getElementById('v4k').textContent=k;build();draw();drawDart();upd();});
+    sd.addEventListener('input',function(){d=+sd.value;document.getElementById('v4d').textContent=d.toFixed(2);build();draw();drawDart();upd();});
+    bb.addEventListener('click',function(){bon=!bon;bb.setAttribute('aria-pressed',bon?'true':'false');draw();drawDart();upd();});
+    br.addEventListener('click',function(){seed++;build();draw();drawDart();upd();});
+    L.addMod(document.getElementById('c4'),function(){draw();});
+    L.addMod(document.getElementById('c4b'),function(){drawDart();});
+    upd();
+  }
+  return {init:init};
+})();
+
+/* ===================== ④-2 서열 지도 모형 ===================== */
+var P5=(function(){
+  var m=0,th=2.4,seed=31,pts=[],cent=[[-3.1,1.2],[2.4,2.3],[0.3,-2.6]];
+  function build(){
+    var r=rng(seed);pts=[];
+    cent.forEach(function(c,ci){
+      var cnt=ci===0?46:ci===1?38:34;
+      for(var i=0;i<cnt;i++)pts.push({x:c[0]+gauss(r)*0.72,y:c[1]+gauss(r)*0.72,g:ci,nw:false});
+    });
+    var nn=18;
+    for(var j=0;j<nn;j++){
+      var dx=2.0+gauss(r)*0.5,dy=-1.4+gauss(r)*0.5;
+      pts.push({x:cent[1][0]+dx*(m/24),y:cent[1][1]+dy*(m/24),g:1,nw:true,base:[cent[1][0],cent[1][1]],d:[dx,dy]});
+    }
+  }
+  function mark(){
+    var newCnt=0;
+    pts.forEach(function(p){
+      var best=1e9;
+      cent.forEach(function(c){var dd=Math.hypot(p.x-c[0],p.y-c[1]);if(dd<best)best=dd;});
+      p.far=best>th;
+      if(p.far)newCnt++;
+    });
+    return newCnt;
+  }
+  function draw(){
+    var c=document.getElementById('c5');if(!c)return;
+    var W=fit(c,300),x=c.getContext('2d'),H=300,pad=30;
+    if(!pts.length)build();
+    var far=mark();
+    var lo=-6,hi=6;
+    function X(v){return pad+(W-pad*2)*(v-lo)/(hi-lo);}
+    function Y(v){return H-pad-(H-pad*2)*(v-lo)/(hi-lo);}
+    for(var g=-6;g<=6;g+=2){line(x,X(g),pad,X(g),H-pad,'#f2f5f8',1);line(x,pad,Y(g),W-pad,Y(g),'#f2f5f8',1);}
+    cent.forEach(function(cc){
+      x.strokeStyle='rgba(74,106,150,.35)';x.lineWidth=1;x.setLineDash([3,3]);
+      x.beginPath();x.arc(X(cc[0]),Y(cc[1]),(X(th)-X(0)),0,Math.PI*2);x.stroke();x.setLineDash([]);
+    });
+    var cols=['#9b3fb5','#13733a','#4a6a96'];
+    pts.forEach(function(p){
+      x.fillStyle=p.far?EYE:cols[p.g];
+      x.globalAlpha=p.far?0.95:0.6;
+      x.beginPath();x.arc(X(p.x),Y(p.y),p.far?4.5:3.4,0,Math.PI*2);x.fill();x.globalAlpha=1;
+    });
+    txt(x,'점 = 서열 하나 · 점선 = 새 무리로 볼 거리 '+th.toFixed(1),pad,16,MUT,11,'left',true);
+    if(far>0)txt(x,'새 무리 후보 '+far+'개',W-pad,16,EYE,11.5,'right',true);
+    stamp(x,W,'설명용 모형 · 실제 데이터 아님');
+  }
+  function drawBand(){
+    var c=document.getElementById('c5b');if(!c)return;
+    var W=fit(c,180),x=c.getContext('2d'),H=180,pad=34;
+    var steps=24,cols=['#9b3fb5','#13733a','#4a6a96',EYE];
+    var bw=(W-pad*2)/steps;
+    for(var s=0;s<steps;s++){
+      var fr=Math.max(0,(s-(steps-m))/steps)*1.6;fr=Math.min(fr,0.55);
+      var sh=[0.34*(1-fr*0.3),0.34*(1-fr),0.32*(1-fr*0.3),fr];
+      var tot=sh.reduce(function(a,b){return a+b;},0);
+      var y=H-pad;
+      for(var q=0;q<4;q++){
+        var hh=(H-pad*2)*sh[q]/tot;
+        x.fillStyle=cols[q];x.globalAlpha=q===3?0.9:0.55;
+        x.fillRect(pad+s*bw,y-hh,bw+0.5,hh);x.globalAlpha=1;y-=hh;
+      }
+    }
+    line(x,pad,H-pad,W-pad,H-pad,RULE,1);
+    txt(x,'시간 →',W-pad,H-pad+14,MUT,10.5,'right');
+    if(m>6){
+      var fx=pad+(W-pad*2)*(steps-m/1.4)/steps;
+      line(x,fx,pad-6,fx,H-pad,EYE,2);
+      txt(x,'신규 계통 후보',fx+6,pad+2,EYE,11,'left',true);
+    }
+    txt(x,'무리별 점유율 (빨강 = 새 무리)',pad,16,MUT,11,'left',true);
+    stamp(x,W,'설명용 모형 · 실제 데이터 아님');
+  }
+  function upd(){
+    if(!pts.length)build();
+    var far=mark();
+    kpi(document.getElementById('k5'),[
+      {k:'서열 수',v:num(pts.length)+'개',c:'s',n:'설명용 모형'},
+      {k:'기존 무리',v:'3개',c:'m',n:'미리 알던 계통'},
+      {k:'새 무리 후보',v:far+'개',c:far?'r':'g',n:'거리 기준 '+th.toFixed(1)+' 초과'},
+      {k:'쓴 정답표',v:'0건',c:'g',n:'라벨 없이 판정'}
+    ]);
+    document.getElementById('eq5').innerHTML='거리(서열, 가장 가까운 무리 중심) &gt; <i>'+th.toFixed(1)+'</i> &nbsp;→&nbsp; 새 무리 후보 &nbsp;·&nbsp; 쌓인 변이 <em>'+m+'</em>개';
+    var ins=document.getElementById('ins5'),h='';
+    if(m===0)h+='<p class="m">아직 변이가 쌓이지 않았습니다. 세 무리가 각자 자리에 있습니다.</p>';
+    if(m>0&&far===0)h+='<p class="a">변이가 '+m+'개 쌓였지만 아직 거리 기준 안쪽입니다. 기준값을 내려 보면 더 일찍 잡히지만 오탐도 늘어납니다.</p>';
+    if(far>0)h+='<p class="r">기존 무리에서 '+th.toFixed(1)+' 넘게 떨어진 서열이 '+far+'개입니다. 정답표 없이 거리만으로 띄운 결과입니다 — 여기까지가 비지도학습이 말할 수 있는 범위입니다.</p>';
+    if(th<=1.6)h+='<p class="a">기준을 '+th.toFixed(1)+'로 낮추면 멀쩡한 무리도 새 계통으로 잡힙니다. 기준값을 정하는 일 자체가 사람의 판단입니다.</p>';
+    ins.innerHTML=h;
+  }
+  function init(){
+    var sm=document.getElementById('s5m'),st=document.getElementById('s5t'),br=document.getElementById('b5run');
+    sm.addEventListener('input',function(){m=+sm.value;document.getElementById('v5m').textContent=m;build();draw();drawBand();upd();});
+    st.addEventListener('input',function(){th=+st.value;document.getElementById('v5t').textContent=th.toFixed(1);draw();drawBand();upd();});
+    br.addEventListener('click',function(){seed++;build();draw();drawBand();upd();});
+    L.addMod(document.getElementById('c5'),function(){draw();});
+    L.addMod(document.getElementById('c5b'),function(){drawBand();});
+    upd();
+  }
+  return {init:init};
+})();
+
+/* ===================== ⑤ 봉인 채점 모형 + 대결 ===================== */
+var P6=(function(){
+  var use={a:true,b:false,c:false},topp=10,seed=57,V=[],opened=false,prog=0;
+  var NV=1200,THR=0.45,HTHR=0.45,PESC=0.95;
+  function build(){
+    var r=rng(seed);V=[];
+    for(var i=0;i<NV;i++){
+      var f=r(),e=r(),c=r(),hid=r();
+      /* 숨은 라벨: 세 성질이 모두 문턱을 넘고, 화면에 없는 네 번째 성질(hid)까지 맞아야
+         실제로 문제가 된다. hid는 점수에 쓰이지 않으므로 세 요소를 다 켜도 적중률에 천장이 생긴다.
+         설명용 가정이며, 어떤 연구의 성능 수치도 아니다. */
+      var esc=(f>THR&&e>THR&&c>THR&&hid>HTHR)&&r()<PESC;
+      var sem=0.2*f+0.8*r();   /* 의미 변화만 쓰는 점수 — 라벨과의 관련이 약하다 */
+      V.push({f:f,e:e,c:c,esc:esc,sem:sem});
+    }
+  }
+  function score(v,mode){
+    if(mode==='sem')return v.sem;
+    if(mode==='three')return v.f*v.e*v.c;   /* 대결의 가정 A — 화면 토글과 무관 */
+    var s=1,any=false;
+    if(use.a){s*=v.f;any=true;}
+    if(use.b){s*=v.e;any=true;}
+    if(use.c){s*=v.c;any=true;}
+    return any?s:0.5;
+  }
+  function recall(mode,p){
+    var arr=V.map(function(v){return {s:score(v,mode),esc:v.esc};});
+    arr.sort(function(x,y){return y.s-x.s;});
+    var kk=Math.max(1,Math.round(V.length*p/100));
+    var tot=V.filter(function(v){return v.esc;}).length;
+    var got=0;for(var i=0;i<kk;i++)if(arr[i].esc)got++;
+    var rc=tot?got/tot:0;
+    var se=tot?Math.sqrt(Math.max(rc*(1-rc),0.001)/tot):0;
+    return {rc:rc,got:got,tot:tot,k:kk,lo:Math.max(0,rc-1.96*se),hi:Math.min(1,rc+1.96*se)};
+  }
+  function draw(){
+    var c=document.getElementById('c6');if(!c)return;
+    var W=fit(c,280),x=c.getContext('2d'),H=280,padL=46,padR=16,padT=22,padB=38;
+    if(!V.length)build();
+    var arr=V.map(function(v){return {s:score(v,'all'),esc:v.esc};});
+    arr.sort(function(a,b){return b.s-a.s;});
+    var bw=(W-padL-padR)/arr.length,maxs=arr[0].s||1;
+    var kk=Math.max(1,Math.round(arr.length*topp/100));
+    x.fillStyle='rgba(74,106,150,.08)';x.fillRect(padL,padT,bw*kk,H-padT-padB);
+    arr.forEach(function(q,i){
+      var hh=(H-padT-padB)*(q.s/maxs),px=padL+i*bw;
+      x.fillStyle=q.esc?EYE:'#c3cedb';
+      x.globalAlpha=opened?1:(q.esc?0.0:0.9);
+      x.fillRect(px,H-padB-hh,Math.max(bw-0.4,0.8),hh);x.globalAlpha=1;
+    });
+    line(x,padL+bw*kk,padT-6,padL+bw*kk,H-padB,ACC,2);
+    txt(x,'상위 '+topp+'%',padL+bw*kk+6,padT+2,ACC,11,'left',true);
+    line(x,padL,H-padB,W-padR,H-padB,RULE,1);
+    txt(x,'점수 높은 순 →',padL,H-padB+16,MUT,10.5,'left');
+    txt(x,opened?'빨강 = 실제로 문제가 된 변이 (봉인 해제)':'봉인 중 — 채점 전에는 정답이 보이지 않는다',padL,12,opened?EYE:MUT,11,'left',true);
+    stamp(x,W,'설명용 모형 · 실제 데이터 아님');
+  }
+  function drawBox(dt){
+    var c=document.getElementById('c6b');if(!c)return;
+    var W=fit(c,190),x=c.getContext('2d'),H=190,cx=W/2;
+    if(opened&&prog<1&&!L.reduce)prog=Math.min(1,prog+dt*0.8);
+    if(L.reduce&&opened)prog=1;
+    var bw=96,bh=62,bx=cx-bw/2,by=70;
+    x.fillStyle='#f0ece2';x.strokeStyle='#b9a98c';x.lineWidth=2;
+    x.fillRect(bx,by,bw,bh);x.strokeRect(bx,by,bw,bh);
+    x.save();x.translate(bx,by);x.rotate(-prog*0.5);
+    x.fillStyle='#e6dcc8';x.strokeStyle='#b9a98c';
+    x.fillRect(0,-12,bw,12);x.strokeRect(0,-12,bw,12);x.restore();
+    for(var i=0;i<3;i++){
+      var pp=Math.max(0,prog-i*0.18);
+      if(pp<=0)continue;
+      var px=bx+18+i*26,py=by-10-pp*34;
+      x.fillStyle='#fff';x.strokeStyle=RULE;x.lineWidth=1;
+      x.fillRect(px,py,20,26);x.strokeRect(px,py,20,26);
+      x.fillStyle='#d5dbe2';for(var r2=0;r2<4;r2++)x.fillRect(px+3,py+4+r2*5,14,2);
+    }
+    var rA=recall('all',topp);
+    var bx2=cx+90,bw2=Math.min(130,W-bx2-24);
+    if(bw2>40){
+      txt(x,'적중률',bx2,66,MUT,11,'left',true);
+      x.fillStyle='#eef2f6';x.fillRect(bx2,74,bw2,16);
+      x.fillStyle=GFP;x.fillRect(bx2,74,bw2*(opened?rA.rc:0),16);
+      line(x,bx2+bw2*topp/100,70,bx2+bw2*topp/100,94,EYE,2);
+      txt(x,'기준선 '+topp+'%',bx2,106,EYE,10.5,'left');
+      txt(x,opened?(rA.rc*100).toFixed(0)+'%':'—',bx2+bw2+6,82,GFP,12,'left',true);
+    }
+    txt(x,opened?'봉인을 열고 채점했다':'‘봉인 열고 채점’을 누르면 채점합니다',cx,H-16,MUT,11.5,'center',true);
+    stamp(x,W,'설명용 모형 · 실제 데이터 아님');
+  }
+  function upd(){
+    if(!V.length)build();
+    var r=recall('all',topp),rs=recall('sem',topp),cnt=(use.a?1:0)+(use.b?1:0)+(use.c?1:0);
+    kpi(document.getElementById('k6'),[
+      {k:'상위 '+topp+'% 적중률',v:opened?(r.rc*100).toFixed(0)+'%':'—',c:opened&&r.rc>topp/100*1.5?'g':'a',n:opened?'95% 구간 '+(r.lo*100).toFixed(0)+'~'+(r.hi*100).toFixed(0)+'% (이항 정규근사)':'봉인 중'},
+      {k:'무작위 기준선',v:topp+'%',c:'r',n:'아무 점수 없이 고를 때'},
+      {k:'켠 요소',v:cnt+'개',c:'m',n:(use.a?'적합도 ':'')+(use.b?'접근 자리 ':'')+(use.c?'결합 교란':'')||'없음'},
+      {k:'문제 변이 수',v:r.tot+'개',c:'s',n:'전체 '+num(NV)+'개 중'}
+    ]);
+    document.getElementById('eq6').innerHTML='점수 = '+(use.a?'<b>적합도</b>':'')+(use.b?(use.a?' × ':'')+'<em>항체 접근 자리</em>':'')+(use.c?((use.a||use.b)?' × ':'')+'<i>결합 교란</i>':'')+(cnt===0?'(없음)':'')+
+      ' &nbsp;→&nbsp; 상위 '+topp+'% 안에 든 문제 변이 '+(opened?r.got+' / '+r.tot:'—');
+    var ins=document.getElementById('ins6'),h='';
+    if(!opened)h+='<p class="m">아직 봉인 상태입니다. 정답을 보지 않은 채로 점수를 매기는 것이 이 모형의 핵심입니다.</p>';
+    else{
+      if(cnt===3)h+='<p class="g">세 요소를 모두 곱했을 때 적중률 '+(r.rc*100).toFixed(0)+'%로, 무작위 기준선 '+topp+'%보다 뚜렷하게 높습니다. 95% 구간 '+(r.lo*100).toFixed(0)+'~'+(r.hi*100).toFixed(0)+'%가 기준선과 겹치지 않습니다. 그래도 100%에 닿지 못하는데, 이 모형의 숨은 정답에는 점수에 쓰이지 않는 네 번째 성질이 들어 있기 때문입니다 — 재지 못한 것이 있으면 천장이 생깁니다.</p>';
+      if(cnt===2)h+='<p class="a">두 요소만 쓰면 적중률이 '+(r.rc*100).toFixed(0)+'%로 떨어집니다. 하나를 뺀 대가가 그대로 나타납니다.</p>';
+      if(cnt===1)h+='<p class="a">요소를 하나만 쓰면 적중률이 '+(r.rc*100).toFixed(0)+'%까지 떨어집니다. 95% 구간은 '+(r.lo*100).toFixed(0)+'~'+(r.hi*100).toFixed(0)+'%입니다 — 세 요소를 모두 쓴 경우와 분명히 다릅니다.</p>';
+      if(cnt===0)h+='<p class="r">요소를 모두 끄면 점수가 없는 것과 같아 적중률이 기준선으로 돌아갑니다.</p>';
+      h+='<p class="m">의미 변화만 쓰는 점수로 채점하면 '+(rs.rc*100).toFixed(0)+'%이고, 95% 구간 '+(rs.lo*100).toFixed(0)+'~'+(rs.hi*100).toFixed(0)+'%가 기준선 '+topp+'%와 겹칩니다. 기준선과 다르다고 말할 수 없는 상태입니다 — 재평가 연구가 이 접근에 대해 유용하다는 근거를 찾지 못했다고 보고한 것과 같은 방향입니다.</p>';
+      if(r.tot<20)h+='<p class="a">문제 변이가 '+r.tot+'개뿐이라 구간이 넓습니다. ③단계에서 본 것처럼, 사건 수가 적으면 결론을 좁히기 어렵습니다.</p>';
+    }
+    ins.innerHTML=h;
+  }
+  function init(){
+    ['a','b','c'].forEach(function(key,i){
+      var b=document.getElementById('b6'+key);
+      b.addEventListener('click',function(){
+        use[key]=!use[key];b.setAttribute('aria-pressed',use[key]?'true':'false');
+        draw();upd();
+      });
+    });
+    var sp=document.getElementById('s6p');
+    sp.addEventListener('input',function(){topp=+sp.value;document.getElementById('v6p').textContent=topp+'%';draw();upd();});
+    document.getElementById('b6run').addEventListener('click',function(){
+      opened=true;prog=L.reduce?1:0;draw();upd();
+    });
+    L.addMod(document.getElementById('c6'),function(){draw();});
+    L.addMod(document.getElementById('c6b'),function(dt){drawBox(dt);});
+    upd();
+  }
+  return {init:init,recall:recall,build:build,ready:function(){if(!V.length)build();}};
+})();
+
+/* ===================== ④-3 가린 자리 복원 (자기지도) ===================== */
+var P7=(function(){
+  var SEQ=['M','K','V','L','A','G','T','S','R','E','D','N'];
+  var CAND=['A','G','L','S','T','V'];
+  var mi=6,win=2,seed=71,res=null;
+  function predict(){
+    /* 장난감 규칙: 가린 자리의 앞뒤 글자가 비슷할수록 특정 후보의 점수가 오른다.
+       정답은 가려진 글자 자신이므로 사람이 라벨을 달지 않는다. */
+    var r=rng(seed),i=mi-1,sc={},tot=0;
+    CAND.forEach(function(c){sc[c]=0.35+r()*0.25;});
+    for(var d=1;d<=win;d++){
+      [i-d,i+d].forEach(function(j){
+        if(j<0||j>=SEQ.length)return;
+        var nb=SEQ[j],w=1/d;
+        CAND.forEach(function(c){
+          var same=(c===nb)?0.55:0;
+          var near=(CAND.indexOf(nb)>=0&&Math.abs(CAND.indexOf(c)-CAND.indexOf(nb))===1)?0.3:0;
+          sc[c]+=w*(same+near);
+        });
+        if(CAND.indexOf(SEQ[i])>=0)sc[SEQ[i]]+=w*0.42;  /* 문맥이 넓어지면 참 글자가 드러난다 */
+      });
+    }
+    CAND.forEach(function(c){tot+=sc[c];});
+    var ps=CAND.map(function(c){return {c:c,p:sc[c]/tot};});
+    ps.sort(function(a,b){return b.p-a.p;});
+    var truth=SEQ[i],inCand=CAND.indexOf(truth)>=0;
+    res={ps:ps,truth:truth,inCand:inCand,top1:ps[0].c===truth,
+         rank:ps.map(function(q){return q.c;}).indexOf(truth)+1,
+         pTruth:inCand?ps.filter(function(q){return q.c===truth;})[0].p:0};
+  }
+  function draw(){
+    var c=document.getElementById('c7');if(!c)return;
+    var W=fit(c,250),x=c.getContext('2d'),H=250;
+    if(!res)predict();
+    var n=SEQ.length,bw=Math.min(34,(W-60)/n),sx=(W-bw*n)/2,sy=30;
+    for(var i=0;i<n;i++){
+      var masked=(i===mi-1),inWin=Math.abs(i-(mi-1))<=win&&!masked;
+      x.fillStyle=masked?'#fdf3e1':(inWin?'#e7f5ec':'#f6f8fa');
+      x.strokeStyle=masked?AMB:(inWin?GFP:RULE);x.lineWidth=masked?2:1;
+      x.fillRect(sx+i*bw,sy,bw-3,30);x.strokeRect(sx+i*bw,sy,bw-3,30);
+      txt(x,masked?'?':SEQ[i],sx+i*bw+(bw-3)/2,sy+15,masked?AMB:INK,13.5,'center',true);
+      txt(x,String(i+1),sx+i*bw+(bw-3)/2,sy+40,MUT,9.5,'center');
+    }
+    txt(x,'노란 자리를 가렸습니다 · 초록은 모델이 참고하는 앞뒤 문맥',sx,16,MUT,11,'left',true);
+    var by=96,bh=20,bl=Math.min(220,W-150);
+    res.ps.forEach(function(q,i){
+      var isT=(q.c===res.truth);
+      txt(x,q.c,sx,by+i*(bh+6)+bh/2,isT?GFP:INK,13,'left',true);
+      x.fillStyle='#eef2f6';x.fillRect(sx+22,by+i*(bh+6),bl,bh);
+      x.fillStyle=isT?GFP:'#c3cedb';x.fillRect(sx+22,by+i*(bh+6),bl*(q.p/res.ps[0].p),bh);
+      txt(x,(q.p*100).toFixed(0)+'%',sx+22+bl+8,by+i*(bh+6)+bh/2,isT?GFP:MUT,12,'left',true);
+      if(isT)txt(x,'← 가려진 글자',sx+22+bl+52,by+i*(bh+6)+bh/2,GFP,11,'left',true);
+    });
+    stamp(x,W,'설명용 모형 · 실제 데이터 아님');
+  }
+  function upd(){
+    if(!res)predict();
+    kpi(document.getElementById('k7'),[
+      {k:'1순위 후보',v:res.ps[0].c,c:res.top1?'g':'r',n:res.top1?'가려진 글자와 같다':'가려진 글자는 '+res.truth},
+      {k:'가려진 글자의 순위',v:res.inCand?res.rank+'위':'후보 밖',c:'s',n:'후보 '+CAND.length+'개 중'},
+      {k:'그 글자에 준 확률',v:res.inCand?(res.pTruth*100).toFixed(0)+'%':'—',c:'m',n:'문맥 폭 '+win},
+      {k:'사람이 단 라벨',v:'0건',c:'g',n:'정답은 가린 글자 자신'}
+    ]);
+    document.getElementById('eq7').innerHTML='P( 자리 <em>'+mi+'</em> = ? | 앞뒤 <i>'+win+'</i>글자 ) &nbsp;→&nbsp; 1순위 <b>'+res.ps[0].c+'</b> ('+(res.ps[0].p*100).toFixed(0)+'%)';
+    var ins=document.getElementById('ins7'),h='';
+    if(win===0)h+='<p class="r">문맥 폭을 0으로 두면 앞뒤를 전혀 보지 않습니다. 확률이 후보들 사이에 거의 고르게 퍼지고, 맞히는 것은 운에 가깝습니다.</p>';
+    if(win>=2&&res.top1)h+='<p class="g">문맥을 '+win+'글자까지 보니 가려진 글자가 1순위로 올라왔습니다. 사람이 정답표를 만들어 준 적은 없습니다 — 가린 자리 자체가 정답이었습니다.</p>';
+    if(win>=1&&!res.top1&&res.inCand)h+='<p class="a">아직 1순위가 아닙니다('+res.rank+'위). 문맥 폭을 넓히거나 다른 자리를 가려 보세요. 자리마다 주변 정보의 양이 다릅니다.</p>';
+    if(!res.inCand)h+='<p class="r">가려진 글자가 후보 목록 밖입니다. 후보를 좁게 잡으면 아무리 학습해도 맞힐 수 없습니다 — 어휘를 정하는 일도 설계의 일부입니다.</p>';
+    h+='<p class="m">이렇게 배운 분포는 “있을 수 있는 서열”의 모양입니다. 그 분포에서 어떤 변이가 드문지를 읽어 적합도 점수로 쓰는 것이 ⑤단계의 첫 번째 요소입니다.</p>';
+    ins.innerHTML=h;
+  }
+  function init(){
+    var si=document.getElementById('s7i'),sw=document.getElementById('s7w'),br=document.getElementById('b7run');
+    si.addEventListener('input',function(){mi=+si.value;document.getElementById('v7i').textContent=mi;predict();draw();upd();});
+    sw.addEventListener('input',function(){win=+sw.value;document.getElementById('v7w').textContent=win;predict();draw();upd();});
+    br.addEventListener('click',function(){seed++;predict();draw();upd();});
+    L.addMod(document.getElementById('c7'),function(){draw();});
+    upd();
+  }
+  return {init:init};
+})();
+
+/* ===================== 대결 (조건부 C) ===================== */
+(function(){
+  function init(){
+    var box=document.getElementById('duelBox'),rev=document.getElementById('duelReveal'),shown=false;
+    var flyImg=box.querySelector('.side.f img'),roboImg=box.querySelector('.side.r img');
+    var gmsg=document.getElementById('gmsg'),guess=null;
+    document.getElementById('gf').addEventListener('click',function(){guess='f';gmsg.textContent='초파리 쪽으로 기록했습니다. 저장하지 않습니다.';});
+    document.getElementById('gr').addEventListener('click',function(){guess='r';gmsg.textContent='주판봇 쪽으로 기록했습니다. 저장하지 않습니다.';});
+    function bar(label,v,col,note){
+      return '<div class="barrow"><span>'+label+'</span><span class="track"><i class="fill" style="background:'+col+'" data-w="'+(v*100).toFixed(1)+'"></i></span><span class="n">'+(v*100).toFixed(0)+'%'+(note||'')+'</span></div>';
+    }
+    function fillBars(){
+      Array.prototype.forEach.call(box.querySelectorAll('.fill'),function(f){
+        f.style.width='0';setTimeout(function(){f.style.width=f.dataset.w+'%';},40);
+      });
+    }
+    rev.addEventListener('click',function(){
+      if(shown){
+        box.classList.remove('open');shown=false;rev.textContent='결과 보기';
+        L.Cast.set(flyImg,'fly','point');L.Cast.set(roboImg,'robo','coin');
+        return;
+      }
+      P6.ready();
+      var A=P6.recall('three',10),B=P6.recall('sem',10),base=0.10;
+      document.getElementById('barsA').innerHTML=
+        bar('주판봇 · 모델',A.rc,'#0b7a86')+
+        bar('무작위 기준선',base,'#8e99a6')+
+        bar('초파리 · 실험만',base,'#c93030',' 동률');
+      document.getElementById('barsB').innerHTML=
+        bar('주판봇 · 모델',B.rc,'#0b7a86')+
+        bar('무작위 기준선',base,'#8e99a6')+
+        bar('초파리 · 실험만',base,'#c93030',' 동률');
+      document.getElementById('asstSay').textContent=
+        '가정 A에서 상위 10% 적중률은 '+(A.rc*100).toFixed(0)+'%, 95% 구간 '+(A.lo*100).toFixed(0)+'~'+(A.hi*100).toFixed(0)+'%예요. '+
+        '가정 B에서는 '+(B.rc*100).toFixed(0)+'%, 구간 '+(B.lo*100).toFixed(0)+'~'+(B.hi*100).toFixed(0)+'%입니다. '+
+        '무작위로 고르면 10%이고, 가정 B의 구간은 그 선과 겹칩니다. 두 조건의 숫자를 모두 적어 두었습니다.';
+      document.getElementById('docSay').textContent=
+        '세 요소를 모두 쓰면 기준선 위로 올라가고, 의미 변화만 쓰면 기준선과 구별되지 않는다. 어느 가정이 현실에 가까운지는 데이터와 후속 연구가 정한다. 모형은 가정을 따라간다 — 이 판은 판정하지 않는다.';
+      document.getElementById('resCode').textContent='C (조건부)';
+      L.Cast.set(flyImg,'fly','coffee');L.Cast.set(roboImg,'robo','calc');
+      box.classList.add('open');shown=true;rev.textContent='다시 닫기';
+      fillBars();
+      if(guess)gmsg.textContent='조건에 따라 갈렸으므로 어느 쪽도 맞다·틀리다로 채점하지 않습니다.';
+    });
+  }
+  window.LAB.initPanels=function(){
+    P1.init();P2.init();P3.init();P4.init();P5.init();P6.init();P7.init();init();
+  };
+})();
+})();
+</script>

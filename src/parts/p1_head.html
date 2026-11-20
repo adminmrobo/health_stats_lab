@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>신약은 어떤 숫자로 허가받는가 — 임상시험의 통계와 AI</title>
+<meta name="description" content="전임상부터 4상까지 신약 개발 과정, 임상에서의 통계적 가설검정, 분산을 모르는 작은 표본의 95% 신뢰구간 풀이, 그리고 AI를 도입하면 어디가 단순해지고 어디가 그대로인가.">
+<meta name="citation_title" content="신약은 어떤 숫자로 허가받는가 — 임상시험의 통계와 AI">
+<meta name="citation_author" content="안상선">
+<meta name="citation_publication_date" content="2026/11/20">
+<meta name="dc.title" content="신약은 어떤 숫자로 허가받는가 — 임상시험의 통계와 AI">
+<meta name="dc.creator" content="안상선">
+<meta name="dc.date" content="2026-11-20">
+<meta name="dc.language" content="ko">
+<meta property="og:title" content="신약은 어떤 숫자로 허가받는가">
+<meta property="og:description" content="임상시험의 통계적 가설검정과 AI — 연구실 해설 대시보드">
+<meta property="og:image" content="assets/img/cover_01_og.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#ffffff; --panel:#f6f8fa; --panel2:#eef2f6; --rule:#d5dbe2;
+  --text:#16212b; --muted:#5b6874;
+  --stain:#9b3fb5; --gfp:#13733a; --eye:#c9302c; --amber:#a35c00; --info:#1e55c8;
+  --stain-soft:#f6ecfa; --gfp-soft:#e7f5ec; --eye-soft:#fcebea;
+  --amber-soft:#fdf3e1; --info-soft:#e6eefb;
+  --c-doc:#7a3fd6; --c-asst:#c42a6e; --c-fly:#c93030; --c-robo:#0b7a86;--c-sia:#5a4a9c;--c-moa:#b8577f;
+  --accent:#4a6a96;              /* 통계 팩 P12 슬레이트 파랑 */
+  --accent-soft:#eaeff6;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);
+  font-family:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",system-ui,sans-serif;
+  font-size:16px;line-height:1.8;-webkit-text-size-adjust:100%}
+h1,h2,h3,h4,p,td,th,li{word-break:keep-all}
+h1{font-size:clamp(32px,5vw,56px);line-height:1.22;margin:0 0 14px;letter-spacing:-.02em}
+h2{font-size:clamp(24px,3vw,34px);margin:0 0 10px;letter-spacing:-.01em}
+h3{font-size:19px;margin:28px 0 8px}
+h4{font-size:16px;margin:0 0 6px}
+p{margin:12px 0}
+a{color:var(--accent)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+
+/* 진행 막대 */
+#prog{position:fixed;top:0;left:0;height:3px;width:0;background:var(--gfp);z-index:60;transition:width .1s linear}
+
+/* 상단 목차 */
+nav.top{position:sticky;top:0;height:54px;overflow:hidden;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--rule);z-index:50}
+nav.top .in{max-width:1080px;margin:0 auto;padding:0 20px;height:54px;display:flex;align-items:center;
+  gap:6px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;scroll-snap-type:x proximity;
+  -webkit-overflow-scrolling:touch}
+nav.top .in::-webkit-scrollbar{display:none}
+nav.top a{scroll-snap-align:start}
+nav.top::after{content:"";position:absolute;top:0;right:0;width:26px;height:53px;pointer-events:none;
+  background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.95))}
+nav.top .logo{font-weight:700;font-size:14px;color:var(--accent);white-space:nowrap;margin-right:8px}
+nav.top a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:500;padding:7px 10px;border-radius:6px;white-space:nowrap}
+nav.top a:hover{background:var(--panel);color:var(--text)}
+@media(max-width:700px){
+  nav.top .nl{display:none}
+  nav.top a{padding:7px 8px;font-size:13.5px;font-weight:600}
+  nav.top .logo{font-size:13px;margin-right:4px}
+}
+
+/* 글 표지 */
+.cover{margin:0 0 6px}
+.cover figure{margin:0;border-bottom:1px solid var(--rule)}
+.cover img{display:block;width:100%;height:auto;image-rendering:pixelated}
+.cover figure .shot,.outro-fig .shot{display:none;width:100%;height:auto;border-radius:0}
+.cover figure.has-img .shot{display:block}
+.cover figure.has-img .alt{display:none}
+.outro-fig.has-img .shot{display:block;border:1px solid var(--rule);border-radius:11px}
+.outro-fig.has-img .alt{display:none}
+header.hero .bgshot{display:none}
+header.hero.has-img .bgshot{display:block;position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:center;opacity:.5;pointer-events:none}
+header.hero.has-img .pixelart{display:none}
+header.hero.has-img .hex{opacity:.3}
+.cover .alt{position:relative;aspect-ratio:16/9;background:
+  radial-gradient(circle at 78% 24%,rgba(74,106,150,.16),transparent 54%),
+  linear-gradient(180deg,#fbfcfe,#eef2f6);
+  display:grid;place-items:center;text-align:center;padding:24px;border-bottom:1px solid var(--rule)}
+.cover .alt .hex{position:absolute;inset:0;opacity:.5;
+  background-image:radial-gradient(circle,rgba(22,33,43,.07) 1.5px,transparent 1.6px);
+  background-size:22px 22px;
+  -webkit-mask-image:radial-gradient(circle at 82% 18%,#000,transparent 62%);
+          mask-image:radial-gradient(circle at 82% 18%,#000,transparent 62%)}
+.cover .alt .ct{position:relative}
+.cover .alt .cs{font-size:12px;letter-spacing:.16em;color:var(--accent);font-weight:700}
+.cover .alt .cm{font-size:clamp(20px,3.4vw,34px);font-weight:700;margin:8px 0 6px}
+.cover .alt .cq{font-size:13px;color:var(--muted)}
+.cover .alt .crew{display:flex;gap:10px;justify-content:center;margin-top:14px}
+.cover .alt .crew img{width:54px;height:54px;image-rendering:pixelated}
+.cover figcaption{font-size:12px;color:var(--muted);padding:8px 20px;max-width:1080px;margin:0 auto}
+
+/* 히어로 */
+header.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--rule);
+  background:linear-gradient(180deg,#ffffff,#fbfcfd)}
+header.hero .pixelart{position:absolute;inset:0;opacity:.3;pointer-events:none}
+header.hero .hex{position:absolute;inset:0;opacity:.55;pointer-events:none;
+  background-image:radial-gradient(circle,rgba(74,106,150,.16) 2px,transparent 2.1px);
+  background-size:26px 26px;
+  -webkit-mask-image:radial-gradient(circle at 88% 12%,#000,transparent 58%);
+          mask-image:radial-gradient(circle at 88% 12%,#000,transparent 58%)}
+.hero-text{position:relative;padding:46px 0 34px}
+.kick{font-size:12px;letter-spacing:.16em;color:var(--accent);font-weight:700;margin-bottom:12px}
+.q{font-size:clamp(17px,2.2vw,21px);font-weight:500;color:var(--text);
+  border-left:3px solid var(--accent);padding:4px 0 4px 14px;margin:18px 0}
+.lede{color:var(--muted);max-width:70ch;margin:0 0 6px;font-size:15.5px}
+.byline{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:12.5px;color:var(--muted);margin-top:16px}
+.byline b{color:var(--text)}
+.chip{background:var(--panel);border:1px solid var(--rule);border-radius:999px;padding:3px 11px}
+.chip.dom{background:var(--accent-soft);border-color:#c6d3e4;color:#2f4a6d;font-weight:700}
+
+/* 숫자 요약 */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:22px 0 0}
+.kpi{border:1px solid var(--rule);border-radius:9px;padding:12px 14px;background:#fff}
+.kpi .k{font-size:11.5px;color:var(--muted);font-weight:600;letter-spacing:.02em}
+.kpi .v{font-size:23px;font-weight:700;letter-spacing:-.01em;font-variant-numeric:tabular-nums;margin-top:2px}
+.kpi .n{font-size:11px;color:var(--muted);margin-top:2px}
+.kpi.g .v{color:var(--gfp)} .kpi.m .v{color:var(--stain)}
+.kpi.r .v{color:var(--eye)} .kpi.a .v{color:var(--amber)}
+.kpi.s .v{color:var(--accent)}
+
+/* 섹션 */
+section.level{scroll-margin-top:120px;padding:64px 0;border-bottom:1px solid var(--rule)}
+section.level:nth-of-type(even){background:linear-gradient(180deg,#fdfefe,#fff)}
+.lvhead{margin-bottom:16px}
+.lvhead .sub{margin:8px 0 0;display:flex;flex-wrap:wrap;gap:6px}
+.lvtag{display:inline-block;font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:999px;
+  background:var(--panel2);color:var(--muted);border:1px solid var(--rule)}
+.lvtag.g{background:var(--gfp-soft);color:var(--gfp);border-color:#c9e3d3}
+.lvtag.s{background:var(--accent-soft);color:#2f4a6d;border-color:#c6d3e4}
+.hexno{width:46px;height:46px;background:var(--accent);color:#fff;display:grid;place-items:center;
+  clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);
+  font-weight:700;font-size:19px;line-height:1;margin-bottom:12px}
+.hexno small{display:block;font-size:8.5px;font-weight:500;opacity:.9;margin-top:1px}
+
+/* 세 장 카드 */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:18px 0}
+.steps > div{border:1px solid var(--rule);border-radius:9px;padding:15px 16px;background:#fff}
+.steps h4{font-size:15px}
+.steps p{margin:0;font-size:14px;color:var(--muted)}
+.steps .no{font-size:11.5px;font-weight:700;color:var(--accent);letter-spacing:.05em;margin-bottom:5px}
+
+/* 짝 카드 */
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0}
+.pair > div{border:1px solid var(--rule);border-radius:9px;padding:14px 16px;background:#fff}
+.pair .tag{display:inline-block;font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:999px;margin-bottom:8px}
+.pair .tag.fly{background:var(--eye-soft);color:var(--eye)}
+.pair .tag.nn{background:var(--stain-soft);color:var(--stain)}
+.pair p{margin:0;font-size:14.5px}
+
+/* 왜 이 방법 / 수식 상자 두 묶음 */
+.why2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0}
+.whybox,.mathbox{border:1px solid var(--rule);border-radius:9px;padding:16px 18px;background:#fff}
+.whybox{border-left:3px solid var(--gfp);background:var(--gfp-soft)}
+.mathbox{border-left:3px solid var(--info);background:var(--info-soft)}
+.whybox h4,.mathbox h4{font-size:14px;letter-spacing:.01em}
+.whybox ol{margin:8px 0 0;padding-left:18px;font-size:14px}
+.whybox ol li{margin:4px 0}
+.whybox .easy{margin-top:10px;font-size:13.5px;background:#fff;border:1px solid #c9e3d3;border-radius:7px;padding:9px 11px}
+.whybox .easy b{color:var(--gfp)}
+.mathbox .ask{font-size:13.5px;background:#fff;border:1px solid #c9d6ef;border-radius:7px;padding:9px 11px;margin:8px 0}
+.mathbox .ask b{color:var(--c-asst)}
+.mathbox .school{font-size:12.5px;color:var(--muted);margin:8px 0 10px}
+.mathbox table{font-size:13px}
+.mathbox .hand{background:#fff;border:1px solid #c9d6ef;border-radius:7px;padding:10px 12px;margin-top:10px;font-size:13.5px}
+.mathbox .hand ol{margin:6px 0 0;padding-left:18px}
+
+/* 수식 */
+.eq{font-variant-numeric:tabular-nums;background:var(--panel);border:1px solid var(--rule);border-radius:7px;
+  padding:11px 13px;margin:12px 0;font-size:14.5px;overflow-x:auto}
+.eq b{color:var(--gfp)} .eq em{color:var(--stain);font-style:normal} .eq i{color:var(--amber);font-style:normal}
+math{font-family:inherit;font-size:1em}
+
+/* 패널 */
+section.panel{border:1px solid var(--rule);border-radius:11px;padding:18px;margin:20px 0;background:#fff}
+.cwrap{overflow-x:auto;margin:0 0 12px}
+canvas{display:block;width:100%;background:#fff;border:1px solid var(--rule);border-radius:8px}
+canvas.wide{min-width:680px}
+.ctrl{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;margin:12px 0}
+.ctrl .group{display:flex;flex-direction:column;gap:5px;min-width:132px}
+.glabel{font-size:11.5px;font-weight:600;color:var(--muted)}
+.glabel .val{color:var(--text);font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.bt{appearance:none;border:1px solid var(--rule);background:#fff;color:var(--text);font:inherit;
+  font-size:13.5px;font-weight:600;padding:8px 14px;border-radius:7px;cursor:pointer}
+.bt:hover{background:var(--panel)}
+.bt.primary,.bt[aria-pressed="true"]{background:var(--gfp);border-color:var(--gfp);color:#fff}
+.bt:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.flow{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
+.flow span.s{font-size:12px;font-weight:600;padding:4px 10px;border-radius:999px;background:var(--panel2);color:var(--muted);border:1px solid var(--rule)}
+.flow span.s.on{background:var(--gfp);color:#fff;border-color:var(--gfp)}
+.flow span.s.done{background:var(--gfp-soft);color:var(--gfp);border-color:#c9e3d3}
+.insight{margin:12px 0 0}
+.insight p{margin:6px 0;font-size:14px;padding:9px 12px;border-radius:7px;border-left:3px solid var(--rule);background:var(--panel)}
+.insight p.g{border-left-color:var(--gfp);background:var(--gfp-soft)}
+.insight p.m{border-left-color:var(--stain);background:var(--stain-soft)}
+.insight p.r{border-left-color:var(--eye);background:var(--eye-soft)}
+.insight p.a{border-left-color:var(--amber);background:var(--amber-soft)}
+
+/* 풀이 상자 */
+.explain{border:1px solid #e8d9b8;border-left:3px solid var(--amber);background:var(--amber-soft);
+  border-radius:9px;padding:16px 18px;margin:20px 0}
+.explain h4{color:var(--amber)}
+.explain ol{margin:8px 0 0;padding-left:20px}
+.explain ol li{margin:10px 0;font-size:14.5px}
+.explain .lim{margin-top:14px;padding-top:12px;border-top:1px dashed #e0cfa8;font-size:14px}
+.explain .lim b{color:var(--amber)}
+
+/* 연결 상자 */
+.bridge{border:1px solid var(--rule);border-radius:9px;padding:14px 16px;margin:16px 0;font-size:14.5px}
+.bridge h4{font-size:13.5px}
+.bridge.gen{border-left:3px solid var(--info);background:var(--info-soft)}
+.bridge.gen h4{color:var(--info)}
+.bridge.ai{border-left:3px solid var(--stain);background:var(--stain-soft)}
+.bridge.ai h4{color:var(--stain)}
+.bridge.field{border-left:3px solid var(--eye);background:var(--eye-soft)}
+.bridge.field h4{color:var(--eye)}
+.bridge .limit{display:block;margin-top:7px;font-size:13px;color:var(--muted)}
+
+/* 안심 상자·30초 복습 */
+.calm{border:1px dashed var(--rule);background:var(--panel);border-radius:9px;padding:12px 15px;margin:16px 0;font-size:14px;color:var(--muted)}
+.recap{border:1px solid var(--rule);border-radius:9px;background:#fff;padding:13px 16px;margin:16px 0}
+.recap h4{font-size:13px;color:var(--accent)}
+.recap p{margin:6px 0 0;font-size:14px}
+
+/* 처음 오신 분께 */
+.first{border:1px solid #c6d3e4;background:var(--accent-soft);border-radius:11px;padding:20px 22px;margin:28px 0 0}
+.first h3{margin:0 0 10px;font-size:17px;color:#2f4a6d}
+.first ol{margin:0;padding-left:20px}
+.first ol li{margin:7px 0;font-size:14.5px}
+.first .ok{margin:12px 0 0;font-size:13.5px;font-weight:600;color:#2f4a6d}
+.first details{margin-top:12px;border-top:1px solid #c6d3e4;padding-top:10px}
+.first summary{cursor:pointer;font-size:13.5px;font-weight:600;color:#2f4a6d}
+.first details table{margin-top:10px;font-size:13px}
+
+/* 등장인물 */
+.cast{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:18px 0}
+.cast > div{border:1px solid var(--rule);border-radius:9px;padding:14px;background:#fff;display:flex;gap:12px;align-items:flex-start}
+.cast img{width:56px;height:56px;image-rendering:pixelated;flex:0 0 56px}
+.cast b{display:block;font-size:14.5px}
+.cast p{margin:3px 0 0;font-size:13px;color:var(--muted)}
+
+/* 말풍선 */
+.say{display:flex;gap:12px;align-items:flex-start;margin:18px 0;border:1px solid var(--rule);
+  border-radius:11px;padding:13px 15px;background:#fff}
+.say img.who{width:64px;height:64px;image-rendering:pixelated;flex:0 0 64px;border-radius:9px;border:1px solid var(--rule)}
+.say .name{font-size:12.5px;display:block;margin-bottom:3px}
+.say p{margin:0;font-size:14.5px}
+.say[data-who=doc]{border-color:#d9c8f5}.say[data-who=doc] .name{color:var(--c-doc)}
+.say[data-who=doc] img.who{border-color:#d9c8f5}
+.say[data-who=asst]{border-color:#f3c6da}.say[data-who=asst] .name{color:var(--c-asst)}
+.say[data-who=asst] img.who{border-color:#f3c6da}
+.say[data-who=fly]{border-color:#f0c6c6}.say[data-who=fly] .name{color:var(--c-fly)}
+.say[data-who=fly] img.who{border-color:#f0c6c6}
+.say[data-who=robo]{border-color:#bfe0e4}.say[data-who=robo] .name{color:var(--c-robo)}
+.say[data-who=robo] img.who{border-color:#bfe0e4}
+.talk{display:grid;gap:8px;margin:18px 0}
+.talk .say{margin:0}
+
+/* 표 */
+.tw{overflow-x:auto;margin:18px 0;border:1px solid var(--rule);border-radius:9px}
+table.tb{width:100%;border-collapse:collapse;font-size:14px;min-width:560px;background:#fff}
+table.tb th,table.tb td{padding:10px 13px;text-align:left;border-bottom:1px solid var(--rule);vertical-align:top}
+table.tb th{background:var(--panel);font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.02em}
+table.tb tr:last-child td{border-bottom:0}
+table.tb td.num{font-variant-numeric:tabular-nums;text-align:right}
+.mathbox table.tb{min-width:0}
+
+/* 코드 접기 */
+details.code{border:1px solid var(--rule);border-radius:9px;margin:16px 0;background:#fff}
+details.code summary{cursor:pointer;padding:11px 15px;font-size:13.5px;font-weight:600;color:var(--muted)}
+details.code[open] summary{border-bottom:1px solid var(--rule)}
+details.code .cin{padding:13px 15px}
+details.code pre{margin:0;overflow-x:auto;font-size:12.5px;line-height:1.6;
+  background:var(--panel);border:1px solid var(--rule);border-radius:7px;padding:11px 13px}
+details.code .mean{margin:8px 0 0;font-size:13px;color:var(--muted)}
+details.math{border:1px solid var(--rule);border-radius:9px;margin:16px 0;background:#fff}
+details.math summary{cursor:pointer;padding:11px 15px;font-size:13.5px;font-weight:600;color:var(--muted)}
+details.math .min{padding:0 15px 14px}
+
+/* 퀴즈 */
+.quiz{border:1px solid #c9d6ef;background:var(--info-soft);border-radius:9px;padding:16px 18px;margin:20px 0}
+.quiz h4{color:var(--info);font-size:13.5px}
+.quiz .qit{margin:12px 0 0}
+.quiz .qq{font-size:14.5px;font-weight:500;margin-bottom:7px}
+.quiz .qo{display:flex;flex-direction:column;gap:5px}
+.quiz .qo button{text-align:left;appearance:none;border:1px solid var(--rule);background:#fff;font:inherit;
+  font-size:14px;padding:8px 12px;border-radius:7px;cursor:pointer}
+.quiz .qo button:hover{background:var(--panel)}
+.quiz .qo button.ok{border-color:var(--gfp);background:var(--gfp-soft);color:var(--gfp);font-weight:600}
+.quiz .qo button.no{border-color:var(--eye);background:var(--eye-soft);color:var(--eye)}
+.quiz .fb{margin-top:8px;font-size:13.5px;padding:9px 12px;border-radius:7px;background:#fff;border:1px solid var(--rule)}
+
+/* 용어 밑줄 */
+.jt{border-bottom:2px dotted var(--amber);cursor:help}
+#tip{position:absolute;z-index:70;max-width:300px;background:#fff;border:1px solid var(--rule);
+  border-radius:9px;box-shadow:0 4px 18px rgba(22,33,43,.14);padding:12px 14px;font-size:13.5px;display:none}
+#tip b{display:block;font-size:13px;color:var(--amber);margin-bottom:3px}
+#tip .cat{font-size:11px;color:var(--muted);font-weight:600}
+
+/* 학습 도우미 */
+#study{position:fixed;right:16px;bottom:16px;z-index:55;background:#fff;border:1px solid var(--rule);
+  border-radius:999px;box-shadow:0 3px 14px rgba(22,33,43,.12);padding:9px 14px;font-size:12.5px;
+  display:flex;gap:10px;align-items:center;font-variant-numeric:tabular-nums}
+#study .gb{appearance:none;border:1px solid var(--rule);background:#fff;font:inherit;font-size:11.5px;
+  font-weight:600;padding:3px 9px;border-radius:999px;cursor:pointer}
+
+/* 대결 */
+.duel{border:1px solid var(--rule);border-radius:11px;padding:18px;background:#fff;margin:20px 0}
+.duelhead{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;margin-bottom:16px}
+.duelhead .side{display:flex;flex-direction:column;align-items:center;gap:6px}
+.duelhead img{width:104px;height:104px;image-rendering:pixelated}
+.duelhead .vs{font-weight:700;font-size:21px;color:var(--muted)}
+.duelhead .nm{font-size:12.5px;font-weight:700}
+.duelhead .side.f .nm{color:var(--c-fly)} .duelhead .side.r .nm{color:var(--c-robo)}
+.duelhead .side.f img{transform:scaleX(-1)}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.choices > div{border:1px solid var(--rule);border-radius:9px;padding:13px 15px}
+.choices .f{border-left:3px solid var(--c-fly)} .choices .r{border-left:3px solid var(--c-robo)}
+.choices h4{font-size:14px} .choices p{margin:4px 0 0;font-size:13.5px;color:var(--muted)}
+.guess{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.bars{display:none;gap:10px;margin:14px 0}
+.duel.open .bars{display:grid}
+.barrow{display:grid;grid-template-columns:118px 1fr 92px;gap:10px;align-items:center;font-size:13.5px}
+.barrow .track{height:20px;background:var(--panel2);border-radius:5px;overflow:hidden}
+.barrow .fill{height:100%;width:0;border-radius:5px;transition:width .9s cubic-bezier(.22,.9,.26,1)}
+.barrow .n{text-align:right;font-variant-numeric:tabular-nums;font-weight:700;font-size:13px}
+.cond{display:none;margin:12px 0}
+.duel.open .cond{display:block}
+.cond h4{font-size:13.5px;margin-bottom:8px}
+.verdict{display:none;margin-top:14px}
+.duel.open .verdict{display:block}
+.score{display:flex;gap:10px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);margin-top:10px}
+
+/* 지식 색인 */
+.kgbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:16px 0}
+.kgbar input[type=search]{flex:1 1 220px;font:inherit;font-size:14px;padding:9px 12px;
+  border:1px solid var(--rule);border-radius:8px}
+.kgchips{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
+.kgchips button{appearance:none;border:1px solid var(--rule);background:#fff;font:inherit;font-size:12.5px;
+  font-weight:600;padding:5px 11px;border-radius:999px;cursor:pointer;color:var(--muted)}
+.kgchips button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.kglist{margin:14px 0 0}
+.kgi{border-bottom:1px solid var(--rule);padding:12px 0}
+.kgi:last-child{border-bottom:0}
+.kgi .t{font-weight:600;font-size:14.5px}
+.kgi .ty{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--panel2);
+  color:var(--muted);margin-left:7px;vertical-align:2px}
+.kgi .df{font-size:13.5px;color:var(--muted);margin:3px 0 0}
+.kgi a{font-size:12.5px;font-weight:600;text-decoration:none}
+.kgstat{display:flex;flex-wrap:wrap;gap:12px;font-size:12.5px;color:var(--muted);margin-top:14px;
+  padding-top:12px;border-top:1px solid var(--rule)}
+
+/* 꾸러미 */
+.exp{display:grid;gap:14px}
+.expcard{border:1px solid var(--rule);border-radius:9px;padding:15px 17px;background:#fff}
+.expcard h4{font-size:14px}
+.cite{background:var(--panel);border:1px solid var(--rule);border-radius:7px;padding:11px 13px;
+  font-size:13px;margin:10px 0;word-break:break-all}
+.files{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.files button{appearance:none;border:1px solid var(--rule);background:#fff;font:inherit;font-size:12px;
+  font-weight:600;padding:6px 11px;border-radius:6px;cursor:pointer}
+.files button:hover{background:var(--panel)}
+.refli{border-bottom:1px solid var(--rule);padding:11px 0;font-size:13.5px}
+.refli:last-child{border-bottom:0}
+.refli .bg{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:999px;margin-right:6px;
+  background:var(--gfp-soft);color:var(--gfp)}
+.refli .bg.no{background:var(--amber-soft);color:var(--amber)}
+.refli .rl{font-size:12px;color:var(--muted);margin-top:2px}
+
+/* 바닥글 */
+
+
+/* ===== 인턴 진행 안내 띠 (시아) ===== */
+.guide{display:flex;gap:11px;align-items:flex-start;border:1px solid var(--rule);
+  border-left:3px solid var(--c-sia);border-radius:0 9px 9px 0;background:#fcfbfe;
+  padding:11px 15px;margin:0 0 18px}
+.guide img{width:34px;height:34px;flex:0 0 34px;image-rendering:pixelated}
+.guide .g{font-size:13.5px;line-height:1.65}
+.guide .g b{color:var(--c-sia);font-size:11.5px;display:block;margin-bottom:1px}
+.guide .step{color:var(--muted);font-variant-numeric:tabular-nums}
+
+/* ===== 인턴 쉼·응원 상자 (모아) ===== */
+.rest{display:flex;gap:12px;align-items:center;border:1px dashed var(--c-moa);
+  border-radius:10px;background:#fffbfd;padding:13px 16px;margin:18px 0}
+.rest img{width:38px;height:38px;flex:0 0 38px;image-rendering:pixelated}
+.rest p{margin:0;font-size:14px;line-height:1.7}
+.rest p b{color:var(--c-moa)}
+
+/* ===== 미공개 슬롯 (X1~X3) ===== */
+.hidebox{border:1px solid var(--rule);border-radius:10px;margin:18px 0;background:#fff}
+.hidebox > summary{cursor:pointer;padding:12px 16px;font-size:13.5px;font-weight:600;color:var(--muted)}
+.hidebox[open] > summary{border-bottom:1px solid var(--rule)}
+.hidebox .hin{padding:14px 16px 16px}
+.anon{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin:12px 0 4px}
+.anon figure{margin:0;text-align:center;width:104px}
+.anon img{width:72px;height:72px;image-rendering:pixelated;opacity:.92}
+.anon figcaption{font-size:11.5px;color:var(--muted);margin-top:3px}
+.anon .vo{display:block;font-size:12px;color:#7a3fd6;margin-top:1px}
+.castmore{appearance:none;border:1px solid var(--rule);background:#fff;font:inherit;
+  font-size:13px;font-weight:600;color:var(--muted);padding:8px 15px;border-radius:999px;
+  cursor:pointer;margin:4px 0 0}
+.castmore[aria-expanded="true"]{background:var(--panel)}
+#castMore[hidden]{display:none}
+
+/* ===== 4컷만화 ===== */
+.comic{border:1px solid var(--rule);border-radius:12px;overflow:hidden;background:#fff;
+  margin:18px auto;max-width:720px}
+.comic .ch{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline;padding:12px 16px;
+  border-bottom:1px solid var(--rule);background:var(--panel)}
+.comic .ch b{font-size:14px}
+.comic .ch span{font-size:12px;color:var(--muted)}
+.cuts{display:grid;grid-template-columns:1fr 1fr}
+.cut{position:relative;aspect-ratio:1/1;overflow:hidden;
+  border-right:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.cut:nth-child(2n){border-right:0}
+.cut:nth-child(n+3){border-bottom:0}
+.cut .art{position:absolute;inset:0;background-size:200% 200%;background-repeat:no-repeat;display:none}
+.comic.has-img .cut .art{display:block}
+.comic.has-img .cut .ph{display:none}
+.cut[data-i="1"] .art{background-position:0 0}
+.cut[data-i="2"] .art{background-position:100% 0}
+.cut[data-i="3"] .art{background-position:0 100%}
+.cut[data-i="4"] .art{background-position:100% 100%}
+.cut .no{position:absolute;top:8px;left:8px;width:22px;height:22px;border-radius:50%;
+  background:rgba(22,33,43,.78);color:#fff;font-size:11.5px;font-weight:700;
+  display:grid;place-items:center;z-index:3}
+.bub{position:absolute;z-index:2;max-width:74%;background:rgba(255,255,255,.95);
+  border:1.5px solid var(--text);border-radius:12px;padding:8px 11px;font-size:13px;line-height:1.5}
+.bub b{display:block;font-size:11px;margin-bottom:2px}
+.bub::after{content:"";position:absolute;width:11px;height:11px;background:inherit;
+  border-right:1.5px solid var(--text);border-bottom:1.5px solid var(--text);transform:rotate(45deg)}
+.bub.tl{top:9%;left:6%} .bub.tl::after{bottom:-7px;left:22px}
+.bub.tr{top:9%;right:6%} .bub.tr::after{bottom:-7px;right:22px}
+.bub.bl{bottom:8%;left:6%} .bub.bl::after{top:-7px;left:22px;transform:rotate(225deg)}
+.bub.br{bottom:8%;right:6%} .bub.br::after{top:-7px;right:22px;transform:rotate(225deg)}
+.bub.doc{border-color:var(--c-doc)} .bub.doc b{color:var(--c-doc)} .bub.doc::after{border-color:var(--c-doc)}
+.bub.asst{border-color:var(--c-asst)} .bub.asst b{color:var(--c-asst)} .bub.asst::after{border-color:var(--c-asst)}
+.bub.fly{border-color:var(--c-fly)} .bub.fly b{color:var(--c-fly)} .bub.fly::after{border-color:var(--c-fly)}
+.bub.robo{border-color:var(--c-robo)} .bub.robo b{color:var(--c-robo)} .bub.robo::after{border-color:var(--c-robo)}
+.cut .ph{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:16px;
+  background:repeating-linear-gradient(45deg,#f7f9fb,#f7f9fb 9px,#eef2f6 9px,#eef2f6 18px)}
+.cut .ph .d{font-size:12px;color:var(--muted);max-width:88%}
+.cut .ph img{width:50px;height:50px;image-rendering:pixelated;margin-bottom:6px}
+.comic .cap{padding:10px 16px;font-size:12px;color:var(--muted);border-top:1px solid var(--rule)}
+
+/* ===== 3줄 상자 ===== */
+.threeline{border:1px solid #c6d3e4;background:var(--accent-soft);border-radius:10px;
+  padding:14px 17px;margin:16px 0}
+.threeline b.t{display:block;font-size:13px;color:#2f4a6d;margin-bottom:4px}
+.threeline ol{margin:0;padding-left:20px;font-size:14.5px}
+.threeline ol li{margin:4px 0}
+
+/* ===== 자세히 접기 ===== */
+details.more{border:1px solid var(--rule);border-radius:9px;margin:16px 0;background:#fff}
+details.more summary{cursor:pointer;padding:11px 15px;font-size:13.5px;font-weight:600;color:var(--muted)}
+details.more[open] summary{border-bottom:1px solid var(--rule)}
+details.more .min{padding:4px 15px 14px}
+details.more .min > *:first-child{margin-top:12px}
+
+/* ===== 만화 우선 모드 ===== */
+#modebar{position:sticky;top:54px;z-index:40;background:rgba(255,255,255,.95);
+  backdrop-filter:blur(6px);border-bottom:1px solid var(--rule)}
+#modebar .in{max-width:1080px;margin:0 auto;padding:9px 20px;display:flex;flex-wrap:wrap;
+  gap:10px;align-items:center}
+#modebar .lab{font-size:12.5px;color:var(--muted)}
+#modeBt{appearance:none;border:1px solid var(--rule);background:#fff;font:inherit;font-size:13px;
+  font-weight:700;padding:7px 14px;border-radius:999px;cursor:pointer;color:var(--muted)}
+#modeBt[aria-pressed="true"]{background:var(--gfp);border-color:var(--gfp);color:#fff}
+body.comicfirst .full{display:none}
+/* 단계 안에서 만화·3줄·모형·퀴즈만 남긴다 */
+body.comicfirst section.level[id^="lv"] .recap,
+body.comicfirst section.level[id^="lv"] .pair,
+body.comicfirst section.level[id^="lv"] .why2,
+body.comicfirst section.level[id^="lv"] .explain,
+body.comicfirst section.level[id^="lv"] .talk,
+body.comicfirst section.level[id^="lv"] .bridge,
+body.comicfirst section.level[id^="lv"] .calm,
+body.comicfirst section.level[id^="lv"] .steps,
+body.comicfirst section.level[id^="lv"] .tw,
+body.comicfirst section.level[id^="lv"] > .wrap > p.lede,
+body.comicfirst section.level[id^="lv"] > .wrap > h3,
+body.comicfirst section.level[id^="lv"] > .wrap > details{display:none}
+body.comicfirst .threeline{border-color:var(--gfp);background:var(--gfp-soft)}
+body.comicfirst .threeline b.t{color:var(--gfp)}
+
+@media(max-width:620px){
+  .cuts{grid-template-columns:1fr}
+  .cut{border-right:0}
+  .cut:nth-child(n+3){border-bottom:1px solid var(--rule)}
+  .cut:last-child{border-bottom:0}
+  .bub{max-width:84%;font-size:12.5px}
+  #modebar .in{padding:8px 20px}
+}
+
+footer{padding:40px 0 60px;font-size:13px;color:var(--muted)}
+footer h4{font-size:13px;color:var(--text)}
+footer .fnote{margin:14px 0 0}
+footer ol{padding-left:20px}
+footer ol li{margin:5px 0}
+
+@media(max-width:980px){ header.hero .pixelart{opacity:.2} header.hero.has-img .bgshot{opacity:.34} }
+@media(max-width:620px){ header.hero.has-img .bgshot{opacity:.24} }
+@media(max-width:860px){ .kpis{grid-template-columns:repeat(auto-fit,minmax(140px,1fr))} }
+@media(max-width:760px){
+  .pair,.why2,.choices{grid-template-columns:1fr}
+  section.level{padding:48px 0}
+  .duelhead{grid-template-columns:1fr auto 1fr}
+  .duelhead img{width:76px;height:76px}
+}
+@media(max-width:520px){ #study{left:12px;right:12px;justify-content:center} }
+@media(max-width:460px){
+  .kpis{grid-template-columns:1fr 1fr}
+  .barrow{grid-template-columns:84px 1fr 72px;font-size:12.5px}
+}
+@media(prefers-reduced-motion:reduce){ *{transition:none!important;animation:none!important} html{scroll-behavior:auto} }
+</style>
+</head>
+<body>
+<div id="prog" aria-hidden="true"></div>
+
+<nav class="top" aria-label="페이지 목차">
+  <div class="in">
+    <span class="logo">연구실 해설 · 보건통계 01</span>
+    <a href="#first">처음 오신 분께</a>
+    <a href="#why">왜 이 주제</a>
+    <a href="#map">큰 그림</a>
+    <a href="#lv1">①<span class="nl"> 관문</span></a>
+    <a href="#lv2a">②-1<span class="nl"> 가설검정</span></a>
+    <a href="#lv2b">②-2<span class="nl"> 검정력</span></a>
+    <a href="#lv3a">③-1<span class="nl"> 예시 풀이</span></a>
+    <a href="#lv3b">③-2<span class="nl"> 구간 읽기</span></a>
+    <a href="#lv4a">④-1<span class="nl"> 쪼개 보기</span></a>
+    <a href="#lv4b">④-2<span class="nl"> 바탕 비율</span></a>
+    <a href="#lv4c">④-3<span class="nl"> 라벨 없이</span></a>
+    <a href="#lv5a">⑤-1<span class="nl"> 봉인 채점</span></a>
+    <a href="#lv5b">⑤-2<span class="nl"> AI 분석</span></a>
+    <a href="#duel">대결</a>
+    <a href="#sum">정리</a>
+    <a href="#kg">지식 색인</a>
+    <a href="#export">꾸러미</a>
+  </div>
+</nav>
+
+<div id="modebar">
+  <div class="in">
+    <button id="modeBt" aria-pressed="false">만화 우선으로 보기</button>
+    <span class="lab" id="modeLab">지금은 전체 읽기 — 설명을 모두 보여 줍니다</span>
+  </div>
+</div>
+
+<!-- lab-cover -->
+<div class="cover">
+  <figure data-img="cover_01">
+    <img class="shot" data-src="assets/img/cover_01.webp" width="1920" height="1080"
+         alt="연구실 측정실 바닥의 고리 던지기 놀이판 앞에 모여 선 네 사람. 나무 말뚝 하나를 빛나는 고리 여러 개가 둘러싸고, 일부는 옆으로 비껴 나가 있다.">
+    <div class="alt" role="img" aria-label="연구실 식구 넷이 임상시험 자료를 앞에 두고 선 픽셀아트 표지 자리. 표지 그림을 아직 넣지 않아 대체 표지가 보인다.">
+      <span class="hex" aria-hidden="true"></span>
+      <div class="ct">
+        <div class="cs">보건통계 연구실 · 01</div>
+        <div class="cm">신약은 어떤 숫자로 허가받는가</div>
+        <div class="cq">임상시험의 통계적 가설검정, 그리고 AI가 줄여 주는 곳과 줄이지 못하는 곳</div>
+        <div class="crew" aria-hidden="true">
+          <img data-who="doc" data-mood="think" alt="">
+          <img data-who="asst" data-mood="report" alt="">
+          <img data-who="fly" data-mood="magnify" alt="">
+          <img data-who="robo" data-mood="calc" alt="">
+        </div>
+      </div>
+    </div>
+    <figcaption>글 표지 — 말뚝(참값)은 고정이고 고리(추정 구간)가 던질 때마다 움직인다. ③단계의 은유를 그림으로 옮긴 것이다.</figcaption>
+  </figure>
+</div>
+<!-- /lab-cover -->
+
+<header class="hero">
+  <img class="bgshot" data-src="assets/img/bg_01.webp" alt="" aria-hidden="true">
+  <canvas class="pixelart" id="heroArt" data-img="bg_01" aria-hidden="true"></canvas>
+  <span class="hex" aria-hidden="true"></span>
+  <div class="wrap hero-text">
+    <div class="kick">통계학 · 보건통계 (주) + 인공지능 (보조)</div>
+    <h1>신약은 어떤 숫자로 허가받는가</h1>
+    <p class="q">사람에게 쓸 약이 듣는다는 말은 어떤 숫자로 확인되고, 그 숫자 만드는 일에서 AI는 어디까지 도와줄 수 있을까?</p>
+    <p class="lede">신약 하나가 허가를 받으려면 전임상부터 3상까지 네 번의 관문을 지나고, 관문마다 통계적 가설검정으로 판정을 받습니다. 이 페이지는 그 과정을 순서대로 풀고, 분산을 모르는 작은 표본의 평균을 추정하는 실제 예시를 손으로 끝까지 계산해 본 다음, AI를 넣으면 어느 자리가 단순해지고 어느 자리가 그대로 남는지를 나눠 봅니다.</p>
+    <div class="byline">
+      <span>글 · <b>안상선</b> (<a href="https://adminmrobo.github.io/who_am_i/who_am_i.html" target="_blank" rel="noopener">소개</a>) · (주)M-Robo 대표</span>
+      <span class="chip dom">분야 통계학(주) · 인공지능(보조)</span>
+      <span class="chip">기준 시점 2026-11-20</span>
+      <span class="chip">읽는 데 25분</span>
+    </div>
+    <section class="kpis">
+      <div class="kpi s"><div class="k">예시 95% 신뢰구간</div><div class="v">32.59 ~ 42.73</div><div class="n">아동 10명, 단위 µg/L <sup>[예시]</sup></div></div>
+      <div class="kpi a"><div class="k">임상 1상 성공률 · AI 발굴</div><div class="v">80~90%</div><div class="n">1상 완료 24개 중 21개 <sup>[1]</sup></div></div>
+      <div class="kpi r"><div class="k">임상 2상 성공률</div><div class="v">약 40%</div><div class="n">비AI 약물과 유사 <sup>[2]</sup></div></div>
+      <div class="kpi g"><div class="k">하위집단 20개를 그냥 보면</div><div class="v">0.64</div><div class="n">차이가 없어도 하나는 '유의' <sup>[계산]</sup></div></div>
+    </section>
+
+    <div class="first" id="first">
+      <h3>처음 오신 분께 — 이 페이지를 3줄로</h3>
+      <ol>
+        <li><b>무엇을</b> — 신약과 백신이 사람에게 쓰이기까지 거치는 임상시험의 단계, 그리고 각 단계가 어떤 통계 판정으로 통과·탈락을 가르는지 봅니다.</li>
+        <li><b>왜 중요한가</b> — 뉴스의 "효과가 있다", "유의한 차이가 없었다"는 말은 모두 이 판정의 결과입니다. 판정 규칙을 알면 같은 문장이 다르게 읽힙니다.</li>
+        <li><b>업무에서는</b> — A/B 테스트, 품질 검사, 설문 결과 보고서가 쓰는 규칙이 같습니다. 표본이 작을 때 평균을 어떻게 보고해야 하는지가 ③단계의 예시입니다.</li>
+      </ol>
+      <p class="ok">코드와 수식을 몰라도 끝까지 읽을 수 있습니다. 필요한 식은 조수가 기호 하나씩 물어보고 박사가 답하는 상자로 따로 떼어 두었고, 파이썬 코드는 접어 두었습니다.</p>
+      <details>
+        <summary>영어 약어 풀어 보기</summary>
+        <div class="tw"><table class="tb">
+          <tbody>
+            <tr><td><b>CI</b></td><td>Confidence Interval · 신뢰구간. 추정값 하나 대신 "이 범위" 로 보고하는 방식</td></tr>
+            <tr><td><b>SE</b></td><td>Standard Error · 표준오차. 표본평균이 표본마다 얼마나 흔들리는지를 재는 값</td></tr>
+            <tr><td><b>SD</b></td><td>Standard Deviation · 표준편차. 개별 측정값이 평균에서 얼마나 퍼져 있는지</td></tr>
+            <tr><td><b>VE</b></td><td>Vaccine Efficacy · 백신 효능. 임상시험에서 두 집단의 발병률을 비교해 얻는 값</td></tr>
+            <tr><td><b>FVC</b></td><td>Forced Vital Capacity · 노력성 폐활량. 폐 기능을 재는 지표의 하나</td></tr>
+            <tr><td><b>DMS</b></td><td>Deep Mutational Scanning · 깊은 변이 조사. 변이를 하나씩 만들어 성질을 실험으로 재는 방법</td></tr>
+            <tr><td><b>IPF</b></td><td>Idiopathic Pulmonary Fibrosis · 특발성 폐섬유증. 원인이 밝혀지지 않은 폐 질환</td></tr>
+          </tbody>
+        </table></div>
+      </details>
+    </div>
+  </div>
+</header>
+
+<section class="level" id="cast" aria-label="등장인물">
+  <div class="wrap">
+    <h2>등장인물과 이 페이지 사용법</h2>
+    <p class="lede">설명은 개념이 주인공이고, 식구들은 진행을 맡습니다. 네 사람이 번갈아 이야기하고, 인턴 두 사람이 순서와 쉼을 챙깁니다.</p>
+    <div class="cast">
+      <div><img data-who="doc" data-mood="front" alt=""><div><b>박사</b><p>해설과 판정. 자신만만하지만 판정은 계산된 숫자대로 내립니다. 막히기 쉬운 자리에서 먼저 멈춰 줍니다.</p></div></div>
+      <div><img data-who="asst" data-mood="smile" alt=""><div><b>조수 하루</b><p>실험을 진행하고 숫자를 발표합니다. 수식이 나오면 기호 하나씩 대신 물어봅니다.</p></div></div>
+      <div><img data-who="fly" data-mood="clip" alt=""><div><b>초파리 연구원</b><p>의심하는 쪽. "그 숫자, 처음 보는 자료로도 그래?"를 묻고 함정을 짚습니다.</p></div></div>
+      <div><img data-who="robo" data-mood="smile" alt=""><div><b>주판봇</b><p>확신하는 쪽. 크고 높은 숫자를 좋아합니다. 악역이 아니라 성급한 확신을 보여 주는 역할입니다.</p></div></div>
+    </div>
+    <button class="castmore" id="castBt" aria-expanded="false" aria-controls="castMore">순서를 챙기는 인턴 두 사람 보기</button>
+    <div class="cast" id="castMore" hidden>
+      <div><img data-who="sia" data-mood="guide" alt=""><div><b>인턴 시아</b><p>단계마다 “여기까지 무엇을 했고 다음은 무엇인가”를 한 줄로 알려 줍니다. 조용하고 꼼꼼합니다.</p></div></div>
+      <div><img data-who="moa" data-mood="tea" alt=""><div><b>인턴 모아</b><p>오래 보게 되는 자리에서 쉬어 가자고 말합니다. 퀴즈 앞에서 가장 큰 소리로 응원합니다.</p></div></div>
+    </div>
+    <div class="calm">노란 점선 밑줄이 그어진 말은 누르거나 마우스를 올리면 뜻이 뜹니다. 오른쪽 아래 도우미에서 밑줄을 <b>핵심 → 전체 → 끄기</b>로 바꿀 수 있습니다. 이 페이지는 앞선 편 없이 혼자 읽어도 됩니다.</div>
+    <div class="say" data-who="doc">
+      <img class="who" data-who="doc" data-mood="think" alt="" aria-hidden="true">
+      <div><b class="name">박사</b><p>회사에서 이런 일이 생기면 어떻게 하시겠어요. 새 약을 10명에게 써 봤더니 평균이 37.66으로 나왔습니다. 이 숫자 하나를 보고서에 그대로 적어도 될까요?</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="level" id="why">
+  <div class="wrap">
+    <h2>왜 이 주제인가</h2>
+    <div class="steps">
+      <div><div class="no">이유 ①</div><h4>숫자가 관문을 지킨다</h4><p>약은 좋은 아이디어가 아니라 정해진 통계 판정을 통과해야 다음 단계로 갑니다. 그 판정 규칙이 개발 기간과 비용의 대부분을 정합니다.</p></div>
+      <div><div class="no">이유 ②</div><h4>같은 규칙을 매일 쓴다</h4><p>표본이 작을 때 평균을 어떻게 보고하는가, 여러 집단으로 쪼개 보면 무엇이 망가지는가는 업무 보고서에서도 그대로 나타납니다.</p></div>
+      <div><div class="no">이유 ③</div><h4>AI가 줄이는 곳이 따로 있다</h4><p>AI는 후보를 좁히고 자료를 정리하는 자리에서 크게 줄여 주지만, 사람에게서 사건을 세는 시간은 줄이지 못합니다. 이 구분이 과장과 사실을 가릅니다.</p></div>
+    </div>
+    <div class="bridge field">
+      <h4>현장에 옮기면</h4>
+      측정 오차, 결측치, 중간에 빠진 참가자, 여러 번 들여다본 중간 결과 — 현장의 자료는 교과서 예제처럼 깨끗하지 않습니다. 이 페이지의 숫자는 모두 설명용 모형이므로, 실제 보고서에서는 자료를 모은 설계(누가 어떻게 뽑혔는지)를 먼저 적어야 합니다.
+      <span class="limit">비유의 한계: 이 페이지는 판정 규칙을 보여 주고, 특정 약이나 백신의 효과를 평가하지 않습니다.</span>
+    </div>
+  </div>
+</section>
+
+<section class="level" id="map">
+  <div class="wrap">
+    <h2>큰 그림 — 다섯 단계가 이어지는 방식</h2>
+    <p class="lede">각 단계는 앞 단계가 풀지 못한 문제를 풀며 등장하고, 자기 한계로 끝나 다음 단계를 부릅니다.</p>
+    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:8%">단계</th><th style="width:26%">다루는 것</th><th style="width:30%">새로 생긴 능력</th><th>이 단계의 한계 — 다음을 부르는 이유</th></tr></thead>
+      <tbody>
+        <tr><td><b>①</b></td><td>신약 개발과 임상시험의 전 과정</td><td>어떤 관문이 몇 개이고 각 관문이 무엇을 묻는지 안다</td><td>관문을 통과했다는 판정은 누가, 어떤 규칙으로 내리는지가 아직 비어 있다</td></tr>
+        <tr><td><b>②</b></td><td>임상에서의 통계적 가설검정</td><td>귀무가설·오류 두 종류·검정력으로 통과 규칙을 읽는다</td><td>검정은 "차이가 있나"만 답한다. "얼마나 되나"는 추정이 필요하다</td></tr>
+        <tr><td><b>③</b></td><td>작은 표본의 평균 추정 — 예시 풀이</td><td>분산을 모를 때 t 분포로 신뢰구간을 직접 계산한다</td><td>집단을 여러 개로 쪼개 보면 이 깔끔한 구간이 흔들린다</td></tr>
+        <tr><td><b>④</b></td><td>하위집단 함정과 라벨 없는 탐색 <span class="lvtag">AI 보조</span></td><td>쪼개 보기의 함정을 알고, 라벨 없는 자료에서 새 무리를 찾는다</td><td>새 무리를 찾는 것과 다음에 무엇이 올지 맞히는 것은 다른 문제다</td></tr>
+        <tr><td><b>⑤</b></td><td>AI 도입 분석 — 봉인해서 채점하기</td><td>예측을 사전 정보만으로 채점하고, 단계별로 무엇이 줄는지 가른다</td><td>감시 자료 자체가 치우쳐 있고, 사람에게서 사건을 세는 시간은 남는다</td></tr>
+      </tbody>
+    </table></div>
+    <div class="say" data-who="fly">
+      <img class="who" data-who="fly" data-mood="point" alt="" aria-hidden="true">
+      <div><b class="name">초파리 연구원</b><p>다섯 단계 다 좋은데, 세 번째에서 손으로 계산 안 하고 넘어가면 나머지는 그냥 구경이야.</p></div>
+    </div>
+  </div>
+</section>

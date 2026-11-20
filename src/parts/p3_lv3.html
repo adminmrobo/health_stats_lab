@@ -1,0 +1,237 @@
+
+<section class="level" id="lv3a">
+  <div class="wrap">
+    <div class="lvhead">
+      <div class="hexno">3<small>예시</small></div>
+      <h2>③-1 · 예시 풀이 — 왜 z가 아니고 t인가</h2>
+      <p class="sub"><span class="lvtag g">방법: t 분포로 95% 신뢰구간</span><span class="lvtag s">연구실: 눈금이 흔들리는 자</span></p>
+    </div>
+
+<div class="guide"><img data-who="sia" data-mood="guide" alt="">
+  <div class="g"><b>인턴 시아</b><span class="step">4 / 10</span> 규칙과 인원을 봤습니다. 이제 숫자 하나를 끝까지 직접 계산합니다.</div></div>
+<div class="comic" data-src="assets/img/comic_lv3a.webp">
+  <div class="ch"><b>눈금이 흔들리는 자</b><span>자까지 흔들리면 여유를 더 둔다</span></div>
+  <div class="cuts">
+    <div class="cut" data-i="1"><div class="art"></div><span class="no">1</span>
+      <div class="ph"><div><img data-who="robo" data-mood="calc" alt=""><div class="d">주판봇이 표준편차 7.09가 찍힌 종이를 들고 있다</div></div></div>
+      <div class="bub robo tl"><b>주판봇</b>표준편차 7.09! 이걸로 구간을 만들면 끝이다.</div>
+    </div>
+    <div class="cut" data-i="2"><div class="art"></div><span class="no">2</span>
+      <div class="ph"><div><img data-who="fly" data-mood="point" alt=""><div class="d">초파리가 열 명뿐인 명단을 가리킨다</div></div></div>
+      <div class="bub fly tr"><b>초파리 연구원</b>그 7.09도 열 명한테서 나온 값이야. 그것도 흔들려.</div>
+    </div>
+    <div class="cut" data-i="3"><div class="art"></div><span class="no">3</span>
+      <div class="ph"><div><img data-who="doc" data-mood="board" alt=""><div class="d">박사가 눈금이 일렁이는 자를 들어 보인다</div></div></div>
+      <div class="bub doc bl"><b>박사</b>재는 자의 눈금까지 흔들리면, 여유를 더 둬야 합니다.</div>
+    </div>
+    <div class="cut" data-i="4"><div class="art"></div><span class="no">4</span>
+      <div class="ph"><div><img data-who="asst" data-mood="report" alt=""><div class="d">하루가 1.96과 2.262를 나란히 적는다</div></div></div>
+      <div class="bub asst br"><b>조수 하루</b>그래서 1.96이 아니라 2.262를 쓰는군요. 그 차이가 여유였어요.</div>
+    </div>
+  </div>
+  <div class="cap">인턴 시아 — 1 → 2 → 3 → 4 순서로 보시면 돼요. 좁은 화면에서는 네 장면이 세로로 쌓입니다.</div>
+</div>
+<div class="threeline"><b class="t">이 단계 3줄</b><ol><li>분산을 모르면 표준편차도 표본에서 추정한 값이라 함께 흔들린다.</li><li>그 흔들림을 메우려고 정규분포(1.96)보다 꼬리가 두꺼운 t 분포(2.262)를 쓴다.</li><li>표본이 작을수록 둘의 차이가 커지고, 커지면 거의 같아진다.</li></ol></div>
+    <div class="recap full">
+      <h4>30초 복습</h4>
+      <p>앞 단계의 검정은 “차이가 있나”에 예·아니오로 답했습니다. 이번에는 “그래서 얼마인가”에 답합니다. 답은 숫자 하나가 아니라 <b>범위</b>로 보고합니다.</p>
+      <p style="margin-top:8px"><b>틀이 바뀝니다.</b> ②단계는 두 집단(약과 위약)을 <b>비교</b>했고, 여기서는 집단 <b>하나</b>의 평균을 <b>추정</b>합니다. 쓰는 분포도 정규근사에서 t로 바뀝니다. 비교에서 추정으로 옮겨 가는 자리라고 생각하시면 됩니다.</p>
+    </div>
+
+    <div class="explain" style="border-left-color:var(--accent);background:var(--accent-soft);border-color:#c6d3e4">
+      <h4 style="color:#2f4a6d">문제</h4>
+      <p style="margin:6px 0 0;font-size:15px">알루미늄이 포함된 제산제를 처방받은 아동의 집단으로부터 10명의 아동을 무작위로 추출하였다. 이 집단의 혈장 알루미늄 수준은 정규분포를 따르는 것으로 생각되지만 분산은 알려지지 않았다. 10명의 아동으로부터 구한 표본 평균은 <b>37.66</b>, 표준편차는 <b>7.09</b>이다. 이 집단의 혈장 알루미늄 수준의 평균에 대한 <b>95% 신뢰구간</b>을 구하라.</p>
+      <div class="lim" style="border-top-color:#c6d3e4"><b>주어진 것</b> — n = 10, x̄ = 37.66, s = 7.09, 신뢰수준 95%. 모분산 σ²는 모른다. 모집단은 정규분포로 가정한다. <span class="jt" data-g="단위">단위</span>는 µg/L이다 <sup>[12]</sup>. 이 문제는 Pagano·Gauvreau의 『Principles of Biostatistics』 신뢰구간 장에 있는 ‘제산제와 혈장 알루미늄 수준’ 예제다 <sup>[12]</sup>.</div>
+    </div>
+
+    <details class="more full"><summary>자세히 — 연구실 장면과 업무로 옮겨 보기</summary><div class="min">
+    <div class="pair">
+      <div><div class="tag fly">연구실에서는</div><p>말뚝 하나를 땅에 박아 두고 고리를 던지는 놀이와 같습니다. 말뚝(참 평균)은 처음부터 한 자리에 고정되어 있고, 던질 때마다 <b>고리(구간)가 움직입니다</b>. “이번에 던진 고리가 말뚝에 걸렸을 확률”을 말할 수는 없습니다. 말할 수 있는 것은 “이 방식으로 계속 던지면 백 번 중 약 아흔다섯 번은 걸린다”입니다.</p></div>
+      <div><div class="tag nn">통계로는</div><p>신뢰구간은 모수를 고정된 값으로 보고 구간을 확률변수로 봅니다. 그래서 “95% 신뢰구간에 모평균이 있을 확률이 95%”라는 문장은 틀립니다. 바른 문장은 “같은 방법으로 구간을 반복해 만들면 그중 약 95%가 모평균을 포함한다”입니다.</p></div>
+    </div>
+
+    </div></details>
+
+    <div class="why2 full">
+      <div class="whybox">
+        <h4>왜 z가 아니고 t인가</h4>
+        <ol>
+          <li><b>문제 상황</b> — 모평균을 추정하려는데, 표본평균이 표본마다 얼마나 흔들리는지를 알려면 모표준편차 σ가 필요합니다.</li>
+          <li><b>앞 방법의 한계</b> — σ를 아는 경우에는 정규분포(z)를 씁니다. 그런데 이 문제는 σ를 모릅니다. 대신 표본에서 구한 s를 씁니다. s 자체가 표본마다 흔들리는 값이므로, 흔들림이 <b>두 겹</b>이 됩니다.</li>
+          <li><b>해법</b> — 그 두 겹의 흔들림을 반영해 꼬리를 더 두껍게 만든 분포가 t 분포입니다. 표본이 작을수록 z보다 눈에 띄게 넓어지고, n이 커지면 z에 가까워집니다.</li>
+        </ol>
+        <p class="easy"><b>쉽게 말하면</b> 자의 눈금까지 흔들리는 상황입니다. 자가 정확할 때보다 여유를 더 두고 재야 합니다. 그 여유가 t 분포의 두꺼운 꼬리입니다.</p>
+      </div>
+      <div class="mathbox">
+        <h4>수학 수식을 어려워하는 조수가 대신 물어봅니다</h4>
+        <p class="ask"><b>조수 하루</b> “박사님, 식에 t<sub>0.025, 9</sub>처럼 숫자가 두 개 붙어 있는데 각각 뭔가요?”</p>
+        <p class="school">학교 수학으로 보면 — 고등학교 통계의 ‘신뢰구간’ 식과 모양이 같습니다. z 자리에 t가 들어간 것뿐입니다.</p>
+        <div class="eq"><em>x̄</em> ± <b>t</b><sub>α/2,&nbsp;<i>n</i>−1</sub> × ( <em>s</em> ÷ √<i>n</i> )</div>
+        <div class="tw"><table class="tb">
+          <thead><tr><th>식 조각</th><th>읽는 법</th><th>뜻</th></tr></thead>
+          <tbody>
+            <tr><td><em>x̄</em></td><td>엑스 바</td><td>표본평균 37.66 — 구간의 가운데</td></tr>
+            <tr><td>α/2 = 0.025</td><td>알파 반</td><td>95%를 남기고 양쪽 꼬리에 2.5%씩 버린다는 뜻</td></tr>
+            <tr><td><i>n</i>−1 = 9</td><td>자유도 구</td><td>s를 계산할 때 평균을 이미 썼으므로 자유롭게 움직이는 값이 하나 줄어든다</td></tr>
+            <tr><td><b>t</b><sub>0.025,&nbsp;9</sub></td><td>티 영점영이오 구</td><td>t 분포표에서 읽는 기준값 = <b>2.262</b></td></tr>
+            <tr><td><em>s</em> ÷ √<i>n</i></td><td>표준오차</td><td>7.09 ÷ √10 = 2.2421</td></tr>
+          </tbody>
+        </table></div>
+        <div class="hand"><b>숫자로 한 번 해 보기</b>
+          <ol>
+            <li>√10 = 3.1623</li>
+            <li>표준오차 = 7.09 ÷ 3.1623 = <b>2.2421</b></li>
+            <li>t<sub>0.025, 9</sub> = <b>2.262</b> (분포표)</li>
+            <li>오차한계 = 2.262 × 2.2421 = <b>5.0719</b></li>
+            <li>아래끝 = 37.66 − 5.0719 = <b>32.59</b></li>
+            <li>위끝 = 37.66 + 5.0719 = <b>42.73</b></li>
+          </ol>
+        </div>
+        <p class="ask" style="margin-top:10px"><b>조수 하루</b> “구했습니다. <b>(32.59, 42.73)</b>이에요. 폭이 10.14니까 평균 37.66의 4분의 1이 넘네요. 10명으로는 이 정도까지만 말할 수 있는 거군요.”</p>
+      </div>
+    </div>
+
+    <div class="eq" style="font-size:15.5px;background:var(--gfp-soft);border-color:#c9e3d3">
+      <b>답</b> &nbsp; 95% 신뢰구간 = 37.66 ± 2.262 × (7.09 ÷ √10) = 37.66 ± 5.07 = <b>(32.59, 42.73)</b> µg/L
+    </div>
+
+    <div class="box" style="border:1px solid #c9e3d3;border-left:3px solid var(--gfp);background:var(--gfp-soft);border-radius:9px;padding:15px 17px;margin:16px 0">
+      <h4 style="margin:0 0 6px;font-size:14px;color:var(--gfp)">구간을 숫자로만 두지 않고 해석하기</h4>
+      <p style="margin:0;font-size:14.5px">같은 교재는 <b>제산제를 받지 않은</b> 집단의 평균 혈장 알루미늄 수준을 4.13 µg/L로 제시합니다 <sup>[12]</sup>. 우리가 구한 구간 (32.59, 42.73)은 4.13을 <b>포함하지 않습니다.</b> 그래서 이 표본은 제산제를 받은 집단의 평균이 받지 않은 집단의 수준과 같다고 보기 어렵다는 근거가 됩니다.</p>
+      <p style="margin:8px 0 0;font-size:14px;color:var(--muted)">읽는 순서가 중요합니다 — 구간을 먼저 구하고, 비교할 값이 그 안에 들어오는지를 봅니다. 들어오지 않으면 “이 자료로는 같다고 보기 어렵다”이고, 들어오면 “이 자료로는 다르다고 말할 수 없다”입니다. 어느 쪽도 “증명됐다”가 아닙니다.</p>
+    </div>
+
+    <div class="tw"><table class="tb">
+      <thead><tr><th style="width:26%">자유도 9의 기준값</th><th style="width:18%">신뢰수준</th><th style="width:18%">t 기준값</th><th>이 문제에서의 구간</th></tr></thead>
+      <tbody>
+        <tr><td>t<sub>0.05, 9</sub></td><td>90%</td><td class="num">1.833</td><td class="num">(33.55, 41.77) · 폭 8.22</td></tr>
+        <tr><td><b>t<sub>0.025, 9</sub></b></td><td><b>95%</b></td><td class="num"><b>2.262</b></td><td class="num"><b>(32.59, 42.73) · 폭 10.14</b></td></tr>
+        <tr><td>t<sub>0.005, 9</sub></td><td>99%</td><td class="num">3.250</td><td class="num">(30.37, 44.95) · 폭 14.57</td></tr>
+        <tr><td>z<sub>0.025</sub> (σ를 안다면)</td><td>95%</td><td class="num">1.960</td><td class="num">(33.27, 42.05) · 폭 8.79</td></tr>
+      </tbody>
+    </table></div>
+    <p class="lede" style="font-size:14px">맨 아랫줄이 t를 쓰는 이유를 보여 줍니다. σ를 안다고 가정하면 구간이 8.79로 좁아지지만, 모르는 것을 안다고 둔 결과이므로 <b>실제보다 자신 있게</b> 보고하는 셈이 됩니다. 1.96과 2.262의 차이가 그 대가입니다.</p>
+
+    <div class="quiz" data-quiz="lv3a"></div>
+  </div>
+</section>
+
+<section class="level" id="lv3b">
+  <div class="wrap">
+    <div class="lvhead">
+      <div class="hexno">3<small>해석</small></div>
+      <h2>③-2 · 구간을 읽는 법 — 95%는 무엇의 95%인가</h2>
+      <p class="sub"><span class="lvtag g">방법: 같은 방법으로 100번 추정해 보기</span><span class="lvtag s">연구실: 말뚝은 고정, 고리가 움직인다</span></p>
+    </div>
+
+<div class="guide"><img data-who="sia" data-mood="guide" alt="">
+  <div class="g"><b>인턴 시아</b><span class="step">5 / 10</span> 구간은 구했습니다. 그 구간을 어떻게 읽어야 하는지가 여기서 갈립니다.</div></div>
+<div class="comic" data-src="assets/img/comic_lv3b.webp">
+  <div class="ch"><b>고리 던지기</b><span>움직이는 것은 고리, 말뚝은 그대로다</span></div>
+  <div class="cuts">
+    <div class="cut" data-i="1"><div class="art"></div><span class="no">1</span>
+      <div class="ph"><div><img data-who="robo" data-mood="coin" alt=""><div class="d">주판봇이 구간 (32.59, 42.73)이 적힌 판을 들고 있다</div></div></div>
+      <div class="bub robo tl"><b>주판봇</b>참값이 이 구간에 있을 확률이 95%다. 그렇게 쓰면 되지.</div>
+    </div>
+    <div class="cut" data-i="2"><div class="art"></div><span class="no">2</span>
+      <div class="ph"><div><img data-who="fly" data-mood="magnify" alt=""><div class="d">초파리가 구간의 폭을 돋보기로 재 본다</div></div></div>
+      <div class="bub fly tr"><b>초파리 연구원</b>폭이 10을 넘는데? 그게 ‘확률 95%’랑 같은 말이야?</div>
+    </div>
+    <div class="cut" data-i="3"><div class="art"></div><span class="no">3</span>
+      <div class="ph"><div><img data-who="doc" data-mood="magic" alt=""><div class="d">박사가 땅에 박힌 말뚝 하나를 가리킨다. 고리 여러 개가 날아간다</div></div></div>
+      <div class="bub doc bl"><b>박사</b>말뚝은 움직이지 않습니다. 움직이는 것은 우리가 던지는 고리입니다.</div>
+    </div>
+    <div class="cut" data-i="4"><div class="art"></div><span class="no">4</span>
+      <div class="ph"><div><img data-who="asst" data-mood="spark" alt=""><div class="d">하루가 고리 100개 중 다섯 개만 빗나간 그림을 보여 준다</div></div></div>
+      <div class="bub asst br"><b>조수 하루</b>이런 구간을 100번 만들면 95번이 참값을 품는다는 뜻이군요.</div>
+    </div>
+  </div>
+  <div class="cap">인턴 시아 — 1 → 2 → 3 → 4 순서로 보시면 돼요. 좁은 화면에서는 네 장면이 세로로 쌓입니다.</div>
+</div>
+<div class="threeline"><b class="t">이 단계 3줄</b><ol><li>신뢰구간은 참값이 아니라 <b>구간을 만드는 방법</b>에 붙은 성질이다.</li><li>“이 구간에 참값이 있을 확률 95%”는 흔한 오독 — 참값은 고정이고 구간이 표본마다 바뀐다.</li><li>95%는 같은 방법으로 100번 추정했을 때 95번이 참값을 품는다는 뜻이다.</li></ol></div>
+    <div class="talk">
+      <div class="say" data-who="robo">
+        <img class="who" data-who="robo" data-mood="coin" alt="" aria-hidden="true">
+        <div><b class="name">주판봇</b><p>평균 37.66. 소수점 둘째 자리까지 나왔으니 정확하다. 이 값으로 기준을 잡자.</p></div>
+      </div>
+      <div class="say" data-who="fly">
+        <img class="who" data-who="fly" data-mood="magnify" alt="" aria-hidden="true">
+        <div><b class="name">초파리 연구원</b><p>폭이 10을 넘는데 소수점 둘째 자리가 무슨 의미야? 아래 모형에서 ‘100번 던지기’를 눌러 봐. 네가 말한 ‘정확한 값’이 표본마다 어디로 가는지 보여.</p></div>
+      </div>
+      <div class="say" data-who="doc">
+        <img class="who" data-who="doc" data-mood="board" alt="" aria-hidden="true">
+        <div><b class="name">박사</b><p>둘 다 반은 맞습니다. 가운데 값은 가장 그럴듯한 추정이고, 폭은 그 추정을 얼마나 믿을지를 말해 줍니다. 보고서에는 둘을 같이 적습니다.</p></div>
+      </div>
+    </div>
+
+    <section class="panel">
+      <h3>고리 던지기 모형 — 같은 방법으로 100번 추정해 보기</h3>
+      <div class="cwrap"><canvas id="c3" height="300" aria-label="같은 방법으로 만든 신뢰구간 100개를 세로 막대로 그린 그림. 참 평균 선을 포함하지 못한 구간은 붉은색으로 표시된다."></canvas></div>
+      <div class="ctrl">
+        <div class="group">
+          <span class="glabel">신뢰수준 <span class="val" id="v3c">95%</span></span>
+          <input type="range" id="s3c" min="0" max="2" step="1" value="1">
+        </div>
+        <div class="group">
+          <span class="glabel">표본 크기 n <span class="val" id="v3n">10</span></span>
+          <input type="range" id="s3n" min="4" max="120" step="1" value="10">
+        </div>
+        <div class="group">
+          <span class="glabel">모표준편차 σ <span class="val" id="v3s">7.09</span></span>
+          <input type="range" id="s3s" min="2" max="16" step="0.1" value="7.09">
+        </div>
+        <div class="group">
+          <button class="bt primary" id="b3run">▶ 100번 던지기</button>
+        </div>
+      </div>
+      <h3>행동으로 보기 — 말뚝은 고정, 고리가 움직인다</h3>
+      <div class="cwrap"><canvas id="c3b" class="wide" height="200" aria-label="고정된 말뚝 하나와, 던져진 고리들이 말뚝에 걸리거나 빗나가는 모습."></canvas></div>
+      <section class="kpis" id="k3"></section>
+      <div class="eq" id="eq3"></div>
+      <div class="insight" id="ins3" aria-live="polite"></div>
+    </section>
+
+    <div class="explain full">
+      <h4>풀이 — 이 모형이 말해 주는 네 가지</h4>
+      <ol>
+        <li><b>적중한 구간의 개수</b>를 보세요. 95%로 두면 100개 중 대체로 90~99개가 참 평균을 포함합니다. 정확히 95개가 아니라 그 근처에서 흔들립니다 — 적중 여부도 표본에 따라 달라지는 값이기 때문입니다.</li>
+        <li>신뢰수준을 99%로 올리면 적중은 늘지만 <b>구간이 넓어집니다</b>. 더 안전하게 말하려면 덜 구체적으로 말해야 합니다. 둘을 동시에 좋게 만들 수는 없습니다.</li>
+        <li>n을 10에서 40으로 올려 보세요. 폭이 대략 절반으로 줄어듭니다. 폭은 √n에 반비례하므로, 폭을 절반으로 줄이려면 표본을 <b>네 배</b>로 늘려야 합니다.</li>
+        <li>σ를 키우면 폭이 그대로 커집니다. 측정이 정밀해지면(σ가 작아지면) 같은 인원으로도 더 좁게 말할 수 있습니다 — 사람을 더 모으는 것 말고 다른 길이 있다는 뜻입니다.</li>
+      </ol>
+      <div class="lim"><b>이 단계의 한계</b> — 지금은 집단이 하나였습니다. 실제 보고서는 연령별·용량별·변이별로 쪼개 보게 되고, 쪼개는 순간 이 깔끔한 95%가 무너집니다. 다음 단계가 그 이야기입니다.</div>
+    </div>
+
+    <details class="more full"><summary>자세히 — 업무 보고서와 AI로 옮겨 보기</summary><div class="min">
+    <div class="bridge gen">
+      <h4>데이터 분석으로 치면</h4>
+      대시보드의 평균값 하나를 그대로 목표치와 비교하는 보고가 이 문제와 같습니다. 표본이 10건이라면 신뢰구간을 함께 적어야 하고, 폭이 목표치를 걸치고 있다면 “달성했다/미달이다”를 단정할 수 없습니다.
+      <span class="limit">비유의 한계: 업무 자료는 무작위 표본이 아닌 경우가 많습니다. 그때는 구간을 구해도 ‘어느 모집단의’ 평균인지가 불분명해집니다.</span>
+    </div>
+
+    <div class="bridge ai">
+      <h4>AI 모델로 치면</h4>
+      모델 성능을 “정확도 92%”처럼 한 숫자로 보고하는 것도 같은 문제를 안고 있습니다. 평가 자료가 200건이라면 그 92%에도 구간이 붙습니다. 교차검증 다섯 번의 평균만 적고 흔들림을 적지 않으면, 92%와 90%의 차이를 과장해 읽게 됩니다.
+      <span class="limit">비유의 한계: 모델 평가는 같은 자료를 여러 번 쓰므로, 반복 사이가 독립이 아니라 구간이 실제보다 좁게 나오는 경향이 있습니다.</span>
+    </div>
+
+    </div></details>
+
+    <details class="code full">
+      <summary>교안의 파이썬 코드로 보면 (몰라도 됩니다)</summary>
+      <div class="cin">
+        <pre>import math
+from scipy import stats
+n, xbar, s = 10, 37.66, 7.09
+t = stats.t.ppf(0.975, n-1)          # 2.262
+h = t * s / math.sqrt(n)             # 5.072
+print(xbar - h, xbar + h)            # 32.59  42.73</pre>
+        <p class="mean">뜻 — 분포표에서 2.262를 읽는 일을 <code>t.ppf</code>가 대신하고, 나머지는 위 손계산과 같은 순서다.</p>
+      </div>
+    </details>
+
+    <div class="rest"><img data-who="moa" data-mood="cheer" alt="">
+  <p><b>모아</b> — 절반 왔어요. 가장 손이 많이 가는 계산은 지나갔습니다.</p></div>
+<div class="quiz" data-quiz="lv3b"></div>
+  </div>
+</section>
