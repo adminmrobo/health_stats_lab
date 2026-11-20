@@ -1,163 +1,379 @@
 {
-  "series_ko": "연구실 해설 대시보드 · 보건통계 01",
-  "title_ko": "신약은 어떤 숫자로 허가받는가",
-  "site_title": "신약은 어떤 숫자로 허가받는가 — 임상시험의 통계와 AI",
-  "site_url": "",
-  "domain": [
-    "stats",
-    "ai"
+ "series_ko": "연구실 해설 대시보드 · 보건통계 01",
+ "title_ko": "신약은 어떤 숫자로 허가받는가",
+ "site_title": "신약은 어떤 숫자로 허가받는가 — 임상시험의 통계와 AI",
+ "site_url": "",
+ "domain": [
+  "stats",
+  "ai"
+ ],
+ "anchor_type": "B",
+ "duel_result": "C",
+ "ontology": {
+  "pages": [
+   {
+    "path": "01_clinical_stats_ai.html",
+    "kg": true,
+    "export": true,
+    "nodes": 52,
+    "edges": 60,
+    "references": 10
+   }
   ],
-  "anchor_type": "B",
-  "duel_result": "C",
-  "ontology": {
-    "pages": [
-      {
-        "path": "01_clinical_stats_ai.html",
-        "kg": true,
-        "export": true,
-        "nodes": 52,
-        "edges": 60,
-        "references": 10
-      }
-    ],
-    "files": []
+  "files": []
+ },
+ "i18n": {
+  "langs": [
+   "ko"
+  ],
+  "pages": {
+   "ko": 1
   },
-  "i18n": {
-    "langs": [
-      "ko"
-    ],
-    "pages": {
-      "ko": 1
-    },
-    "readme_langs": [
-      "ko"
-    ]
+  "readme_langs": [
+   "ko"
+  ]
+ },
+ "languages": [
+  "ko"
+ ],
+ "items": [
+  {
+   "id": "cover_01",
+   "role": "cover",
+   "path": "assets/img/cover_01.webp",
+   "embedded_in": "01_clinical_stats_ai.html",
+   "key": "figure[data-img=cover_01]",
+   "size": [
+    1920,
+    1080
+   ],
+   "characters": [
+    "doc",
+    "asst",
+    "fly",
+    "jupanbot"
+   ],
+   "robot": "jupanbot-v2",
+   "prompt_en": "16-bit RPG pixel art, bold dark outlines, 16:9 wide composition, a sunlit measuring room beside a bright white laboratory, a ring toss game on the floor with one wooden peg and many thin glowing rings some encircling the peg and some missing it, four characters gathered centre-right, height order scientist > girl researcher > boxy CRT robot > fruit fly, lower-left quarter left simple, no text, no letters, no numbers, no logos, bright daytime palette",
+   "source_of": null,
+   "status": "ok"
   },
-  "languages": [
-    "ko"
-  ],
-  "items": [
-    {
-      "id": "cover_01",
-      "role": "cover",
-      "path": "assets/img/cover_01.webp",
-      "embedded_in": "01_clinical_stats_ai.html",
-      "key": "figure[data-img=cover_01]",
-      "size": [
-        1920,
-        1080
-      ],
-      "characters": [
-        "doc",
-        "asst",
-        "fly",
-        "jupanbot"
-      ],
-      "robot": "jupanbot-v2",
-      "prompt_en": "16-bit RPG pixel art, bold dark outlines, 16:9 wide composition, a sunlit measuring room beside a bright white laboratory, a ring toss game on the floor with one wooden peg and many thin glowing rings some encircling the peg and some missing it, four characters gathered centre-right, height order scientist > girl researcher > boxy CRT robot > fruit fly, lower-left quarter left simple, no text, no letters, no numbers, no logos, bright daytime palette",
-      "source_of": null,
-      "status": "ok"
-    },
-    {
-      "id": "bg_01",
-      "role": "background",
-      "path": "assets/img/bg_01.webp",
-      "embedded_in": "01_clinical_stats_ai.html",
-      "key": "canvas[data-img=bg_01]",
-      "size": [
-        1920,
-        720
-      ],
-      "characters": [],
-      "robot": null,
-      "prompt_en": "16-bit RPG pixel art, 8:3 ultra-wide background, no characters, a bright white laboratory measuring room in daytime, left 45% mostly empty wall and floor, right side a workbench with a brass balance scale, three graduated cylinders, a tape measure and a blank grid board covered with scattered dots, no text, no numbers, no logos",
-      "source_of": null,
-      "status": "ok"
-    },
-    {
-      "id": "sc_01_outro",
-      "role": "scene",
-      "path": "assets/img/sc_01_outro.webp",
-      "embedded_in": "01_clinical_stats_ai.html",
-      "key": "figure[data-img=sc_01_outro]",
-      "size": [
-        1200,
-        800
-      ],
-      "characters": [
-        "doc",
-        "asst",
-        "fly",
-        "jupanbot"
-      ],
-      "robot": "jupanbot-v2",
-      "prompt_en": "16-bit RPG pixel art, 3:2 composition, inside a bright daytime laboratory, four characters in a loose half circle facing a large blank board showing only two plain horizontal bars of different length with no text, neither rival placed in front of the other, faces within the upper 62% of the frame, no text, no letters, no numbers, no logos",
-      "source_of": null,
-      "status": "ok"
-    },
-    {
-      "id": "thumb_01",
-      "role": "thumb",
-      "path": "assets/img/cover_01_thumb.webp",
-      "size": [
-        600,
-        400
-      ],
-      "characters": [
-        "doc",
-        "asst",
-        "fly",
-        "jupanbot"
-      ],
-      "robot": "jupanbot-v2",
-      "prompt_en": null,
-      "source_of": "cover_01",
-      "status": "ok"
-    },
-    {
-      "id": "og_01",
-      "role": "og",
-      "path": "assets/img/cover_01_og.webp",
-      "size": [
-        1200,
-        630
-      ],
-      "characters": [
-        "doc",
-        "asst",
-        "fly",
-        "jupanbot"
-      ],
-      "robot": "jupanbot-v2",
-      "prompt_en": null,
-      "source_of": "cover_01",
-      "status": "ok"
-    }
-  ],
-  "reused_expressions": [
-    "doc_think",
-    "doc_front",
-    "doc_board",
-    "doc_magic",
-    "asst_smile",
-    "asst_report",
-    "asst_firm",
-    "asst_spark",
-    "fly_clip",
-    "fly_point",
-    "fly_magnify",
-    "fly_coffee",
-    "fly_arms",
-    "robo_coin",
-    "robo_calc",
-    "robo_meh"
-  ],
-  "character_pack": {
-    "repo": "adminmrobo/fruitfly-lab-expressions",
-    "commit": "86d04ac",
-    "size": 96,
-    "embedded_kb": 86
+  {
+   "id": "bg_01",
+   "role": "background",
+   "path": "assets/img/bg_01.webp",
+   "embedded_in": "01_clinical_stats_ai.html",
+   "key": "canvas[data-img=bg_01]",
+   "size": [
+    1920,
+    720
+   ],
+   "characters": [],
+   "robot": null,
+   "prompt_en": "16-bit RPG pixel art, 8:3 ultra-wide background, no characters, a bright white laboratory measuring room in daytime, left 45% mostly empty wall and floor, right side a workbench with a brass balance scale, three graduated cylinders, a tape measure and a blank grid board covered with scattered dots, no text, no numbers, no logos",
+   "source_of": null,
+   "status": "ok"
   },
-  "updated": "2026-11-21",
-  "images_generated_by": "Genspark (16비트 RPG 픽셀아트), 2026-11-21 수령"
+  {
+   "id": "sc_01_outro",
+   "role": "scene",
+   "path": "assets/img/sc_01_outro.webp",
+   "embedded_in": "01_clinical_stats_ai.html",
+   "key": "figure[data-img=sc_01_outro]",
+   "size": [
+    1200,
+    800
+   ],
+   "characters": [
+    "doc",
+    "asst",
+    "fly",
+    "jupanbot"
+   ],
+   "robot": "jupanbot-v2",
+   "prompt_en": "16-bit RPG pixel art, 3:2 composition, inside a bright daytime laboratory, four characters in a loose half circle facing a large blank board showing only two plain horizontal bars of different length with no text, neither rival placed in front of the other, faces within the upper 62% of the frame, no text, no letters, no numbers, no logos",
+   "source_of": null,
+   "status": "ok"
+  },
+  {
+   "id": "thumb_01",
+   "role": "thumb",
+   "path": "assets/img/cover_01_thumb.webp",
+   "size": [
+    600,
+    400
+   ],
+   "characters": [
+    "doc",
+    "asst",
+    "fly",
+    "jupanbot"
+   ],
+   "robot": "jupanbot-v2",
+   "prompt_en": null,
+   "source_of": "cover_01",
+   "status": "ok"
+  },
+  {
+   "id": "og_01",
+   "role": "og",
+   "path": "assets/img/cover_01_og.webp",
+   "size": [
+    1200,
+    630
+   ],
+   "characters": [
+    "doc",
+    "asst",
+    "fly",
+    "jupanbot"
+   ],
+   "robot": "jupanbot-v2",
+   "prompt_en": null,
+   "source_of": "cover_01",
+   "status": "ok"
+  },
+  {
+   "id": "comic_lv2a",
+   "role": "comic_4cut",
+   "step": "②-1 가설검정",
+   "title": "재판정에서 시작한다",
+   "path": "assets/img/comic_lv2a.webp",
+   "embedded_in": "01_clinical_stats_ai.html",
+   "key": ".comic[data-src$=\"comic_lv2a.webp\"] (2x2, CSS로 네 칸 분할)",
+   "anchor": "#lv2a",
+   "size": [
+    1024,
+    1024
+   ],
+   "characters": [
+    "doc",
+    "asst",
+    "fly",
+    "jupanbot"
+   ],
+   "robot": "jupanbot-v2",
+   "text_in_image": false,
+   "bubbles": "HTML 오버레이 (.bub)",
+   "status": "ok"
+  },
+  {
+   "id": "comic_lv2b",
+   "role": "comic_4cut",
+   "step": "②-2 검정력",
+   "title": "어두운 방의 손전등",
+   "path": "assets/img/comic_lv2b.webp",
+   "embedded_in": "01_clinical_stats_ai.html",
+   "key": ".comic[data-src$=\"comic_lv2b.webp\"] (2x2, CSS로 네 칸 분할)",
+   "anchor": "#lv2b",
+   "size": [
+    1024,
+    1024
+   ],
+   "characters": [
+    "doc",
+    "asst",
+    "fly",
+    "jupanbot"
+   ],
+   "robot": "jupanbot-v2",
+   "text_in_image": false,
+   "bubbles": "HTML 오버레이 (.bub)",
+   "status": "ok"
+  },
+  {
+   "id": "comic_lv3a",
+   "role": "comic_4cut",
+   "step": "③-1 예시 풀이",
+   "title": "눈금이 흔들리는 자",
+   "path": "assets/img/comic_lv3a.webp",
+   "embedded_in": "01_clinical_stats_ai.html",
+   "key": ".comic[data-src$=\"comic_lv3a.webp\"] (2x2, CSS로 네 칸 분할)",
+   "anchor": "#lv3a",
+   "size": [
+    1024,
+    1024
+   ],
+   "characters": [
+    "doc",
+    "asst",
+    "fly",
+    "jupanbot"
+   ],
+   "robot": "jupanbot-v2",
+   "text_in_image": false,
+   "bubbles": "HTML 오버레이 (.bub)",
+   "status": "ok"
+  },
+  {
+   "id": "comic_lv3b",
+   "role": "comic_4cut",
+   "step": "③-2 구간 읽기",
+   "title": "고리 던지기",
+   "path": "assets/img/comic_lv3b.webp",
+   "embedded_in": "01_clinical_stats_ai.html",
+   "key": ".comic[data-src$=\"comic_lv3b.webp\"] (2x2, CSS로 네 칸 분할)",
+   "anchor": "#lv3b",
+   "size": [
+    1024,
+    1024
+   ],
+   "characters": [
+    "doc",
+    "asst",
+    "fly",
+    "jupanbot"
+   ],
+   "robot": "jupanbot-v2",
+   "text_in_image": false,
+   "bubbles": "HTML 오버레이 (.bub)",
+   "status": "ok"
+  },
+  {
+   "id": "comic_lv4a",
+   "role": "comic_4cut",
+   "step": "④-1 쪼개 보기",
+   "title": "스무 번 던진 다트",
+   "path": "assets/img/comic_lv4a.webp",
+   "embedded_in": "01_clinical_stats_ai.html",
+   "key": ".comic[data-src$=\"comic_lv4a.webp\"] (2x2, CSS로 네 칸 분할)",
+   "anchor": "#lv4a",
+   "size": [
+    1024,
+    1024
+   ],
+   "characters": [
+    "doc",
+    "asst",
+    "fly",
+    "jupanbot"
+   ],
+   "robot": "jupanbot-v2",
+   "text_in_image": false,
+   "bubbles": "HTML 오버레이 (.bub)",
+   "status": "ok"
+  },
+  {
+   "id": "comic_lv4b",
+   "role": "comic_4cut",
+   "step": "④-2 바탕 비율",
+   "title": "1,000명을 세워 본다",
+   "path": "assets/img/comic_lv4b.webp",
+   "embedded_in": "01_clinical_stats_ai.html",
+   "key": ".comic[data-src$=\"comic_lv4b.webp\"] (2x2, CSS로 네 칸 분할)",
+   "anchor": "#lv4b",
+   "size": [
+    1024,
+    1024
+   ],
+   "characters": [
+    "doc",
+    "asst",
+    "fly",
+    "jupanbot"
+   ],
+   "robot": "jupanbot-v2",
+   "text_in_image": false,
+   "bubbles": "HTML 오버레이 (.bub)",
+   "status": "ok"
+  },
+  {
+   "id": "comic_lv4c",
+   "role": "comic_4cut",
+   "step": "④-3 라벨 없이",
+   "title": "라벨 없이 찾기",
+   "path": "assets/img/comic_lv4c.webp",
+   "embedded_in": "01_clinical_stats_ai.html",
+   "key": ".comic[data-src$=\"comic_lv4c.webp\"] (2x2, CSS로 네 칸 분할)",
+   "anchor": "#lv4c",
+   "size": [
+    1024,
+    1024
+   ],
+   "characters": [
+    "doc",
+    "asst",
+    "fly",
+    "jupanbot"
+   ],
+   "robot": "jupanbot-v2",
+   "text_in_image": false,
+   "bubbles": "HTML 오버레이 (.bub)",
+   "status": "ok"
+  },
+  {
+   "id": "comic_lv5a",
+   "role": "comic_4cut",
+   "step": "⑤-1 봉인 채점",
+   "title": "봉인된 시험지",
+   "path": "assets/img/comic_lv5a.webp",
+   "embedded_in": "01_clinical_stats_ai.html",
+   "key": ".comic[data-src$=\"comic_lv5a.webp\"] (2x2, CSS로 네 칸 분할)",
+   "anchor": "#lv5a",
+   "size": [
+    1024,
+    1024
+   ],
+   "characters": [
+    "doc",
+    "asst",
+    "fly",
+    "jupanbot"
+   ],
+   "robot": "jupanbot-v2",
+   "text_in_image": false,
+   "bubbles": "HTML 오버레이 (.bub)",
+   "status": "ok"
+  },
+  {
+   "id": "comic_lv5b",
+   "role": "comic_4cut",
+   "step": "⑤-2 AI 분석",
+   "title": "줄어드는 자리와 남는 자리",
+   "path": "assets/img/comic_lv5b.webp",
+   "embedded_in": "01_clinical_stats_ai.html",
+   "key": ".comic[data-src$=\"comic_lv5b.webp\"] (2x2, CSS로 네 칸 분할)",
+   "anchor": "#lv5b",
+   "size": [
+    1024,
+    1024
+   ],
+   "characters": [
+    "doc",
+    "asst",
+    "fly",
+    "jupanbot"
+   ],
+   "robot": "jupanbot-v2",
+   "text_in_image": false,
+   "bubbles": "HTML 오버레이 (.bub)",
+   "status": "ok"
+  }
+ ],
+ "reused_expressions": [
+  "doc_think",
+  "doc_front",
+  "doc_board",
+  "doc_magic",
+  "asst_smile",
+  "asst_report",
+  "asst_firm",
+  "asst_spark",
+  "fly_clip",
+  "fly_point",
+  "fly_magnify",
+  "fly_coffee",
+  "fly_arms",
+  "robo_coin",
+  "robo_calc",
+  "robo_meh"
+ ],
+ "character_pack": {
+  "repo": "adminmrobo/fruitfly-lab-expressions",
+  "commit": "86d04ac",
+  "size": 96,
+  "embedded_kb": 86
+ },
+ "updated": "2026-11-21",
+ "images_generated_by": "Genspark (16비트 RPG 픽셀아트), 2026-11-21 수령 — 표지·배경·아웃트로 3장 + 4컷만화 9장"
 }
