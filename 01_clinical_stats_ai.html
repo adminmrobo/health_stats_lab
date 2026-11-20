@@ -729,6 +729,7 @@ print(1000 * math.prod(rates))</pre>
 
     <section class="panel">
       <h3>판정 모형 — 효과 크기와 표본 수를 바꿔 보기</h3>
+      <p class="note" style="font-size:13px;color:var(--muted);margin:0 0 10px">처음에는 <b>실선 하나</b>만 보입니다 — 차이가 없는 세계입니다. 익숙해지면 아래 단추로 점선(효과가 있는 세계)을 켜 두 세계를 겹쳐 보세요.</p>
       <div class="cwrap"><canvas id="c2" height="280" aria-label="차이가 없는 세계의 분포와 실제 관측된 검정통계량의 위치, 그리고 꼬리 넓이를 보여 주는 그림."></canvas></div>
       <div class="ctrl">
         <div class="group">
@@ -742,6 +743,9 @@ print(1000 * math.prod(rates))</pre>
         <div class="group">
           <span class="glabel">유의수준 α <span class="val" id="v2a">0.05</span></span>
           <input type="range" id="s2a" min="0.01" max="0.10" step="0.01" value="0.05">
+        </div>
+        <div class="group">
+          <button class="bt" id="b2alt" aria-pressed="false">점선(효과 있는 세계) 함께 보기</button>
         </div>
         <div class="group">
           <button class="bt primary" id="b2run">▶ 한 번 더 실험</button>
@@ -783,6 +787,17 @@ print(1000 * math.prod(rates))</pre>
       <span class="limit">비유의 한계: 웹 실험은 대상을 거의 무한히 늘릴 수 있지만, 임상은 참가자 수와 사건 발생을 기다리는 시간이 정해져 있습니다.</span>
     </div>
 
+    <div class="bridge field">
+      <h4>현장에 옮기면 — 계획서 통계 섹션의 나머지 절반</h4>
+      교과서 계산이 끝나는 자리에서 실제 계획서는 세 가지를 더 적습니다.
+      <ol style="margin:8px 0 0;padding-left:20px">
+        <li><b>중도 탈락</b> — 끝까지 남지 않는 참가자를 미리 예상해 필요 인원을 늘려 둡니다. 탈락률 20%를 가정하면 모집 목표는 그만큼 커집니다.</li>
+        <li><b>결측치</b> — 빠진 값을 어떻게 다룰지(제외·대체·민감도 분석)를 <b>자료를 보기 전에</b> 정해 둡니다. 보고 나서 정하면 그 선택이 결과를 따라갑니다.</li>
+        <li><b>중간 분석</b> — 도중에 들여다보려면 횟수와 시점, 그때 쓸 기준을 미리 적습니다. 그냥 매일 보다가 좋은 날 멈추면 제1종 오류가 설계한 값보다 커집니다.</li>
+      </ol>
+      <span class="limit">세 항목 모두 ‘미리 정한다’가 핵심입니다. 자료를 본 뒤 정한 규칙은 규칙이 아닙니다.</span>
+    </div>
+
     <details class="math">
       <summary>수식으로 보기 — 검정력과 필요 인원</summary>
       <div class="min">
@@ -822,7 +837,7 @@ print(t, p)</pre>
     <div class="explain" style="border-left-color:var(--accent);background:var(--accent-soft);border-color:#c6d3e4">
       <h4 style="color:#2f4a6d">문제</h4>
       <p style="margin:6px 0 0;font-size:15px">알루미늄이 포함된 제산제를 처방받은 아동의 집단으로부터 10명의 아동을 무작위로 추출하였다. 이 집단의 혈장 알루미늄 수준은 정규분포를 따르는 것으로 생각되지만 분산은 알려지지 않았다. 10명의 아동으로부터 구한 표본 평균은 <b>37.66</b>, 표준편차는 <b>7.09</b>이다. 이 집단의 혈장 알루미늄 수준의 평균에 대한 <b>95% 신뢰구간</b>을 구하라.</p>
-      <div class="lim" style="border-top-color:#c6d3e4"><b>주어진 것</b> — n = 10, x̄ = 37.66, s = 7.09, 신뢰수준 95%. 모분산 σ²는 모른다. 모집단은 정규분포로 가정한다. <span class="jt" data-g="단위">단위</span>는 문제에 적혀 있지 않으므로 이 페이지에서는 µg/L로 적고, 수치는 교재의 예제값으로 둡니다.</div>
+      <div class="lim" style="border-top-color:#c6d3e4"><b>주어진 것</b> — n = 10, x̄ = 37.66, s = 7.09, 신뢰수준 95%. 모분산 σ²는 모른다. 모집단은 정규분포로 가정한다. <span class="jt" data-g="단위">단위</span>는 µg/L이다 <sup>[12]</sup>. 이 문제는 Pagano·Gauvreau의 『Principles of Biostatistics』 신뢰구간 장에 있는 ‘제산제와 혈장 알루미늄 수준’ 예제다 <sup>[12]</sup>.</div>
     </div>
 
     <div class="pair">
@@ -871,6 +886,12 @@ print(t, p)</pre>
 
     <div class="eq" style="font-size:15.5px;background:var(--gfp-soft);border-color:#c9e3d3">
       <b>답</b> &nbsp; 95% 신뢰구간 = 37.66 ± 2.262 × (7.09 ÷ √10) = 37.66 ± 5.07 = <b>(32.59, 42.73)</b> µg/L
+    </div>
+
+    <div class="box" style="border:1px solid #c9e3d3;border-left:3px solid var(--gfp);background:var(--gfp-soft);border-radius:9px;padding:15px 17px;margin:16px 0">
+      <h4 style="margin:0 0 6px;font-size:14px;color:var(--gfp)">구간을 숫자로만 두지 않고 해석하기</h4>
+      <p style="margin:0;font-size:14.5px">같은 교재는 <b>제산제를 받지 않은</b> 집단의 평균 혈장 알루미늄 수준을 4.13 µg/L로 제시합니다 <sup>[12]</sup>. 우리가 구한 구간 (32.59, 42.73)은 4.13을 <b>포함하지 않습니다.</b> 그래서 이 표본은 제산제를 받은 집단의 평균이 받지 않은 집단의 수준과 같다고 보기 어렵다는 근거가 됩니다.</p>
+      <p style="margin:8px 0 0;font-size:14px;color:var(--muted)">읽는 순서가 중요합니다 — 구간을 먼저 구하고, 비교할 값이 그 안에 들어오는지를 봅니다. 들어오지 않으면 “이 자료로는 같다고 보기 어렵다”이고, 들어오면 “이 자료로는 다르다고 말할 수 없다”입니다. 어느 쪽도 “증명됐다”가 아닙니다.</p>
     </div>
 
     <div class="tw"><table class="tb">
@@ -1096,6 +1117,28 @@ print(xbar - h, xbar + h)            # 32.59  42.73</pre>
       <section class="kpis" id="k5"></section>
       <div class="eq" id="eq5"></div>
       <div class="insight" id="ins5" aria-live="polite"></div>
+    </section>
+
+    <section class="panel">
+      <h3>가린 자리 복원 — 자기지도 학습은 정답표 없이 무엇을 배우나</h3>
+      <p class="note" style="font-size:13.5px;color:var(--muted);margin:0 0 10px">서열에서 한 자리를 가리고 그 자리를 맞혀 보게 합니다. 정답은 <b>가려진 글자 자신</b>이므로 사람이 라벨을 달아 줄 필요가 없습니다. 이것이 자기지도 학습이 ‘스스로 과제를 만든다’는 말의 뜻입니다.</p>
+      <div class="cwrap"><canvas id="c7" height="250" aria-label="서열 한 줄에서 한 자리가 가려져 있고, 그 자리에 올 수 있는 글자들의 확률이 막대로 표시된 그림."></canvas></div>
+      <div class="ctrl">
+        <div class="group">
+          <span class="glabel">가릴 자리 <span class="val" id="v7i">6</span>번</span>
+          <input type="range" id="s7i" min="1" max="12" step="1" value="6">
+        </div>
+        <div class="group">
+          <span class="glabel">앞뒤 문맥을 보는 폭 <span class="val" id="v7w">2</span></span>
+          <input type="range" id="s7w" min="0" max="4" step="1" value="2">
+        </div>
+        <div class="group">
+          <button class="bt primary" id="b7run">▶ 가린 자리 맞혀 보기</button>
+        </div>
+      </div>
+      <section class="kpis" id="k7"></section>
+      <div class="eq" id="eq7"></div>
+      <div class="insight" id="ins7" aria-live="polite"></div>
     </section>
 
     <div class="explain">
@@ -1457,7 +1500,11 @@ print(xbar - h, xbar + h)            # 32.59  42.73</pre>
   {"id":"lab:question/bias-correction","type":"Question","label":{"ko":"감시 자료의 지역 편향을 통계적으로 어디까지 보정할 수 있나","en":"how far can surveillance bias be corrected"},"page":"01_clinical_stats_ai","anchor":"#lv5","domain":["stats"],"status":"known","confidence":"mid"},
   {"id":"lab:work/thadani2023evescape","type":"Work","label":{"ko":"사전 자료로 회피를 예측한 연구 (2023)","en":"Learning from prepandemic data to forecast viral escape"},"page":"01_clinical_stats_ai","anchor":"#export","domain":["ai"],"status":"known","confidence":"high"},
   {"id":"lab:work/zhang2023lineardesign","type":"Work","label":{"ko":"서열 최적화 알고리즘 연구 (2023)","en":"Algorithm for optimized mRNA design"},"page":"01_clinical_stats_ai","anchor":"#export","domain":["ai"],"status":"known","confidence":"high"},
-  {"id":"lab:work/revaluation2025","type":"Work","label":{"ko":"의미 변화 지표 재평가 연구 (2025)","en":"systematic evaluation of the language-of-viral-escape model"},"page":"01_clinical_stats_ai","anchor":"#export","domain":["ai"],"status":"known","confidence":"high"}
+  {"id":"lab:work/revaluation2025","type":"Work","label":{"ko":"의미 변화 지표 재평가 연구 (2025)","en":"systematic evaluation of the language-of-viral-escape model"},"page":"01_clinical_stats_ai","anchor":"#export","domain":["ai"],"status":"known","confidence":"high"},
+  {"id":"lab:work/pagano2000","type":"Work","label":{"ko":"Principles of Biostatistics (2000)","en":"Principles of Biostatistics, 2nd ed."},"page":"01_clinical_stats_ai","anchor":"#export","domain":["stats"],"status":"known","confidence":"high"},
+  {"id":"lab:work/jayatunga2024","type":"Work","label":{"ko":"AI 발굴 약물의 임상 성적 분석 (2024)","en":"How successful are AI-discovered drugs in clinical trials?"},"page":"01_clinical_stats_ai","anchor":"#export","domain":["ai"],"status":"known","confidence":"high"},
+  {"id":"lab:method/masked-token-recovery","type":"Method","label":{"ko":"가린 자리 복원","en":"masked token recovery"},"definition":{"ko":"서열의 한 자리를 가리고 그 자리를 맞히게 하는 과제. 정답이 가려진 글자 자신이므로 사람이 라벨을 달지 않는다."},"page":"01_clinical_stats_ai","anchor":"#lv4","level":4,"family":"multivariate","domain":["ai"],"anchorType":"B","status":"known","confidence":"high"},
+  {"id":"lab:simulation/masked-recovery","type":"Simulation","label":{"ko":"가린 자리 복원 모형","en":"masked recovery simulation"},"page":"01_clinical_stats_ai","anchor":"#lv4","domain":["ai"],"status":"known","confidence":"high"}
  ],
  "edges":[
   {"s":"lab:question/how-approved","p":"lab:raises","o":"lab:concept/clinical-phases","anchor":"#lv1","confidence":"high"},
@@ -1519,7 +1566,13 @@ print(xbar - h, xbar + h)            # 32.59  42.73</pre>
   {"s":"lab:metric/recall-at-top","p":"lab:derivedFrom","o":"lab:method/prepandemic-validation","anchor":"#lv5","confidence":"high"},
   {"s":"lab:method/self-supervised-plm","p":"lab:prerequisiteOf","o":"lab:method/three-factor-escape-score","anchor":"#lv5","confidence":"mid"},
   {"s":"lab:concept/combinatorial-explosion","p":"lab:explainedIn","o":"lab:simulation/sequence-map","anchor":"#lv4","confidence":"high"},
-  {"s":"lab:question/how-approved","p":"lab:raises","o":"lab:method/hypothesis-test","anchor":"#lv2","confidence":"high"}
+  {"s":"lab:question/how-approved","p":"lab:raises","o":"lab:method/hypothesis-test","anchor":"#lv2","confidence":"high"},
+  {"s":"lab:claim/aluminium-ci","p":"lab:assertedIn","o":"lab:work/pagano2000","anchor":"#export","confidence":"high"},
+  {"s":"lab:claim/ai-phase1-high","p":"lab:assertedIn","o":"lab:work/jayatunga2024","anchor":"#export","confidence":"high"},
+  {"s":"lab:claim/ai-phase2-similar","p":"lab:assertedIn","o":"lab:work/jayatunga2024","anchor":"#export","confidence":"high"},
+  {"s":"lab:method/masked-token-recovery","p":"lab:broader","o":"lab:method/self-supervised-plm","anchor":"#lv4","confidence":"high"},
+  {"s":"lab:method/masked-token-recovery","p":"lab:demonstratedBy","o":"lab:simulation/masked-recovery","anchor":"#lv4","confidence":"high"},
+  {"s":"lab:method/masked-token-recovery","p":"lab:prerequisiteOf","o":"lab:method/three-factor-escape-score","anchor":"#lv5","confidence":"mid"}
  ]
 }
 </script>
@@ -1546,11 +1599,12 @@ print(xbar - h, xbar + h)            # 32.59  42.73</pre>
  {"id":"zhang2023lineardesign","type":"article-journal","title":"Algorithm for optimized mRNA design improves stability and immunogenicity","author":[{"family":"Zhang","given":"He"},{"literal":"et al."}],"issued":{"date-parts":[[2023,9,14]]},"container-title":"Nature","volume":"621","page":"396-403","DOI":"","URL":"https://www.nature.com/articles/s41586-023-06127-z","accessed":{"date-parts":[[2026,11,20]]},"lab":{"work":"lab:work/zhang2023lineardesign","role":"수치","supports":["lab:claim/lineardesign-11min"],"verified":{"title":true,"authors":false,"year":true,"venue":true,"doi":false,"pages":true},"checkedBy":"웹 검색 2026-11-20","note":"공동 저자 전체 미확인"}},
  {"id":"revaluation2025","type":"article-journal","title":"A systematic evaluation of the language-of-viral-escape model using multiple machine learning frameworks","author":[{"literal":"저자 미확인"}],"issued":{"date-parts":[[2025]]},"DOI":"","URL":"https://pmc.ncbi.nlm.nih.gov/articles/PMC12040448/","accessed":{"date-parts":[[2026,11,20]]},"lab":{"work":"lab:work/revaluation2025","role":"반대 근거","supports":["lab:method/semantic-change-only"],"verified":{"title":true,"authors":false,"year":true,"venue":false,"doi":false,"pages":false},"checkedBy":"웹 검색 2026-11-20","note":"저자·학술지 미확인"}},
  {"id":"insilico2025rentosertib","type":"article-journal","title":"Phase IIa results of rentosertib, an AI-discovered TNIK inhibitor for idiopathic pulmonary fibrosis","author":[{"literal":"Insilico Medicine"}],"issued":{"date-parts":[[2025,6,3]]},"container-title":"Nature Medicine","DOI":"","URL":"https://www.prnewswire.com/news-releases/insilico-medicine-announces-nature-medicine-publication-of-phase-iia-results-evaluating-rentosertib-the-novel-tnik-inhibitor-for-idiopathic-pulmonary-fibrosis-ipf-discovered-and-designed-with-a-pioneering-ai-approach-302472070.html","accessed":{"date-parts":[[2026,11,20]]},"lab":{"work":"lab:work/insilico2025","role":"수치","supports":["lab:claim/ai-phase2-similar"],"verified":{"title":false,"authors":false,"year":true,"venue":true,"doi":false,"pages":false},"checkedBy":"웹 검색 2026-11-20","note":"기업 보도자료로 확인. 원문 서지 미확인"}},
- {"id":"bcg2024aipipeline","type":"webpage","title":"AI-discovered drugs in clinical trials: pipeline analysis","issued":{"date-parts":[[2026]]},"URL":"https://intuitionlabs.ai/articles/ai-discovered-drugs-clinical-trials-2026","accessed":{"date-parts":[[2026,11,20]]},"lab":{"work":"lab:work/bcg2024","role":"수치","supports":["lab:claim/ai-phase1-high"],"verified":{"title":true,"authors":false,"year":true,"venue":false,"doi":false,"pages":false},"checkedBy":"웹 검색 2026-11-20","note":"2차 정리 자료. BCG 원문 미확인"}},
+ {"id":"jayatunga2024aisuccess","type":"article-journal","title":"How successful are AI-discovered drugs in clinical trials? A first analysis and emerging lessons","author":[{"family":"Jayatunga","given":"Madura K. P."},{"family":"Ayers","given":"Margaret"},{"family":"Bruens","given":"Lotte"},{"family":"Jayanth","given":"Dhruv"},{"family":"Meier","given":"Christoph"}],"issued":{"date-parts":[[2024,4]]},"container-title":"Drug Discovery Today","DOI":"","URL":"https://www.researchgate.net/publication/380223979_How_successful_are_AI-discovered_drugs_in_clinical_trials_A_first_analysis_and_emerging_lessons","accessed":{"date-parts":[[2026,11,20]]},"lab":{"work":"lab:work/jayatunga2024","role":"주 자료","supports":["lab:claim/ai-phase1-high","lab:claim/ai-phase2-similar","lab:limitation/phase2-bottleneck"],"locs":[{"claim":"lab:claim/ai-phase1-high","loc":"본문 — 1상 80~90%"}],"verified":{"title":true,"authors":true,"year":true,"venue":true,"doi":false,"pages":false},"checkedBy":"웹 검색 2026-11-20","note":"DOI·쪽수 미확인"}},
+ {"id":"pagano2000biostat","type":"book","title":"Principles of Biostatistics","author":[{"family":"Pagano","given":"Marcello"},{"family":"Gauvreau","given":"Kimberlee"}],"issued":{"date-parts":[[2000]]},"publisher":"Duxbury","edition":"2","URL":"","accessed":{"date-parts":[[2026,11,20]]},"lab":{"work":"lab:work/pagano2000","role":"주 자료","supports":["lab:claim/aluminium-ci","lab:method/t-interval"],"locs":[{"claim":"lab:claim/aluminium-ci","loc":"신뢰구간 장 — Antacids and plasma aluminum level"}],"verified":{"title":true,"authors":true,"year":true,"venue":true,"doi":false,"pages":false},"checkedBy":"웹 검색 2026-11-20","note":"장·문항 번호는 판에 따라 다름. 쪽수 미확인"}},
  {"id":"nextclade2021","type":"webpage","title":"Nextclade as pango lineage classifier: methods and validation","issued":{"date-parts":[[2021]]},"URL":"https://docs.nextstrain.org/projects/nextclade/en/stable/user/algorithm/nextclade-pango.html","accessed":{"date-parts":[[2026,11,20]]},"lab":{"work":"lab:work/nextclade","role":"배경","supports":["lab:method/unsupervised-clustering"],"verified":{"title":true,"authors":false,"year":false,"venue":true,"doi":false,"pages":false},"checkedBy":"웹 검색 2026-11-20"}},
  {"id":"variants2022review","type":"article-journal","title":"SARS-CoV-2 variants identification: overview of molecular existing methods","issued":{"date-parts":[[2022]]},"URL":"https://pmc.ncbi.nlm.nih.gov/articles/PMC9504725/","accessed":{"date-parts":[[2026,11,20]]},"lab":{"work":"lab:work/variants2022","role":"배경","supports":["lab:concept/surveillance-bias"],"verified":{"title":true,"authors":false,"year":true,"venue":false,"doi":false,"pages":false},"checkedBy":"웹 검색 2026-11-20"}},
  {"id":"oxford2023evescape","type":"webpage","title":"New AI tool could help predict viral outbreaks","author":[{"literal":"University of Oxford"}],"issued":{"date-parts":[[2023,10,19]]},"URL":"https://www.ox.ac.uk/news/2023-10-19-new-ai-tool-could-help-predict-viral-outbreaks","accessed":{"date-parts":[[2026,11,20]]},"lab":{"work":"lab:work/oxford2023","role":"배경","supports":["lab:method/prepandemic-validation"],"verified":{"title":true,"authors":true,"year":true,"venue":true,"doi":false,"pages":false},"checkedBy":"웹 검색 2026-11-20"}},
- {"id":"deepmind2020structures","type":"webpage","title":"Structure predictions for six SARS-CoV-2 associated proteins","issued":{"date-parts":[[2020,3,5]]},"URL":"https://syncedreview.com/2020/03/05/google-deepmind-releases-structure-predictions-for-coronavirus-linked-proteins/","accessed":{"date-parts":[[2026,11,20]]},"lab":{"work":"lab:work/deepmind2020","role":"배경","supports":["lab:concept/clinical-phases"],"verified":{"title":false,"authors":false,"year":true,"venue":false,"doi":false,"pages":false},"checkedBy":"웹 검색 2026-11-20","note":"2차 보도. 원 공개 페이지 미확인"}},
+ {"id":"deepmind2020structures","type":"webpage","title":"Computational predictions of protein structures associated with COVID-19","author":[{"literal":"DeepMind"}],"issued":{"date-parts":[[2020,3,5]]},"URL":"https://deepmind.google/blog/computational-predictions-of-protein-structures-associated-with-covid-19/","accessed":{"date-parts":[[2026,11,20]]},"lab":{"work":"lab:work/deepmind2020","role":"배경","supports":["lab:concept/clinical-phases"],"verified":{"title":true,"authors":true,"year":true,"venue":true,"doi":false,"pages":false},"checkedBy":"웹 검색 2026-11-20","note":"2020-08-04 개정판으로 내용이 바뀌었다. 최초 공개는 단백질 6종"}},
  {"id":"aws2021moderna","type":"webpage","title":"Powering Moderna's digital biotechnology platform with machine learning","author":[{"literal":"Amazon Web Services"}],"issued":{"date-parts":[[2026]]},"URL":"https://aws.amazon.com/solutions/case-studies/moderna-machine-learning/","accessed":{"date-parts":[[2026,11,20]]},"lab":{"work":"lab:work/aws2021","role":"배경","supports":["lab:concept/clinical-phases"],"verified":{"title":true,"authors":true,"year":false,"venue":true,"doi":false,"pages":false},"checkedBy":"웹 검색 2026-11-20","note":"기업 사례 자료"}}
 ]
 </script>
@@ -1570,7 +1624,7 @@ print(xbar - h, xbar + h)            # 32.59  42.73</pre>
  "about":["lab:method/hypothesis-test","lab:method/t-interval","lab:concept/multiple-comparisons","lab:method/prepandemic-validation","lab:concept/clinical-phases"],
  "educationalLevel":"입문~중급",
  "learningResourceType":"interactive explainer",
- "basedOn":["thadani2023evescape","zhang2023lineardesign","revaluation2025"],
+ "basedOn":["pagano2000biostat","jayatunga2024aisuccess","thadani2023evescape","zhang2023lineardesign","revaluation2025"],
  "suggestedCitation":"안상선 (2026). 신약은 어떤 숫자로 허가받는가 — 임상시험의 통계와 AI. 연구실 해설 대시보드 · 보건통계 01, v1.0."
 }
 </script>
@@ -1643,24 +1697,25 @@ print(xbar - h, xbar + h)            # 32.59  42.73</pre>
   <div class="wrap">
     <h3 style="margin-top:0">출처</h3>
     <ol>
-      <li id="fn1">AI 발굴 분자의 임상 1상 성적 — 1상을 마친 24개 중 21개 성공(약 80~90%), 신규 표적에서 사람 첫 투여까지 30개월 이내 사례. <a href="https://intuitionlabs.ai/articles/ai-discovered-drugs-clinical-trials-2026" target="_blank" rel="noopener">파이프라인 정리 자료</a> · 2차 정리 자료이며 BCG 원문은 확인하지 못했습니다.</li>
-      <li id="fn2">AI 발굴 약물의 2상 실패율이 비AI 약물과 비슷한 수준이라는 보고 — 2025년 <i>Nature Medicine</i>에 실린 2상a 결과 논의. <a href="https://www.prnewswire.com/news-releases/insilico-medicine-announces-nature-medicine-publication-of-phase-iia-results-evaluating-rentosertib-the-novel-tnik-inhibitor-for-idiopathic-pulmonary-fibrosis-ipf-discovered-and-designed-with-a-pioneering-ai-approach-302472070.html" target="_blank" rel="noopener">발표 자료</a></li>
+      <li id="fn1">AI 발굴 분자의 임상 1상 성적 — Jayatunga MKP, Ayers M, Bruens L, Jayanth D, Meier C. “How successful are AI-discovered drugs in clinical trials? A first analysis and emerging lessons.” <i>Drug Discovery Today</i> (2024). 1상 성공률 80~90%로 과거 업계 평균보다 뚜렷하게 높다고 보고했습니다. 2023년 12월까지의 자료로 1상을 마친 24개 중 21개 성공. <a href="https://www.researchgate.net/publication/380223979_How_successful_are_AI-discovered_drugs_in_clinical_trials_A_first_analysis_and_emerging_lessons" target="_blank" rel="noopener">원문</a></li>
+      <li id="fn2">2상은 다른 이야기라는 보고 — 위 <i>Drug Discovery Today</i> 논문이 2상 성공률을 약 40%로 적고 “표본이 제한적이지만 과거 업계 평균과 비슷하다”고 밝혔습니다. 2025년 <i>Nature Medicine</i>의 2상a 결과 논의도 같은 방향입니다. <a href="https://www.prnewswire.com/news-releases/insilico-medicine-announces-nature-medicine-publication-of-phase-iia-results-evaluating-rentosertib-the-novel-tnik-inhibitor-for-idiopathic-pulmonary-fibrosis-ipf-discovered-and-designed-with-a-pioneering-ai-approach-302472070.html" target="_blank" rel="noopener">발표 자료</a></li>
       <li id="fn3">검정력 근사 계산 — 양측 α = 0.05, 효과 크기 0.5, 집단별 64명에서 약 0.81. 저자 계산(정규근사).</li>
       <li id="fn4">사전 자료만으로 회피 변이를 앞서 지목한 연구 — Thadani 외, <i>Nature</i> 622:818–825 (2023). <a href="https://www.nature.com/articles/s41586-023-06617-0" target="_blank" rel="noopener">원문</a></li>
       <li id="fn5">위 연구의 검증 시점(2020년 2월까지의 정보만 사용) — <a href="https://www.ox.ac.uk/news/2023-10-19-new-ai-tool-could-help-predict-viral-outbreaks" target="_blank" rel="noopener">기관 보도자료 (2023-10-19)</a></li>
       <li id="fn6">계통 분류 방법과 검증 — <a href="https://docs.nextstrain.org/projects/nextclade/en/stable/user/algorithm/nextclade-pango.html" target="_blank" rel="noopener">Nextclade 공식 문서</a></li>
       <li id="fn7">변이 식별 방법 전반 — <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9504725/" target="_blank" rel="noopener">종합 리뷰 (2022)</a></li>
       <li id="fn8">의미 변화 지표의 재평가 — <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12040448/" target="_blank" rel="noopener">여러 머신러닝 틀로 다시 평가한 연구 (2025)</a>. 저자·학술지는 확인하지 못했습니다.</li>
-      <li id="fn9">코로나 관련 단백질 6종의 예측 구조 공개(2020-03) — <a href="https://syncedreview.com/2020/03/05/google-deepmind-releases-structure-predictions-for-coronavirus-linked-proteins/" target="_blank" rel="noopener">보도</a> · 2차 보도이며 원 공개 페이지는 확인하지 못했습니다.</li>
+      <li id="fn9">코로나 관련 단백질의 예측 구조 공개 — DeepMind, “Computational predictions of protein structures associated with COVID-19”. 2020년 3월 5일 처음 공개할 때는 단백질 6종이었고, 같은 글이 2020년 8월 4일 개정되어 미연구 표적 다섯 개의 최신 예측을 담고 있습니다. 공개 당시 DeepMind 자신이 “구조 예측 시스템은 아직 개발 중이며 제공한 구조의 정확성을 확신할 수 없다”고 적었습니다. <a href="https://deepmind.google/blog/computational-predictions-of-protein-structures-associated-with-covid-19/" target="_blank" rel="noopener">공식 글</a></li>
       <li id="fn10">서열 최적화 알고리즘 — Zhang 외, <i>Nature</i> 621:396–403 (2023). 스파이크 기준 약 11분, 생쥐에서 항체가 최대 128배. <a href="https://www.nature.com/articles/s41586-023-06127-z" target="_blank" rel="noopener">원문</a></li>
-      <li id="fn11">제조·품질 검사 자동화 — <a href="https://aws.amazon.com/solutions/case-studies/moderna-machine-learning/" target="_blank" rel="noopener">기업 사례 자료</a></li>
+      <li id="fn11">제조·품질 검사 자동화 — <a href="https://aws.amazon.com/solutions/case-studies/moderna-machine-learning/" target="_blank" rel="noopener">기업 사례 자료</a> · 기업이 낸 사례 자료이며 심사를 거친 문헌이 아닙니다.</li>
+      <li id="fn12">③단계 예시 문제 — Pagano M, Gauvreau K. <i>Principles of Biostatistics</i>, 2판 (Duxbury, 2000), 신뢰구간 장의 ‘Antacids and plasma aluminum level’ 예제. 같은 예제에 제산제를 받지 않은 집단의 평균 4.13 µg/L가 함께 제시되어 있어, 단위 µg/L는 이 페이지가 붙인 것이 아니라 원 예제의 단위입니다. 3판(Pagano·Gauvreau·Mattie, 2022)에도 같은 장이 있습니다.</li>
     </ol>
 
     <h3>이 페이지에서 ‘예시값·설명용 모형’인 것</h3>
     <div class="fnote">
       <ol>
         <li>①단계의 전임상·3상·허가 통과율(0.35 · 0.60 · 0.90)과 소요 기간 — 설명용 값입니다. 1상·2상 통과율만 문헌 보고값을 참고했습니다.</li>
-        <li>③단계 예시의 수치(n = 10, 평균 37.66, 표준편차 7.09)는 교재 예제값이며, 단위 µg/L는 이 페이지에서 붙인 표기입니다. 특정 집단의 실제 측정값이 아닙니다.</li>
+        <li>③단계 예시의 수치(n = 10, 평균 37.66, 표준편차 7.09)와 단위 µg/L는 교재의 예제값입니다 <sup>[12]</sup>. 특정 집단을 지금 측정한 값이 아닙니다.</li>
         <li>②·③·④단계의 모든 모의실험 자료는 시드를 고정한 난수로 만든 설명용 모형입니다.</li>
         <li>④단계의 바탕 비율 예시(유병률 1%, 민감도 99%, 특이도 95%)는 계산을 보여 주기 위한 예시값입니다.</li>
         <li>⑤단계 봉인 채점 모형의 변이 200개와 점수는 설명용 모형이며, 어떤 연구의 결과 수치도 아닙니다.</li>
@@ -1829,9 +1884,13 @@ var Gloss=(function(){
     if(mode===0){bind();return;}
     var keys=Object.keys(GL).filter(function(k){return mode===1?core.indexOf(k)>=0:true;});
     keys.sort(function(a,b){return b.length-a.length;});
-    var seen={};
+    /* 섹션(또는 히어로) 단위로 첫 등장에만 밑줄을 긋는다 */
+    var seenBy={};
     Array.prototype.forEach.call(scope,function(p){
       if(p.closest('#kg')||p.closest('#export')||p.closest('.mathbox table')||p.closest('#tip'))return;
+      var host=p.closest('section.level')||p.closest('header.hero')||document.body;
+      var hid=host.id||'body';
+      var seen=seenBy[hid]||(seenBy[hid]={});
       keys.forEach(function(k){
         if(seen[k])return;
         var walker=document.createTreeWalker(p,NodeFilter.SHOW_TEXT,null);
@@ -2150,7 +2209,7 @@ var P1=(function(){
 
 /* ===================== ② 판정 모형 ===================== */
 var P2=(function(){
-  var d=0.5,n=64,al=0.05,obs=null,seed=11,tilt=0;
+  var d=0.5,n=64,al=0.05,obs=null,seed=11,tilt=0,showAlt=false;
   function z(){return (al===0.05)?1.959964:(al<=0.02?2.5758293:(al>=0.09?1.6954:tcrit(1-al,5000)));}
   function zc(){ // 양측 임계값
     var p=1-al/2;
@@ -2188,7 +2247,7 @@ var P2=(function(){
     for(var v2=lo;v2<=-k;v2+=0.04)x.lineTo(X(v2),Y(pdf(v2,0)));
     x.lineTo(X(-k),H-padB);x.closePath();x.fill();
     /* 대립 분포 */
-    if(d>0){
+    if(d>0&&showAlt){
       x.strokeStyle='rgba(74,106,150,.55)';x.lineWidth=1.5;x.setLineDash([4,3]);x.beginPath();
       for(var v3=lo;v3<=hi;v3+=0.03){var yy=Y(pdf(v3,ncp()));if(v3===lo)x.moveTo(X(v3),yy);else x.lineTo(X(v3),yy);}
       x.stroke();x.setLineDash([]);
@@ -2203,7 +2262,7 @@ var P2=(function(){
       line(x,X(obs),padT-10,X(obs),H-padB,GFP,2.5);
       txt(x,'관측 z '+obs.toFixed(2),X(obs)+6,padT-4,GFP,11,'left',true);
     }
-    txt(x,'차이가 없는 세계의 분포 (실선) · 참 효과가 있는 세계 (점선)',padL,12,MUT,11,'left',true);
+    txt(x,showAlt?'차이가 없는 세계 (실선) · 참 효과가 있는 세계 (점선)':'차이가 없는 세계의 분포 (실선)',padL,12,MUT,11,'left',true);
     stamp(x,W,'설명용 모형 · 실제 데이터 아님');
   }
   function drawCourt(dt){
@@ -2246,6 +2305,9 @@ var P2=(function(){
   }
   function init(){
     var sd=document.getElementById('s2d'),sn=document.getElementById('s2n'),sa=document.getElementById('s2a'),br=document.getElementById('b2run');
+    var ba=document.getElementById('b2alt');
+    ba.addEventListener('click',function(){showAlt=!showAlt;ba.setAttribute('aria-pressed',showAlt?'true':'false');
+      ba.textContent=showAlt?'점선 끄기 (실선만 보기)':'점선(효과 있는 세계) 함께 보기';draw();});
     sd.addEventListener('input',function(){d=+sd.value;document.getElementById('v2d').textContent=d.toFixed(2);obs=null;draw();upd();});
     sn.addEventListener('input',function(){n=+sn.value;document.getElementById('v2n').textContent=n;obs=null;draw();upd();});
     sa.addEventListener('input',function(){al=+sa.value;document.getElementById('v2a').textContent=al.toFixed(2);draw();upd();});
@@ -2661,6 +2723,89 @@ var P6=(function(){
   return {init:init,recall:recall,build:build,ready:function(){if(!V.length)build();}};
 })();
 
+/* ===================== ④-3 가린 자리 복원 (자기지도) ===================== */
+var P7=(function(){
+  var SEQ=['M','K','V','L','A','G','T','S','R','E','D','N'];
+  var CAND=['A','G','L','S','T','V'];
+  var mi=6,win=2,seed=71,res=null;
+  function predict(){
+    /* 장난감 규칙: 가린 자리의 앞뒤 글자가 비슷할수록 특정 후보의 점수가 오른다.
+       정답은 가려진 글자 자신이므로 사람이 라벨을 달지 않는다. */
+    var r=rng(seed),i=mi-1,sc={},tot=0;
+    CAND.forEach(function(c){sc[c]=0.35+r()*0.25;});
+    for(var d=1;d<=win;d++){
+      [i-d,i+d].forEach(function(j){
+        if(j<0||j>=SEQ.length)return;
+        var nb=SEQ[j],w=1/d;
+        CAND.forEach(function(c){
+          var same=(c===nb)?0.55:0;
+          var near=(CAND.indexOf(nb)>=0&&Math.abs(CAND.indexOf(c)-CAND.indexOf(nb))===1)?0.3:0;
+          sc[c]+=w*(same+near);
+        });
+        if(CAND.indexOf(SEQ[i])>=0)sc[SEQ[i]]+=w*0.42;  /* 문맥이 넓어지면 참 글자가 드러난다 */
+      });
+    }
+    CAND.forEach(function(c){tot+=sc[c];});
+    var ps=CAND.map(function(c){return {c:c,p:sc[c]/tot};});
+    ps.sort(function(a,b){return b.p-a.p;});
+    var truth=SEQ[i],inCand=CAND.indexOf(truth)>=0;
+    res={ps:ps,truth:truth,inCand:inCand,top1:ps[0].c===truth,
+         rank:ps.map(function(q){return q.c;}).indexOf(truth)+1,
+         pTruth:inCand?ps.filter(function(q){return q.c===truth;})[0].p:0};
+  }
+  function draw(){
+    var c=document.getElementById('c7');if(!c)return;
+    var W=fit(c,250),x=c.getContext('2d'),H=250;
+    if(!res)predict();
+    var n=SEQ.length,bw=Math.min(34,(W-60)/n),sx=(W-bw*n)/2,sy=30;
+    for(var i=0;i<n;i++){
+      var masked=(i===mi-1),inWin=Math.abs(i-(mi-1))<=win&&!masked;
+      x.fillStyle=masked?'#fdf3e1':(inWin?'#e7f5ec':'#f6f8fa');
+      x.strokeStyle=masked?AMB:(inWin?GFP:RULE);x.lineWidth=masked?2:1;
+      x.fillRect(sx+i*bw,sy,bw-3,30);x.strokeRect(sx+i*bw,sy,bw-3,30);
+      txt(x,masked?'?':SEQ[i],sx+i*bw+(bw-3)/2,sy+15,masked?AMB:INK,13.5,'center',true);
+      txt(x,String(i+1),sx+i*bw+(bw-3)/2,sy+40,MUT,9.5,'center');
+    }
+    txt(x,'노란 자리를 가렸습니다 · 초록은 모델이 참고하는 앞뒤 문맥',sx,16,MUT,11,'left',true);
+    var by=96,bh=20,bl=Math.min(220,W-150);
+    res.ps.forEach(function(q,i){
+      var isT=(q.c===res.truth);
+      txt(x,q.c,sx,by+i*(bh+6)+bh/2,isT?GFP:INK,13,'left',true);
+      x.fillStyle='#eef2f6';x.fillRect(sx+22,by+i*(bh+6),bl,bh);
+      x.fillStyle=isT?GFP:'#c3cedb';x.fillRect(sx+22,by+i*(bh+6),bl*(q.p/res.ps[0].p),bh);
+      txt(x,(q.p*100).toFixed(0)+'%',sx+22+bl+8,by+i*(bh+6)+bh/2,isT?GFP:MUT,12,'left',true);
+      if(isT)txt(x,'← 가려진 글자',sx+22+bl+52,by+i*(bh+6)+bh/2,GFP,11,'left',true);
+    });
+    stamp(x,W,'설명용 모형 · 실제 데이터 아님');
+  }
+  function upd(){
+    if(!res)predict();
+    kpi(document.getElementById('k7'),[
+      {k:'1순위 후보',v:res.ps[0].c,c:res.top1?'g':'r',n:res.top1?'가려진 글자와 같다':'가려진 글자는 '+res.truth},
+      {k:'가려진 글자의 순위',v:res.inCand?res.rank+'위':'후보 밖',c:'s',n:'후보 '+CAND.length+'개 중'},
+      {k:'그 글자에 준 확률',v:res.inCand?(res.pTruth*100).toFixed(0)+'%':'—',c:'m',n:'문맥 폭 '+win},
+      {k:'사람이 단 라벨',v:'0건',c:'g',n:'정답은 가린 글자 자신'}
+    ]);
+    document.getElementById('eq7').innerHTML='P( 자리 <em>'+mi+'</em> = ? | 앞뒤 <i>'+win+'</i>글자 ) &nbsp;→&nbsp; 1순위 <b>'+res.ps[0].c+'</b> ('+(res.ps[0].p*100).toFixed(0)+'%)';
+    var ins=document.getElementById('ins7'),h='';
+    if(win===0)h+='<p class="r">문맥 폭을 0으로 두면 앞뒤를 전혀 보지 않습니다. 확률이 후보들 사이에 거의 고르게 퍼지고, 맞히는 것은 운에 가깝습니다.</p>';
+    if(win>=2&&res.top1)h+='<p class="g">문맥을 '+win+'글자까지 보니 가려진 글자가 1순위로 올라왔습니다. 사람이 정답표를 만들어 준 적은 없습니다 — 가린 자리 자체가 정답이었습니다.</p>';
+    if(win>=1&&!res.top1&&res.inCand)h+='<p class="a">아직 1순위가 아닙니다('+res.rank+'위). 문맥 폭을 넓히거나 다른 자리를 가려 보세요. 자리마다 주변 정보의 양이 다릅니다.</p>';
+    if(!res.inCand)h+='<p class="r">가려진 글자가 후보 목록 밖입니다. 후보를 좁게 잡으면 아무리 학습해도 맞힐 수 없습니다 — 어휘를 정하는 일도 설계의 일부입니다.</p>';
+    h+='<p class="m">이렇게 배운 분포는 “있을 수 있는 서열”의 모양입니다. 그 분포에서 어떤 변이가 드문지를 읽어 적합도 점수로 쓰는 것이 ⑤단계의 첫 번째 요소입니다.</p>';
+    ins.innerHTML=h;
+  }
+  function init(){
+    var si=document.getElementById('s7i'),sw=document.getElementById('s7w'),br=document.getElementById('b7run');
+    si.addEventListener('input',function(){mi=+si.value;document.getElementById('v7i').textContent=mi;predict();draw();upd();});
+    sw.addEventListener('input',function(){win=+sw.value;document.getElementById('v7w').textContent=win;predict();draw();upd();});
+    br.addEventListener('click',function(){seed++;predict();draw();upd();});
+    L.addMod(document.getElementById('c7'),function(){draw();});
+    upd();
+  }
+  return {init:init};
+})();
+
 /* ===================== 대결 (조건부 C) ===================== */
 (function(){
   function init(){
@@ -2707,7 +2852,7 @@ var P6=(function(){
     });
   }
   window.LAB.initPanels=function(){
-    P1.init();P2.init();P3.init();P4.init();P5.init();P6.init();init();
+    P1.init();P2.init();P3.init();P4.init();P5.init();P6.init();P7.init();init();
   };
 })();
 })();
