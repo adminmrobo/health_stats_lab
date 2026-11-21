@@ -1629,7 +1629,7 @@ print(xbar - h, xbar + h)            # 32.59  42.73</pre>
     </div>
     <div class="cut" data-i="4"><div class="art"></div><span class="no">4</span>
       <div class="ph"><div><img data-who="asst" data-mood="report" alt=""><div class="d">하루가 봉인을 뜯고 두 점수를 나란히 적는다</div></div></div>
-      <div class="bub asst br"><b>조수 하루</b>봉인하고 채점하니 상위 10%에서 55%였어요. 100점이 아니고요.</div>
+      <div class="bub asst br"><b>조수 하루</b>봉인하고 다시 채점하니 점수가 뚝 떨어졌어요. 100점이 아니고요.</div>
     </div>
   </div>
   <div class="cap">인턴 시아 — 1 → 2 → 3 → 4 순서로 보시면 돼요. 좁은 화면에서는 네 장면이 세로로 쌓입니다.</div>
@@ -1664,7 +1664,7 @@ print(xbar - h, xbar + h)            # 32.59  42.73</pre>
 
     <section class="panel">
       <h3>봉인 채점 모형 — 무엇을 곱하면 적중률이 올라가나</h3>
-      <div class="cwrap"><canvas id="c6" height="280" aria-label="변이 200개의 점수 분포와, 상위 몇 퍼센트 안에 실제 문제 변이가 몇 개 들어왔는지를 보여 주는 그림."></canvas></div>
+      <div class="cwrap"><canvas id="c6" height="280" aria-label="변이 1,200개의 점수 분포와, 상위 몇 퍼센트 안에 실제 문제 변이가 몇 개 들어왔는지를 보여 주는 그림."></canvas></div>
       <div class="ctrl">
         <div class="group"><button class="bt primary" id="b6a" aria-pressed="true">① 서열 적합도</button></div>
         <div class="group"><button class="bt" id="b6b" aria-pressed="false">② 항체 접근 자리</button></div>
@@ -1974,7 +1974,7 @@ print(xbar - h, xbar + h)            # 32.59  42.73</pre>
 
 <script type="application/json" id="kg-raw">
 {
- "version":"1.0","page":"01_clinical_stats_ai","domain":["stats","ai"],
+ "version":"1.1","page":"01_clinical_stats_ai","domain":["stats","ai"],
  "nodes":[
   {"id":"lab:question/how-approved","type":"Question","label":{"ko":"신약은 어떤 숫자로 허가받는가","en":"what numbers approve a drug"},"page":"01_clinical_stats_ai","anchor":"#first","domain":["stats"],"status":"known","confidence":"high"},
   {"id":"lab:concept/clinical-phases","type":"Concept","label":{"ko":"임상시험 단계","en":"clinical trial phases"},"definition":{"ko":"전임상·1상·2상·3상·허가 후 4상으로 나뉘어, 단계마다 다른 질문에 답하는 개발 과정."},"page":"01_clinical_stats_ai","anchor":"#lv1","level":1,"family":"design","domain":["stats"],"anchorType":"B","flyStrength":"none","status":"known","confidence":"high","evidence":["F01"]},
@@ -2143,16 +2143,16 @@ print(xbar - h, xbar + h)            # 32.59  42.73</pre>
  "number":"01",
  "creator":[{"name":"안상선","role":"author"}],
  "contributor":[{"name":"AI 보조 제작","role":"assistant"}],
- "date":"2026-11-20",
- "version":"1.0",
+ "date":"2026-11-21",
+ "version":"1.1",
  "language":["ko"],
  "license":"",
- "url":"",
+ "url":"https://adminmrobo.github.io/health_stats_lab/01_clinical_stats_ai.html",
  "about":["lab:method/hypothesis-test","lab:method/t-interval","lab:concept/multiple-comparisons","lab:method/prepandemic-validation","lab:concept/clinical-phases"],
  "educationalLevel":"입문~중급",
  "learningResourceType":"interactive explainer",
  "basedOn":["pagano2000biostat","jayatunga2024aisuccess","thadani2023evescape","zhang2023lineardesign","revaluation2025"],
- "suggestedCitation":"안상선 (2026). 신약은 어떤 숫자로 허가받는가 — 임상시험의 통계와 AI. 연구실 해설 대시보드 · 보건통계 01, v1.0."
+ "suggestedCitation":"안상선 (2026). 신약은 어떤 숫자로 허가받는가 — 임상시험의 통계와 AI. 연구실 해설 대시보드 · 보건통계 01, v1.1."
 }
 </script>
 
@@ -2245,7 +2245,7 @@ print(xbar - h, xbar + h)            # 32.59  42.73</pre>
         <li>③단계 예시의 수치(n = 10, 평균 37.66, 표준편차 7.09)와 단위 µg/L는 교재의 예제값입니다 <sup>[12]</sup>. 특정 집단을 지금 측정한 값이 아닙니다.</li>
         <li>②·③·④단계의 모든 모의실험 자료는 시드를 고정한 난수로 만든 설명용 모형입니다.</li>
         <li>④단계의 바탕 비율 예시(유병률 1%, 민감도 99%, 특이도 95%)는 계산을 보여 주기 위한 예시값입니다.</li>
-        <li>⑤단계 봉인 채점 모형의 변이 200개와 점수는 설명용 모형이며, 어떤 연구의 결과 수치도 아닙니다.</li>
+        <li>⑤단계 봉인 채점 모형의 변이 1,200개와 점수는 설명용 모형이며, 어떤 연구의 결과 수치도 아닙니다.</li>
         <li>대결의 두 조건 숫자는 위 모형에서 나온 값입니다.</li>
       </ol>
     </div>
@@ -2257,7 +2257,7 @@ print(xbar - h, xbar + h)            # 32.59  42.73</pre>
 
     <div class="fnote" style="margin-top:22px;padding-top:16px;border-top:1px solid var(--rule)">
       글 · <b>안상선</b> (<a href="https://adminmrobo.github.io/who_am_i/who_am_i.html" target="_blank" rel="noopener">소개</a>) · (주)M-Robo 대표<br>
-      연구실 해설 대시보드 · 보건통계 01 · v1.0 · 2026-11-20<br>
+      연구실 해설 대시보드 · 보건통계 01 · v1.1 · 2026-11-21<br>
       이 페이지는 교육용이며 의학적 판단이나 투자 판단의 근거가 아닙니다. 캐릭터 그림과 설정의 저작권은 저자에게 있습니다.
     </div>
   </div>
