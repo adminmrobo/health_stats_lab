@@ -335,6 +335,22 @@ var Study=(function(){
 })();
 
 /* ---------- 시작 ---------- */
+function comicFaces(){
+  /* 말풍선 이름 옆에 말하는 식구의 얼굴을 넣는다. 표정은 그 컷의 장면과 같은 것을 쓴다. */
+  Array.prototype.forEach.call(document.querySelectorAll('.comic .cut'),function(cut){
+    var src=cut.querySelector('.ph img[data-who]'), b=cut.querySelector('.bub b');
+    if(!src||!b||cut.querySelector('.bub .face'))return;
+    var bub=b.parentNode, wrap=document.createElement('div');
+    wrap.className='bubtx';
+    while(bub.firstChild) wrap.appendChild(bub.firstChild);
+    var im=document.createElement('img');
+    im.className='face';
+    im.setAttribute('data-who',src.getAttribute('data-who'));
+    im.setAttribute('data-mood',src.getAttribute('data-mood'));
+    im.setAttribute('alt','');
+    bub.appendChild(im); bub.appendChild(wrap);
+  });
+}
 function initComics(){
   /* 만화 그림은 한 장(2x2)으로 받아 CSS로 잘라 쓴다. 없으면 자리와 말풍선만 보인다. */
   Array.prototype.forEach.call(document.querySelectorAll('.comic[data-src]'),function(c){
@@ -376,6 +392,7 @@ function loadShots(){
 document.addEventListener('DOMContentLoaded',function(){
   loadShots();
   initComics();
+  comicFaces();
   initMode();
   (function(){
     var b=document.getElementById('castBt'),mm=document.getElementById('castMore');

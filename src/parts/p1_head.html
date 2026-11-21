@@ -432,9 +432,13 @@ details.math .min{padding:0 15px 14px}
 .cut .no{position:absolute;top:8px;left:8px;width:22px;height:22px;border-radius:50%;
   background:rgba(22,33,43,.78);color:#fff;font-size:11.5px;font-weight:700;
   display:grid;place-items:center;z-index:3}
-.bub{position:absolute;z-index:2;max-width:74%;background:rgba(255,255,255,.95);
+.bub{position:absolute;z-index:2;max-width:78%;background:rgba(255,255,255,.95);
   border:1.5px solid var(--text);border-radius:12px;padding:8px 11px;font-size:13px;line-height:1.5}
+.bub{display:flex;gap:9px;align-items:flex-start}
+.bub .bubtx{min-width:0}
 .bub b{display:block;font-size:11px;margin-bottom:2px}
+.bub .face{width:38px;height:38px;flex:0 0 38px;image-rendering:pixelated;border-radius:6px;
+  border:1px solid rgba(22,33,43,.14);background:rgba(255,255,255,.75)}
 .bub::after{content:"";position:absolute;width:11px;height:11px;background:inherit;
   border-right:1.5px solid var(--text);border-bottom:1.5px solid var(--text);transform:rotate(45deg)}
 .bub.tl{top:9%;left:6%} .bub.tl::after{bottom:-7px;left:22px}
@@ -500,6 +504,7 @@ body.comicfirst .threeline b.t{color:var(--gfp)}
   .cut:nth-child(n+3){border-bottom:1px solid var(--rule)}
   .cut:last-child{border-bottom:0}
   .bub{max-width:84%;font-size:12.5px}
+  .bub .face{width:32px;height:32px;flex:0 0 32px}
   #modebar .in{padding:8px 20px}
 }
 
