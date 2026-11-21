@@ -351,6 +351,28 @@ function comicFaces(){
     bub.appendChild(im); bub.appendChild(wrap);
   });
 }
+function speakerFaces(){
+  /* 이름만 글자로 나오던 자리에 말하는 식구의 얼굴을 붙인다.
+     조수 수식 상자는 물음표가 있으면 막힌 표정, 없으면 이해한 표정을 쓴다. */
+  var WHO={'박사':'doc','조수 하루':'asst','초파리 연구원':'fly','주판봇':'robo',
+           '인턴 시아':'sia','인턴 모아':'moa'};
+  Array.prototype.forEach.call(document.querySelectorAll('p.ask'),function(p){
+    var b=p.querySelector('b');
+    if(!b||p.querySelector('.face'))return;
+    var who=WHO[b.textContent.trim()];
+    if(!who)return;
+    var mood = who==='asst' ? (p.textContent.indexOf('?')>=0 ? 'shock' : 'spark') : 'front';
+    var wrap=document.createElement('span');
+    wrap.className='askt';
+    while(p.firstChild) wrap.appendChild(p.firstChild);
+    var im=document.createElement('img');
+    im.className='face';
+    im.setAttribute('data-who',who); im.setAttribute('data-mood',mood);
+    im.setAttribute('alt','');
+    p.appendChild(im); p.appendChild(wrap);
+    p.classList.add('hasface');
+  });
+}
 function initComics(){
   /* 만화 그림은 한 장(2x2)으로 받아 CSS로 잘라 쓴다. 없으면 자리와 말풍선만 보인다. */
   Array.prototype.forEach.call(document.querySelectorAll('.comic[data-src]'),function(c){
@@ -393,6 +415,7 @@ document.addEventListener('DOMContentLoaded',function(){
   loadShots();
   initComics();
   comicFaces();
+  speakerFaces();
   initMode();
   (function(){
     var b=document.getElementById('castBt'),mm=document.getElementById('castMore');

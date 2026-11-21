@@ -455,6 +455,13 @@ details.math .min{padding:0 15px 14px}
 .cut .ph img{width:50px;height:50px;image-rendering:pixelated;margin-bottom:6px}
 .comic .cap{padding:10px 16px;font-size:12px;color:var(--muted);border-top:1px solid var(--rule)}
 
+p.ask.hasface{display:flex;gap:10px;align-items:flex-start}
+p.ask.hasface .face{width:44px;height:44px;flex:0 0 44px;image-rendering:pixelated;
+  border-radius:7px;border:1px solid var(--rule);background:#fff}
+p.ask.hasface .askt{min-width:0}
+p.ask.hasface b{display:block;color:var(--c-asst);font-size:12.5px;margin-bottom:2px}
+@media(max-width:620px){ p.ask.hasface .face{width:36px;height:36px;flex:0 0 36px} }
+
 /* ===== 3줄 상자 ===== */
 .threeline{border:1px solid #c6d3e4;background:var(--accent-soft);border-radius:10px;
   padding:14px 17px;margin:16px 0}
