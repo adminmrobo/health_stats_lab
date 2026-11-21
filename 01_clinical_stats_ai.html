@@ -714,6 +714,28 @@ footer ol li{margin:5px 0}
 
 <div class="guide"><img data-who="sia" data-mood="guide" alt="">
   <div class="g"><b>인턴 시아</b><span class="step">1 / 10</span> 신약이 지나는 관문을 먼저 훑습니다. 숫자는 다음 단계부터 나옵니다.</div></div>
+<div class="comic" data-src="assets/img/comic_lv1.webp">
+  <div class="ch"><b>관문을 지나는 동안</b><span>앞만 빨라져도 끝까지 가는 수는 그대로다</span></div>
+  <div class="cuts">
+    <div class="cut" data-i="1"><div class="art"></div><span class="no">1</span>
+      <div class="ph"><div><img data-who="robo" data-mood="coin" alt=""><div class="d">주판봇이 후보 물질이 잔뜩 담긴 상자를 통째로 들어 보인다</div></div></div>
+      <div class="bub robo tl"><b>주판봇</b>후보가 천 개다! 이 중에 하나는 약이 되겠지.</div>
+    </div>
+    <div class="cut" data-i="2"><div class="art"></div><span class="no">2</span>
+      <div class="ph"><div><img data-who="fly" data-mood="clip" alt=""><div class="d">초파리가 좁아지는 문 다섯 개가 늘어선 복도를 가리킨다</div></div></div>
+      <div class="bub fly tr"><b>초파리 연구원</b>문을 다섯 번 지나야 해. 하나씩 세어 봤어?</div>
+    </div>
+    <div class="cut" data-i="3"><div class="art"></div><span class="no">3</span>
+      <div class="ph"><div><img data-who="doc" data-mood="board" alt=""><div class="d">박사가 다섯 문을 지나며 후보 더미가 점점 작아지는 그림 앞에 서 있다</div></div></div>
+      <div class="bub doc bl"><b>박사</b>각 문의 통과율을 곱합니다. 가장 좁은 문이 전체를 정합니다.</div>
+    </div>
+    <div class="cut" data-i="4"><div class="art"></div><span class="no">4</span>
+      <div class="ph"><div><img data-who="asst" data-mood="report" alt=""><div class="d">하루가 앞쪽 문만 넓어지고 마지막 문은 그대로인 그림을 든다</div></div></div>
+      <div class="bub asst br"><b>조수 하루</b>앞쪽 문만 넓히면 빨라질 뿐, 끝까지 가는 수는 거의 그대로네요.</div>
+    </div>
+  </div>
+  <div class="cap">인턴 시아 — 1 → 2 → 3 → 4 순서로 보시면 돼요. 좁은 화면에서는 네 장면이 세로로 쌓입니다.</div>
+</div>
 <div class="threeline"><b class="t">이 단계 3줄</b><ol><li>신약은 전임상 · 1상 · 2상 · 3상, 허가 뒤 4상이라는 관문을 차례로 지난다.</li><li>전체 성공 확률은 각 관문 통과율의 <b>곱</b>이므로, 가장 낮은 관문이 전체를 정한다.</li><li>그래서 앞쪽만 빨라지면 기간은 줄어도 허가까지 가는 수는 거의 움직이지 않는다.</li></ol></div>
     <details class="more full"><summary>자세히 — 연구실 장면과 업무로 옮겨 보기</summary><div class="min">
     <div class="pair">
@@ -930,6 +952,26 @@ print(1000 * math.prod(rates))</pre>
       </div>
     </div>
 
+    <section class="panel">
+      <h3>판정 모형 — ‘차이가 없는 세계’에서 이 결과는 얼마나 드문가</h3>
+      <div class="cwrap"><canvas id="c8" height="250" aria-label="차이가 없다고 가정했을 때 나올 수 있는 값들의 분포 곡선. 관측값보다 바깥쪽 꼬리가 칠해져 있고, 그 넓이가 p값이다."></canvas></div>
+      <div class="ctrl">
+        <div class="group">
+          <span class="glabel">관측값 (표준오차 몇 배) <span class="val" id="v8z">2.20</span></span>
+          <input type="range" id="s8z" min="0" max="4" step="0.01" value="2.20">
+        </div>
+        <div class="group">
+          <span class="glabel">유의수준 <span class="val" id="v8a">0.05</span></span>
+          <input type="range" id="s8a" min="0.005" max="0.2" step="0.005" value="0.05">
+        </div>
+        <div class="group">
+          <button class="bt" id="b8side" aria-pressed="false">한쪽만 보기</button>
+        </div>
+      </div>
+      <section class="kpis" id="k8"></section>
+      <p class="pnote">관측값을 오른쪽으로 끌수록 칠해진 꼬리가 좁아집니다. 그 넓이가 p값입니다 — ‘차이가 없다’가 사실일 확률이 아니라, 그것을 사실로 놓았을 때 이런 자료가 나올 확률입니다.</p>
+    </section>
+
     <div class="quiz" data-quiz="lv2a"></div>
   </div>
 </section>
@@ -1015,6 +1057,8 @@ print(1000 * math.prod(rates))</pre>
       <div class="eq" id="eq2"></div>
       <div class="insight" id="ins2" aria-live="polite"></div>
     </section>
+
+
 
     <div class="explain full">
       <h4>풀이 — 네 가지 결과와 두 가지 오류</h4>
@@ -1196,6 +1240,24 @@ print(t, p)</pre>
       </tbody>
     </table></div>
     <p class="lede" style="font-size:14px">맨 아랫줄이 t를 쓰는 이유를 보여 줍니다. σ를 안다고 가정하면 구간이 8.79로 좁아지지만, 모르는 것을 안다고 둔 결과이므로 <b>실제보다 자신 있게</b> 보고하는 셈이 됩니다. 1.96과 2.262의 차이가 그 대가입니다.</p>
+
+
+    <section class="panel">
+      <h3>흔들리는 자 모형 — 표본이 작을수록 기준값이 커진다</h3>
+      <div class="cwrap"><canvas id="c9" height="250" aria-label="t 분포와 정규분포를 겹쳐 그린 그림. 표본이 작을수록 t 분포의 꼬리가 두꺼워지고 기준값이 바깥으로 밀린다."></canvas></div>
+      <div class="ctrl">
+        <div class="group">
+          <span class="glabel">표본 수 n <span class="val" id="v9n">10</span></span>
+          <input type="range" id="s9n" min="3" max="200" step="1" value="10">
+        </div>
+        <div class="group">
+          <span class="glabel">신뢰수준 <span class="val" id="v9c">95%</span></span>
+          <input type="range" id="s9c" min="0" max="2" step="1" value="1">
+        </div>
+      </div>
+      <section class="kpis" id="k9"></section>
+      <p class="pnote">n을 키워 보세요. 기준값이 1.96으로 다가갑니다. 자의 눈금이 흔들리지 않을 만큼 자료가 쌓이면, 더 둘 여유가 없어지는 것입니다.</p>
+    </section>
 
     <div class="quiz" data-quiz="lv3a"></div>
   </div>
@@ -1482,6 +1544,28 @@ print(xbar - h, xbar + h)            # 32.59  42.73</pre>
       <img class="who" data-who="asst" data-mood="report" alt="" aria-hidden="true">
       <div><b class="name">조수 하루</b><p>민감도 99%인데 양성의 83%가 거짓이라는 게 이상해 보이지만, 아닌 사람이 99배 많아서 그렇습니다. 5%의 작은 비율이 큰 집단에 걸리면 절대 수가 커집니다.</p></div>
     </div>
+
+
+    <section class="panel">
+      <h3>1,000명 모형 — 양성 중에서 실제 환자는 몇 명인가</h3>
+      <div class="cwrap"><canvas id="c10" height="270" aria-label="1,000명을 점 1,000개로 늘어놓은 그림. 실제 환자이면서 양성, 환자가 아닌데 양성, 음성이 서로 다른 색으로 칠해져 있다."></canvas></div>
+      <div class="ctrl">
+        <div class="group">
+          <span class="glabel">유병률 (1,000명 중) <span class="val" id="v10p">10명</span></span>
+          <input type="range" id="s10p" min="1" max="300" step="1" value="10">
+        </div>
+        <div class="group">
+          <span class="glabel">민감도 <span class="val" id="v10s">99%</span></span>
+          <input type="range" id="s10s" min="50" max="100" step="1" value="99">
+        </div>
+        <div class="group">
+          <span class="glabel">특이도 <span class="val" id="v10t">95%</span></span>
+          <input type="range" id="s10t" min="50" max="100" step="1" value="95">
+        </div>
+      </div>
+      <section class="kpis" id="k10"></section>
+      <p class="pnote">민감도·특이도를 그대로 둔 채 유병률만 올려 보세요. 검사 성능은 하나도 바뀌지 않았는데 양성의 뜻이 달라집니다. 바탕 비율이 답을 정합니다.</p>
+    </section>
 
     <div class="quiz" data-quiz="lv4b"></div>
   </div>
@@ -1812,6 +1896,23 @@ print(xbar - h, xbar + h)            # 32.59  42.73</pre>
 
 <div class="rest"><img data-who="moa" data-mood="cheer" alt="">
   <p><b>모아</b> — 열 단계 모두 지나셨어요. 수고하셨습니다!</p></div>
+
+    <section class="panel">
+      <h3>기간 모형 — 어디를 줄여야 전체가 줄어드나</h3>
+      <div class="cwrap"><canvas id="c11" height="270" aria-label="단계별 소요 기간을 가로 막대로 그린 그림. AI를 적용한 단계는 줄어든 만큼이 따로 표시된다."></canvas></div>
+      <div class="ctrl">
+        <div class="group"><button class="bt" id="b11a" aria-pressed="false">후보 발굴에 AI</button></div>
+        <div class="group"><button class="bt" id="b11b" aria-pressed="false">전임상에 AI</button></div>
+        <div class="group"><button class="bt" id="b11c" aria-pressed="false">1상에 AI</button></div>
+        <div class="group">
+          <span class="glabel">3상 기간 (개월) <span class="val" id="v11t">36</span></span>
+          <input type="range" id="s11t" min="12" max="60" step="1" value="36">
+        </div>
+      </div>
+      <section class="kpis" id="k11"></section>
+      <p class="pnote">세 단추를 모두 켜 보세요. 앞쪽은 눈에 띄게 줄지만 전체는 조금만 줄어듭니다. 가장 긴 막대가 3상이고, 사람에게서 사건이 쌓이기를 기다리는 그 시간은 계산으로 줄지 않기 때문입니다.</p>
+    </section>
+
 <div class="quiz" data-quiz="lv5b"></div>
   </div>
 </section>
@@ -3438,6 +3539,264 @@ var P7=(function(){
   return {init:init};
 })();
 
+/* ===================== ②-1 판정 모형 — 귀무분포와 꼬리 ===================== */
+var P8=(function(){
+  var z=2.20,al=0.05,one=false;
+  function dens(t){return Math.exp(-t*t/2)/Math.sqrt(2*Math.PI);}
+  function pval(){return one ? (1-Phi(z)) : 2*(1-Phi(Math.abs(z)));}
+  function crit(){return one ? -Math.log(1) + inv(1-al) : inv(1-al/2);}
+  function inv(q){ /* 표준정규 분위수 — 이분법 */
+    var lo=-6,hi=6,m;
+    for(var i=0;i<80;i++){m=(lo+hi)/2; if(Phi(m)<q)lo=m; else hi=m;}
+    return m;
+  }
+  function draw(){
+    var c=document.getElementById('c8');if(!c)return;
+    var W=fit(c,250),x=c.getContext('2d'),H=250,padL=42,padR=16,padT=26,padB=34;
+    var X=function(t){return padL+(t+4)/8*(W-padL-padR);},
+        Y=function(d){return H-padB-d/0.4*(H-padT-padB);};
+    /* 꼬리 칠하기 */
+    function fillTail(from,to,col){
+      x.fillStyle=col;x.beginPath();x.moveTo(X(from),Y(0));
+      for(var t=from;t<=to;t+=0.02)x.lineTo(X(t),Y(dens(t)));
+      x.lineTo(X(to),Y(0));x.closePath();x.fill();
+    }
+    fillTail(z,4,'rgba(201,48,44,.22)');
+    if(!one)fillTail(-4,-z,'rgba(201,48,44,.22)');
+    /* 곡선 */
+    x.strokeStyle=ACC;x.lineWidth=2;x.beginPath();
+    for(var t=-4;t<=4;t+=0.02){var px=X(t),py=Y(dens(t));if(t===-4)x.moveTo(px,py);else x.lineTo(px,py);}
+    x.stroke();
+    line(x,padL,Y(0),W-padR,Y(0),RULE,1);
+    /* 기준값 */
+    var cv=crit();
+    line(x,X(cv),padT,X(cv),Y(0),AMB,1.5);
+    txt(x,'기준 '+cv.toFixed(2),X(cv)+4,padT+8,AMB,11,'left',true);
+    if(!one){line(x,X(-cv),padT,X(-cv),Y(0),AMB,1.5);}
+    /* 관측값 */
+    line(x,X(z),padT-6,X(z),Y(0),EYE,2.5);
+    txt(x,'관측 '+z.toFixed(2),X(z),padT-14,EYE,12,'center',true);
+    [-3,-2,-1,0,1,2,3].forEach(function(t){txt(x,String(t),X(t),Y(0)+14,MUT,10,'center');});
+    txt(x,'차이가 없다고 가정했을 때 나올 수 있는 값들',padL,12,MUT,11,'left',true);
+    stamp(x,W,'설명용 모형 · 실제 데이터 아님');
+  }
+  function up(){
+    var P=pval(),cv=crit(),rej=Math.abs(z)>=cv||(one&&z>=cv);
+    kpi(document.getElementById('k8'),[
+      {k:'p값',v:P<0.001?P.toExponential(1):P.toFixed(4),n:'이 가정 아래 이런 자료가 나올 확률'},
+      {k:'기준값',v:cv.toFixed(3),n:(one?'한쪽':'양쪽')+' · 유의수준 '+al.toFixed(3)},
+      {k:'판정',v:rej?'가정을 버린다':'버리지 못한다',c:rej?'good':'bad',
+       n:rej?'p값이 유의수준보다 작다':'드물다고 하기엔 부족하다'},
+      {k:'제1종 오류',v:(al*100).toFixed(1)+'%',n:'차이가 없는데도 있다고 할 확률'}
+    ]);
+    var e;
+    if(e=document.getElementById('v8z'))e.textContent=z.toFixed(2);
+    if(e=document.getElementById('v8a'))e.textContent=al.toFixed(3);
+    draw();
+  }
+  function init(){
+    var sz=document.getElementById('s8z'),sa=document.getElementById('s8a'),bs=document.getElementById('b8side');
+    if(!sz)return;
+    sz.addEventListener('input',function(){z=+sz.value;up();});
+    sa.addEventListener('input',function(){al=+sa.value;up();});
+    bs.addEventListener('click',function(){one=!one;bs.setAttribute('aria-pressed',one?'true':'false');
+      bs.textContent=one?'양쪽 다 보기':'한쪽만 보기';up();});
+    up();
+    L.addMod(document.getElementById('c8'),function(){});
+  }
+  return {init:init,up:up};
+})();
+
+/* ===================== ③-1 흔들리는 자 — t와 정규분포 ===================== */
+var P9=(function(){
+  var n=10,ci=1,CONF=[0.90,0.95,0.99];
+  function dt(t,df){ /* t 분포 밀도 (로그감마 근사) */
+    function lg(a){var g=[76.18009173,-86.50532033,24.01409822,-1.231739516,0.00120858003,-0.00000536382];
+      var xx=a,y=a,tmp=xx+5.5;tmp-=(xx+0.5)*Math.log(tmp);var ser=1.000000000190015;
+      for(var j=0;j<6;j++){y+=1;ser+=g[j]/y;}return -tmp+Math.log(2.5066282746310005*ser/xx);}
+    return Math.exp(lg((df+1)/2)-lg(df/2))/Math.sqrt(df*Math.PI)*Math.pow(1+t*t/df,-(df+1)/2);
+  }
+  function dz(t){return Math.exp(-t*t/2)/Math.sqrt(2*Math.PI);}
+  function draw(){
+    var c=document.getElementById('c9');if(!c)return;
+    var W=fit(c,250),x=c.getContext('2d'),H=250,padL=42,padR=16,padT=26,padB=34,df=n-1;
+    var X=function(t){return padL+(t+4.5)/9*(W-padL-padR);},
+        Y=function(d){return H-padB-d/0.42*(H-padT-padB);};
+    var tc=tcrit(CONF[ci],df),zc=tcrit(CONF[ci],100000);
+    /* t의 두꺼운 꼬리 칠하기 */
+    x.fillStyle='rgba(201,48,44,.16)';
+    x.beginPath();x.moveTo(X(zc),Y(0));
+    for(var t=zc;t<=4.5;t+=0.02)x.lineTo(X(t),Y(dt(t,df)));
+    x.lineTo(X(4.5),Y(0));x.closePath();x.fill();
+    /* 정규분포 */
+    x.strokeStyle=MUT;x.lineWidth=1.4;x.setLineDash([4,3]);x.beginPath();
+    for(var t=-4.5;t<=4.5;t+=0.02){var px=X(t),py=Y(dz(t));if(t===-4.5)x.moveTo(px,py);else x.lineTo(px,py);}
+    x.stroke();x.setLineDash([]);
+    /* t 분포 */
+    x.strokeStyle=ACC;x.lineWidth=2.2;x.beginPath();
+    for(var t=-4.5;t<=4.5;t+=0.02){var px=X(t),py=Y(dt(t,df));if(t===-4.5)x.moveTo(px,py);else x.lineTo(px,py);}
+    x.stroke();
+    line(x,padL,Y(0),W-padR,Y(0),RULE,1);
+    line(x,X(zc),padT+4,X(zc),Y(0),MUT,1.4);
+    txt(x,'정규 '+zc.toFixed(3),X(zc)-5,padT+10,MUT,11,'right',true);
+    line(x,X(tc),padT-4,X(tc),Y(0),EYE,2);
+    txt(x,'t '+tc.toFixed(3),X(tc)+5,padT+10,EYE,11,'left',true);
+    [-3,-2,-1,0,1,2,3].forEach(function(t){txt(x,String(t),X(t),Y(0)+14,MUT,10,'center');});
+    txt(x,'실선 = t 분포 (자유도 '+df+') · 점선 = 정규분포',padL,12,MUT,11,'left',true);
+    stamp(x,W,'설명용 모형 · 실제 데이터 아님');
+  }
+  function up(){
+    var df=n-1,tc=tcrit(CONF[ci],df),zc=tcrit(CONF[ci],100000);
+    kpi(document.getElementById('k9'),[
+      {k:'자유도',v:String(df),n:'n − 1'},
+      {k:'t 기준값',v:tc.toFixed(3),c:'warn',n:'표준편차를 추정해서 쓸 때'},
+      {k:'정규 기준값',v:zc.toFixed(3),n:'표준편차를 이미 알 때'},
+      {k:'더 둔 여유',v:((tc/zc-1)*100).toFixed(1)+'%',c:(tc/zc-1)<0.05?'good':'',
+       n:'자가 흔들리는 만큼 넓힌 폭'}
+    ]);
+    var e;
+    if(e=document.getElementById('v9n'))e.textContent=String(n);
+    if(e=document.getElementById('v9c'))e.textContent=Math.round(CONF[ci]*100)+'%';
+    draw();
+  }
+  function init(){
+    var sn=document.getElementById('s9n'),sc=document.getElementById('s9c');
+    if(!sn)return;
+    sn.addEventListener('input',function(){n=+sn.value;up();});
+    sc.addEventListener('input',function(){ci=+sc.value;up();});
+    up();
+    L.addMod(document.getElementById('c9'),function(){});
+  }
+  return {init:init,up:up};
+})();
+
+/* ===================== ④-2 1,000명 모형 ===================== */
+var P10=(function(){
+  var prev=10,sens=99,spec=95,N=1000;
+  function calc(){
+    var sick=prev, well=N-prev;
+    var tp=sick*sens/100, fn=sick-tp;
+    var fp=well*(100-spec)/100, tn=well-fp;
+    return {tp:tp,fn:fn,fp:fp,tn:tn,pos:tp+fp};
+  }
+  function draw(){
+    var c=document.getElementById('c10');if(!c)return;
+    var W=fit(c,270),x=c.getContext('2d'),H=270,padL=14,padT=28,padB=30;
+    var r=calc(),cols=50,rows=20;
+    var cell=Math.min((W-padL*2)/cols,(H-padT-padB)/rows);
+    var gw=cell,gh=cell,offX=(W-cell*cols)/2,offY=padT+((H-padT-padB)-cell*rows)/2;
+    var d=Math.max(1.6,cell/2-1.1);
+    var nTP=Math.round(r.tp),nFN=Math.round(r.fn),nFP=Math.round(r.fp);
+    for(var i=0;i<N;i++){
+      var cx=offX+(i%cols)*gw+gw/2, cy=offY+Math.floor(i/cols)*gh+gh/2, col;
+      if(i<nTP)col=EYE;                       /* 환자이면서 양성 */
+      else if(i<nTP+nFN)col=AMB;              /* 환자인데 음성 */
+      else if(i<nTP+nFN+nFP)col=STA;          /* 환자가 아닌데 양성 */
+      else col='#dfe6ee';                     /* 음성 */
+      x.fillStyle=col;x.beginPath();x.arc(cx,cy,d,0,Math.PI*2);x.fill();
+    }
+    txt(x,'● 환자이면서 양성',padL,12,EYE,11,'left',true);
+    txt(x,'● 환자인데 음성',padL+118,12,AMB,11,'left',true);
+    txt(x,'● 환자가 아닌데 양성',padL+228,12,STA,11,'left',true);
+    txt(x,'● 음성',padL+360,12,'#9fb0c0',11,'left',true);
+    txt(x,'점 하나가 한 사람 · 모두 1,000명',padL,H-12,MUT,11,'left');
+    stamp(x,W,'설명용 모형 · 실제 데이터 아님');
+  }
+  function up(){
+    var r=calc(),ppv=r.pos>0?r.tp/r.pos:0;
+    kpi(document.getElementById('k10'),[
+      {k:'양성으로 나온 사람',v:num(r.pos,1)+'명',n:'1,000명 중'},
+      {k:'그중 실제 환자',v:num(r.tp,1)+'명',c:'warn',n:'나머지는 거짓 양성'},
+      {k:'양성일 때 환자일 확률',v:(ppv*100).toFixed(1)+'%',c:ppv>=0.5?'good':'bad',
+       n:'이것이 양성의 실제 뜻'},
+      {k:'놓친 환자',v:num(r.fn,1)+'명',n:'환자인데 음성으로 나온 사람'}
+    ]);
+    var e;
+    if(e=document.getElementById('v10p'))e.textContent=prev+'명';
+    if(e=document.getElementById('v10s'))e.textContent=sens+'%';
+    if(e=document.getElementById('v10t'))e.textContent=spec+'%';
+    draw();
+  }
+  function init(){
+    var sp=document.getElementById('s10p'),ss=document.getElementById('s10s'),st=document.getElementById('s10t');
+    if(!sp)return;
+    sp.addEventListener('input',function(){prev=+sp.value;up();});
+    ss.addEventListener('input',function(){sens=+ss.value;up();});
+    st.addEventListener('input',function(){spec=+st.value;up();});
+    up();
+    L.addMod(document.getElementById('c10'),function(){});
+  }
+  return {init:init,up:up};
+})();
+
+/* ===================== ⑤-2 기간 모형 ===================== */
+var P11=(function(){
+  var ST=[{n:'후보 발굴',m:18,ai:6},{n:'전임상',m:24,ai:16},{n:'임상 1상',m:14,ai:12},
+          {n:'임상 2상',m:24,ai:24},{n:'임상 3상',m:36,ai:36},{n:'허가',m:12,ai:12}];
+  var on=[false,false,false],t3=36;
+  function cur(){
+    return ST.map(function(s,i){
+      var m=s.m;
+      if(i===4)m=t3;
+      if(i<3&&on[i])m=(i===4?t3:s.ai);
+      return {n:s.n,base:(i===4?t3:s.m),now:m};
+    });
+  }
+  function draw(){
+    var c=document.getElementById('c11');if(!c)return;
+    var W=fit(c,270),x=c.getContext('2d'),H=270,padL=76,padR=54,padT=26,padB=26;
+    var rows=cur(),maxm=Math.max.apply(null,rows.map(function(r){return r.base;})),
+        bh=(H-padT-padB)/rows.length, bw=W-padL-padR;
+    var longest=rows.reduce(function(a,b){return b.now>a.now?b:a;},rows[0]);
+    rows.forEach(function(r,i){
+      var y=padT+i*bh+bh/2, full=bw*r.base/maxm, now=bw*r.now/maxm;
+      x.fillStyle='#eef2f6';x.fillRect(padL,y-9,full,18);
+      x.fillStyle=(r.n===longest.n)?EYE:ACC;x.fillRect(padL,y-9,now,18);
+      if(now<full-1){
+        x.strokeStyle=GFP;x.lineWidth=1.5;x.setLineDash([3,2]);
+        x.strokeRect(padL+now,y-9,full-now,18);x.setLineDash([]);
+        txt(x,'−'+(r.base-r.now)+'개월',padL+full+6,y,GFP,11,'left',true);
+      } else {
+        txt(x,r.now+'개월',padL+now+6,y,MUT,11,'left');
+      }
+      txt(x,r.n,padL-8,y,INK,11.5,'right',true);
+    });
+    txt(x,'가로 길이 = 걸리는 기간 · 붉은 막대가 가장 긴 단계',padL-62,12,MUT,11,'left',true);
+    stamp(x,W,'설명용 모형 · 실제 데이터 아님');
+  }
+  function up(){
+    var rows=cur();
+    var base=rows.reduce(function(a,r){return a+r.base;},0),
+        now =rows.reduce(function(a,r){return a+r.now;},0);
+    var longest=rows.reduce(function(a,b){return b.now>a.now?b:a;},rows[0]);
+    kpi(document.getElementById('k11'),[
+      {k:'전체 기간',v:num(now)+'개월',n:'약 '+(now/12).toFixed(1)+'년'},
+      {k:'줄어든 기간',v:(base-now>0?'−'+num(base-now):'0')+'개월',c:base-now>0?'good':'',
+       n:'AI를 켠 단계에서만'},
+      {k:'줄어든 비율',v:((1-now/base)*100).toFixed(1)+'%',c:(1-now/base)<0.2?'bad':'good',
+       n:'전체 기간 기준'},
+      {k:'가장 긴 단계',v:longest.n,c:'warn',n:longest.now+'개월 — 여기가 전체를 정한다'}
+    ]);
+    var e;
+    if(e=document.getElementById('v11t'))e.textContent=String(t3);
+    draw();
+  }
+  function init(){
+    var ids=['b11a','b11b','b11c'],st=document.getElementById('s11t');
+    if(!document.getElementById('b11a'))return;
+    ids.forEach(function(id,i){
+      var b=document.getElementById(id);
+      b.addEventListener('click',function(){
+        on[i]=!on[i];b.setAttribute('aria-pressed',on[i]?'true':'false');
+        b.classList.toggle('primary',on[i]);up();});
+    });
+    st.addEventListener('input',function(){t3=+st.value;up();});
+    up();
+    L.addMod(document.getElementById('c11'),function(){});
+  }
+  return {init:init,up:up};
+})();
+
 /* ===================== 대결 (조건부 C) ===================== */
 (function(){
   function init(){
@@ -3484,7 +3843,8 @@ var P7=(function(){
     });
   }
   window.LAB.initPanels=function(){
-    P1.init();P2.init();P3.init();P4.init();P5.init();P6.init();P7.init();init();
+    P1.init();P2.init();P3.init();P4.init();P5.init();P6.init();P7.init();
+    P8.init();P9.init();P10.init();P11.init();init();
   };
 })();
 })();

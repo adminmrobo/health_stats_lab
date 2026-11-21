@@ -112,6 +112,24 @@
     </table></div>
     <p class="lede" style="font-size:14px">맨 아랫줄이 t를 쓰는 이유를 보여 줍니다. σ를 안다고 가정하면 구간이 8.79로 좁아지지만, 모르는 것을 안다고 둔 결과이므로 <b>실제보다 자신 있게</b> 보고하는 셈이 됩니다. 1.96과 2.262의 차이가 그 대가입니다.</p>
 
+
+    <section class="panel">
+      <h3>흔들리는 자 모형 — 표본이 작을수록 기준값이 커진다</h3>
+      <div class="cwrap"><canvas id="c9" height="250" aria-label="t 분포와 정규분포를 겹쳐 그린 그림. 표본이 작을수록 t 분포의 꼬리가 두꺼워지고 기준값이 바깥으로 밀린다."></canvas></div>
+      <div class="ctrl">
+        <div class="group">
+          <span class="glabel">표본 수 n <span class="val" id="v9n">10</span></span>
+          <input type="range" id="s9n" min="3" max="200" step="1" value="10">
+        </div>
+        <div class="group">
+          <span class="glabel">신뢰수준 <span class="val" id="v9c">95%</span></span>
+          <input type="range" id="s9c" min="0" max="2" step="1" value="1">
+        </div>
+      </div>
+      <section class="kpis" id="k9"></section>
+      <p class="pnote">n을 키워 보세요. 기준값이 1.96으로 다가갑니다. 자의 눈금이 흔들리지 않을 만큼 자료가 쌓이면, 더 둘 여유가 없어지는 것입니다.</p>
+    </section>
+
     <div class="quiz" data-quiz="lv3a"></div>
   </div>
 </section>

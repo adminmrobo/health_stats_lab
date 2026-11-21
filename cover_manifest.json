@@ -134,6 +134,30 @@
    "status": "ok"
   },
   {
+   "id": "comic_lv1",
+   "role": "comic_4cut",
+   "step": "① 관문",
+   "title": "관문을 지나는 동안",
+   "path": "assets/img/comic_lv1.webp",
+   "embedded_in": "01_clinical_stats_ai.html",
+   "key": ".comic[data-src$=\"comic_lv1.webp\"] (2x2, CSS로 네 칸 분할)",
+   "anchor": "#lv1",
+   "size": [
+    1024,
+    1024
+   ],
+   "characters": [
+    "doc",
+    "asst",
+    "fly",
+    "jupanbot"
+   ],
+   "robot": "jupanbot-v2",
+   "text_in_image": false,
+   "bubbles": "HTML 오버레이 (.bub)",
+   "status": "대기 — 요청문 발행"
+  },
+  {
    "id": "comic_lv2a",
    "role": "comic_4cut",
    "step": "②-1 가설검정",

@@ -9,6 +9,28 @@
 
 <div class="guide"><img data-who="sia" data-mood="guide" alt="">
   <div class="g"><b>인턴 시아</b><span class="step">1 / 10</span> 신약이 지나는 관문을 먼저 훑습니다. 숫자는 다음 단계부터 나옵니다.</div></div>
+<div class="comic" data-src="assets/img/comic_lv1.webp">
+  <div class="ch"><b>관문을 지나는 동안</b><span>앞만 빨라져도 끝까지 가는 수는 그대로다</span></div>
+  <div class="cuts">
+    <div class="cut" data-i="1"><div class="art"></div><span class="no">1</span>
+      <div class="ph"><div><img data-who="robo" data-mood="coin" alt=""><div class="d">주판봇이 후보 물질이 잔뜩 담긴 상자를 통째로 들어 보인다</div></div></div>
+      <div class="bub robo tl"><b>주판봇</b>후보가 천 개다! 이 중에 하나는 약이 되겠지.</div>
+    </div>
+    <div class="cut" data-i="2"><div class="art"></div><span class="no">2</span>
+      <div class="ph"><div><img data-who="fly" data-mood="clip" alt=""><div class="d">초파리가 좁아지는 문 다섯 개가 늘어선 복도를 가리킨다</div></div></div>
+      <div class="bub fly tr"><b>초파리 연구원</b>문을 다섯 번 지나야 해. 하나씩 세어 봤어?</div>
+    </div>
+    <div class="cut" data-i="3"><div class="art"></div><span class="no">3</span>
+      <div class="ph"><div><img data-who="doc" data-mood="board" alt=""><div class="d">박사가 다섯 문을 지나며 후보 더미가 점점 작아지는 그림 앞에 서 있다</div></div></div>
+      <div class="bub doc bl"><b>박사</b>각 문의 통과율을 곱합니다. 가장 좁은 문이 전체를 정합니다.</div>
+    </div>
+    <div class="cut" data-i="4"><div class="art"></div><span class="no">4</span>
+      <div class="ph"><div><img data-who="asst" data-mood="report" alt=""><div class="d">하루가 앞쪽 문만 넓어지고 마지막 문은 그대로인 그림을 든다</div></div></div>
+      <div class="bub asst br"><b>조수 하루</b>앞쪽 문만 넓히면 빨라질 뿐, 끝까지 가는 수는 거의 그대로네요.</div>
+    </div>
+  </div>
+  <div class="cap">인턴 시아 — 1 → 2 → 3 → 4 순서로 보시면 돼요. 좁은 화면에서는 네 장면이 세로로 쌓입니다.</div>
+</div>
 <div class="threeline"><b class="t">이 단계 3줄</b><ol><li>신약은 전임상 · 1상 · 2상 · 3상, 허가 뒤 4상이라는 관문을 차례로 지난다.</li><li>전체 성공 확률은 각 관문 통과율의 <b>곱</b>이므로, 가장 낮은 관문이 전체를 정한다.</li><li>그래서 앞쪽만 빨라지면 기간은 줄어도 허가까지 가는 수는 거의 움직이지 않는다.</li></ol></div>
     <details class="more full"><summary>자세히 — 연구실 장면과 업무로 옮겨 보기</summary><div class="min">
     <div class="pair">
@@ -225,6 +247,26 @@ print(1000 * math.prod(rates))</pre>
       </div>
     </div>
 
+    <section class="panel">
+      <h3>판정 모형 — ‘차이가 없는 세계’에서 이 결과는 얼마나 드문가</h3>
+      <div class="cwrap"><canvas id="c8" height="250" aria-label="차이가 없다고 가정했을 때 나올 수 있는 값들의 분포 곡선. 관측값보다 바깥쪽 꼬리가 칠해져 있고, 그 넓이가 p값이다."></canvas></div>
+      <div class="ctrl">
+        <div class="group">
+          <span class="glabel">관측값 (표준오차 몇 배) <span class="val" id="v8z">2.20</span></span>
+          <input type="range" id="s8z" min="0" max="4" step="0.01" value="2.20">
+        </div>
+        <div class="group">
+          <span class="glabel">유의수준 <span class="val" id="v8a">0.05</span></span>
+          <input type="range" id="s8a" min="0.005" max="0.2" step="0.005" value="0.05">
+        </div>
+        <div class="group">
+          <button class="bt" id="b8side" aria-pressed="false">한쪽만 보기</button>
+        </div>
+      </div>
+      <section class="kpis" id="k8"></section>
+      <p class="pnote">관측값을 오른쪽으로 끌수록 칠해진 꼬리가 좁아집니다. 그 넓이가 p값입니다 — ‘차이가 없다’가 사실일 확률이 아니라, 그것을 사실로 놓았을 때 이런 자료가 나올 확률입니다.</p>
+    </section>
+
     <div class="quiz" data-quiz="lv2a"></div>
   </div>
 </section>
@@ -310,6 +352,8 @@ print(1000 * math.prod(rates))</pre>
       <div class="eq" id="eq2"></div>
       <div class="insight" id="ins2" aria-live="polite"></div>
     </section>
+
+
 
     <div class="explain full">
       <h4>풀이 — 네 가지 결과와 두 가지 오류</h4>

@@ -719,6 +719,264 @@ var P7=(function(){
   return {init:init};
 })();
 
+/* ===================== ②-1 판정 모형 — 귀무분포와 꼬리 ===================== */
+var P8=(function(){
+  var z=2.20,al=0.05,one=false;
+  function dens(t){return Math.exp(-t*t/2)/Math.sqrt(2*Math.PI);}
+  function pval(){return one ? (1-Phi(z)) : 2*(1-Phi(Math.abs(z)));}
+  function crit(){return one ? -Math.log(1) + inv(1-al) : inv(1-al/2);}
+  function inv(q){ /* 표준정규 분위수 — 이분법 */
+    var lo=-6,hi=6,m;
+    for(var i=0;i<80;i++){m=(lo+hi)/2; if(Phi(m)<q)lo=m; else hi=m;}
+    return m;
+  }
+  function draw(){
+    var c=document.getElementById('c8');if(!c)return;
+    var W=fit(c,250),x=c.getContext('2d'),H=250,padL=42,padR=16,padT=26,padB=34;
+    var X=function(t){return padL+(t+4)/8*(W-padL-padR);},
+        Y=function(d){return H-padB-d/0.4*(H-padT-padB);};
+    /* 꼬리 칠하기 */
+    function fillTail(from,to,col){
+      x.fillStyle=col;x.beginPath();x.moveTo(X(from),Y(0));
+      for(var t=from;t<=to;t+=0.02)x.lineTo(X(t),Y(dens(t)));
+      x.lineTo(X(to),Y(0));x.closePath();x.fill();
+    }
+    fillTail(z,4,'rgba(201,48,44,.22)');
+    if(!one)fillTail(-4,-z,'rgba(201,48,44,.22)');
+    /* 곡선 */
+    x.strokeStyle=ACC;x.lineWidth=2;x.beginPath();
+    for(var t=-4;t<=4;t+=0.02){var px=X(t),py=Y(dens(t));if(t===-4)x.moveTo(px,py);else x.lineTo(px,py);}
+    x.stroke();
+    line(x,padL,Y(0),W-padR,Y(0),RULE,1);
+    /* 기준값 */
+    var cv=crit();
+    line(x,X(cv),padT,X(cv),Y(0),AMB,1.5);
+    txt(x,'기준 '+cv.toFixed(2),X(cv)+4,padT+8,AMB,11,'left',true);
+    if(!one){line(x,X(-cv),padT,X(-cv),Y(0),AMB,1.5);}
+    /* 관측값 */
+    line(x,X(z),padT-6,X(z),Y(0),EYE,2.5);
+    txt(x,'관측 '+z.toFixed(2),X(z),padT-14,EYE,12,'center',true);
+    [-3,-2,-1,0,1,2,3].forEach(function(t){txt(x,String(t),X(t),Y(0)+14,MUT,10,'center');});
+    txt(x,'차이가 없다고 가정했을 때 나올 수 있는 값들',padL,12,MUT,11,'left',true);
+    stamp(x,W,'설명용 모형 · 실제 데이터 아님');
+  }
+  function up(){
+    var P=pval(),cv=crit(),rej=Math.abs(z)>=cv||(one&&z>=cv);
+    kpi(document.getElementById('k8'),[
+      {k:'p값',v:P<0.001?P.toExponential(1):P.toFixed(4),n:'이 가정 아래 이런 자료가 나올 확률'},
+      {k:'기준값',v:cv.toFixed(3),n:(one?'한쪽':'양쪽')+' · 유의수준 '+al.toFixed(3)},
+      {k:'판정',v:rej?'가정을 버린다':'버리지 못한다',c:rej?'good':'bad',
+       n:rej?'p값이 유의수준보다 작다':'드물다고 하기엔 부족하다'},
+      {k:'제1종 오류',v:(al*100).toFixed(1)+'%',n:'차이가 없는데도 있다고 할 확률'}
+    ]);
+    var e;
+    if(e=document.getElementById('v8z'))e.textContent=z.toFixed(2);
+    if(e=document.getElementById('v8a'))e.textContent=al.toFixed(3);
+    draw();
+  }
+  function init(){
+    var sz=document.getElementById('s8z'),sa=document.getElementById('s8a'),bs=document.getElementById('b8side');
+    if(!sz)return;
+    sz.addEventListener('input',function(){z=+sz.value;up();});
+    sa.addEventListener('input',function(){al=+sa.value;up();});
+    bs.addEventListener('click',function(){one=!one;bs.setAttribute('aria-pressed',one?'true':'false');
+      bs.textContent=one?'양쪽 다 보기':'한쪽만 보기';up();});
+    up();
+    L.addMod(document.getElementById('c8'),function(){});
+  }
+  return {init:init,up:up};
+})();
+
+/* ===================== ③-1 흔들리는 자 — t와 정규분포 ===================== */
+var P9=(function(){
+  var n=10,ci=1,CONF=[0.90,0.95,0.99];
+  function dt(t,df){ /* t 분포 밀도 (로그감마 근사) */
+    function lg(a){var g=[76.18009173,-86.50532033,24.01409822,-1.231739516,0.00120858003,-0.00000536382];
+      var xx=a,y=a,tmp=xx+5.5;tmp-=(xx+0.5)*Math.log(tmp);var ser=1.000000000190015;
+      for(var j=0;j<6;j++){y+=1;ser+=g[j]/y;}return -tmp+Math.log(2.5066282746310005*ser/xx);}
+    return Math.exp(lg((df+1)/2)-lg(df/2))/Math.sqrt(df*Math.PI)*Math.pow(1+t*t/df,-(df+1)/2);
+  }
+  function dz(t){return Math.exp(-t*t/2)/Math.sqrt(2*Math.PI);}
+  function draw(){
+    var c=document.getElementById('c9');if(!c)return;
+    var W=fit(c,250),x=c.getContext('2d'),H=250,padL=42,padR=16,padT=26,padB=34,df=n-1;
+    var X=function(t){return padL+(t+4.5)/9*(W-padL-padR);},
+        Y=function(d){return H-padB-d/0.42*(H-padT-padB);};
+    var tc=tcrit(CONF[ci],df),zc=tcrit(CONF[ci],100000);
+    /* t의 두꺼운 꼬리 칠하기 */
+    x.fillStyle='rgba(201,48,44,.16)';
+    x.beginPath();x.moveTo(X(zc),Y(0));
+    for(var t=zc;t<=4.5;t+=0.02)x.lineTo(X(t),Y(dt(t,df)));
+    x.lineTo(X(4.5),Y(0));x.closePath();x.fill();
+    /* 정규분포 */
+    x.strokeStyle=MUT;x.lineWidth=1.4;x.setLineDash([4,3]);x.beginPath();
+    for(var t=-4.5;t<=4.5;t+=0.02){var px=X(t),py=Y(dz(t));if(t===-4.5)x.moveTo(px,py);else x.lineTo(px,py);}
+    x.stroke();x.setLineDash([]);
+    /* t 분포 */
+    x.strokeStyle=ACC;x.lineWidth=2.2;x.beginPath();
+    for(var t=-4.5;t<=4.5;t+=0.02){var px=X(t),py=Y(dt(t,df));if(t===-4.5)x.moveTo(px,py);else x.lineTo(px,py);}
+    x.stroke();
+    line(x,padL,Y(0),W-padR,Y(0),RULE,1);
+    line(x,X(zc),padT+4,X(zc),Y(0),MUT,1.4);
+    txt(x,'정규 '+zc.toFixed(3),X(zc)-5,padT+10,MUT,11,'right',true);
+    line(x,X(tc),padT-4,X(tc),Y(0),EYE,2);
+    txt(x,'t '+tc.toFixed(3),X(tc)+5,padT+10,EYE,11,'left',true);
+    [-3,-2,-1,0,1,2,3].forEach(function(t){txt(x,String(t),X(t),Y(0)+14,MUT,10,'center');});
+    txt(x,'실선 = t 분포 (자유도 '+df+') · 점선 = 정규분포',padL,12,MUT,11,'left',true);
+    stamp(x,W,'설명용 모형 · 실제 데이터 아님');
+  }
+  function up(){
+    var df=n-1,tc=tcrit(CONF[ci],df),zc=tcrit(CONF[ci],100000);
+    kpi(document.getElementById('k9'),[
+      {k:'자유도',v:String(df),n:'n − 1'},
+      {k:'t 기준값',v:tc.toFixed(3),c:'warn',n:'표준편차를 추정해서 쓸 때'},
+      {k:'정규 기준값',v:zc.toFixed(3),n:'표준편차를 이미 알 때'},
+      {k:'더 둔 여유',v:((tc/zc-1)*100).toFixed(1)+'%',c:(tc/zc-1)<0.05?'good':'',
+       n:'자가 흔들리는 만큼 넓힌 폭'}
+    ]);
+    var e;
+    if(e=document.getElementById('v9n'))e.textContent=String(n);
+    if(e=document.getElementById('v9c'))e.textContent=Math.round(CONF[ci]*100)+'%';
+    draw();
+  }
+  function init(){
+    var sn=document.getElementById('s9n'),sc=document.getElementById('s9c');
+    if(!sn)return;
+    sn.addEventListener('input',function(){n=+sn.value;up();});
+    sc.addEventListener('input',function(){ci=+sc.value;up();});
+    up();
+    L.addMod(document.getElementById('c9'),function(){});
+  }
+  return {init:init,up:up};
+})();
+
+/* ===================== ④-2 1,000명 모형 ===================== */
+var P10=(function(){
+  var prev=10,sens=99,spec=95,N=1000;
+  function calc(){
+    var sick=prev, well=N-prev;
+    var tp=sick*sens/100, fn=sick-tp;
+    var fp=well*(100-spec)/100, tn=well-fp;
+    return {tp:tp,fn:fn,fp:fp,tn:tn,pos:tp+fp};
+  }
+  function draw(){
+    var c=document.getElementById('c10');if(!c)return;
+    var W=fit(c,270),x=c.getContext('2d'),H=270,padL=14,padT=28,padB=30;
+    var r=calc(),cols=50,rows=20;
+    var cell=Math.min((W-padL*2)/cols,(H-padT-padB)/rows);
+    var gw=cell,gh=cell,offX=(W-cell*cols)/2,offY=padT+((H-padT-padB)-cell*rows)/2;
+    var d=Math.max(1.6,cell/2-1.1);
+    var nTP=Math.round(r.tp),nFN=Math.round(r.fn),nFP=Math.round(r.fp);
+    for(var i=0;i<N;i++){
+      var cx=offX+(i%cols)*gw+gw/2, cy=offY+Math.floor(i/cols)*gh+gh/2, col;
+      if(i<nTP)col=EYE;                       /* 환자이면서 양성 */
+      else if(i<nTP+nFN)col=AMB;              /* 환자인데 음성 */
+      else if(i<nTP+nFN+nFP)col=STA;          /* 환자가 아닌데 양성 */
+      else col='#dfe6ee';                     /* 음성 */
+      x.fillStyle=col;x.beginPath();x.arc(cx,cy,d,0,Math.PI*2);x.fill();
+    }
+    txt(x,'● 환자이면서 양성',padL,12,EYE,11,'left',true);
+    txt(x,'● 환자인데 음성',padL+118,12,AMB,11,'left',true);
+    txt(x,'● 환자가 아닌데 양성',padL+228,12,STA,11,'left',true);
+    txt(x,'● 음성',padL+360,12,'#9fb0c0',11,'left',true);
+    txt(x,'점 하나가 한 사람 · 모두 1,000명',padL,H-12,MUT,11,'left');
+    stamp(x,W,'설명용 모형 · 실제 데이터 아님');
+  }
+  function up(){
+    var r=calc(),ppv=r.pos>0?r.tp/r.pos:0;
+    kpi(document.getElementById('k10'),[
+      {k:'양성으로 나온 사람',v:num(r.pos,1)+'명',n:'1,000명 중'},
+      {k:'그중 실제 환자',v:num(r.tp,1)+'명',c:'warn',n:'나머지는 거짓 양성'},
+      {k:'양성일 때 환자일 확률',v:(ppv*100).toFixed(1)+'%',c:ppv>=0.5?'good':'bad',
+       n:'이것이 양성의 실제 뜻'},
+      {k:'놓친 환자',v:num(r.fn,1)+'명',n:'환자인데 음성으로 나온 사람'}
+    ]);
+    var e;
+    if(e=document.getElementById('v10p'))e.textContent=prev+'명';
+    if(e=document.getElementById('v10s'))e.textContent=sens+'%';
+    if(e=document.getElementById('v10t'))e.textContent=spec+'%';
+    draw();
+  }
+  function init(){
+    var sp=document.getElementById('s10p'),ss=document.getElementById('s10s'),st=document.getElementById('s10t');
+    if(!sp)return;
+    sp.addEventListener('input',function(){prev=+sp.value;up();});
+    ss.addEventListener('input',function(){sens=+ss.value;up();});
+    st.addEventListener('input',function(){spec=+st.value;up();});
+    up();
+    L.addMod(document.getElementById('c10'),function(){});
+  }
+  return {init:init,up:up};
+})();
+
+/* ===================== ⑤-2 기간 모형 ===================== */
+var P11=(function(){
+  var ST=[{n:'후보 발굴',m:18,ai:6},{n:'전임상',m:24,ai:16},{n:'임상 1상',m:14,ai:12},
+          {n:'임상 2상',m:24,ai:24},{n:'임상 3상',m:36,ai:36},{n:'허가',m:12,ai:12}];
+  var on=[false,false,false],t3=36;
+  function cur(){
+    return ST.map(function(s,i){
+      var m=s.m;
+      if(i===4)m=t3;
+      if(i<3&&on[i])m=(i===4?t3:s.ai);
+      return {n:s.n,base:(i===4?t3:s.m),now:m};
+    });
+  }
+  function draw(){
+    var c=document.getElementById('c11');if(!c)return;
+    var W=fit(c,270),x=c.getContext('2d'),H=270,padL=76,padR=54,padT=26,padB=26;
+    var rows=cur(),maxm=Math.max.apply(null,rows.map(function(r){return r.base;})),
+        bh=(H-padT-padB)/rows.length, bw=W-padL-padR;
+    var longest=rows.reduce(function(a,b){return b.now>a.now?b:a;},rows[0]);
+    rows.forEach(function(r,i){
+      var y=padT+i*bh+bh/2, full=bw*r.base/maxm, now=bw*r.now/maxm;
+      x.fillStyle='#eef2f6';x.fillRect(padL,y-9,full,18);
+      x.fillStyle=(r.n===longest.n)?EYE:ACC;x.fillRect(padL,y-9,now,18);
+      if(now<full-1){
+        x.strokeStyle=GFP;x.lineWidth=1.5;x.setLineDash([3,2]);
+        x.strokeRect(padL+now,y-9,full-now,18);x.setLineDash([]);
+        txt(x,'−'+(r.base-r.now)+'개월',padL+full+6,y,GFP,11,'left',true);
+      } else {
+        txt(x,r.now+'개월',padL+now+6,y,MUT,11,'left');
+      }
+      txt(x,r.n,padL-8,y,INK,11.5,'right',true);
+    });
+    txt(x,'가로 길이 = 걸리는 기간 · 붉은 막대가 가장 긴 단계',padL-62,12,MUT,11,'left',true);
+    stamp(x,W,'설명용 모형 · 실제 데이터 아님');
+  }
+  function up(){
+    var rows=cur();
+    var base=rows.reduce(function(a,r){return a+r.base;},0),
+        now =rows.reduce(function(a,r){return a+r.now;},0);
+    var longest=rows.reduce(function(a,b){return b.now>a.now?b:a;},rows[0]);
+    kpi(document.getElementById('k11'),[
+      {k:'전체 기간',v:num(now)+'개월',n:'약 '+(now/12).toFixed(1)+'년'},
+      {k:'줄어든 기간',v:(base-now>0?'−'+num(base-now):'0')+'개월',c:base-now>0?'good':'',
+       n:'AI를 켠 단계에서만'},
+      {k:'줄어든 비율',v:((1-now/base)*100).toFixed(1)+'%',c:(1-now/base)<0.2?'bad':'good',
+       n:'전체 기간 기준'},
+      {k:'가장 긴 단계',v:longest.n,c:'warn',n:longest.now+'개월 — 여기가 전체를 정한다'}
+    ]);
+    var e;
+    if(e=document.getElementById('v11t'))e.textContent=String(t3);
+    draw();
+  }
+  function init(){
+    var ids=['b11a','b11b','b11c'],st=document.getElementById('s11t');
+    if(!document.getElementById('b11a'))return;
+    ids.forEach(function(id,i){
+      var b=document.getElementById(id);
+      b.addEventListener('click',function(){
+        on[i]=!on[i];b.setAttribute('aria-pressed',on[i]?'true':'false');
+        b.classList.toggle('primary',on[i]);up();});
+    });
+    st.addEventListener('input',function(){t3=+st.value;up();});
+    up();
+    L.addMod(document.getElementById('c11'),function(){});
+  }
+  return {init:init,up:up};
+})();
+
 /* ===================== 대결 (조건부 C) ===================== */
 (function(){
   function init(){
@@ -765,7 +1023,8 @@ var P7=(function(){
     });
   }
   window.LAB.initPanels=function(){
-    P1.init();P2.init();P3.init();P4.init();P5.init();P6.init();P7.init();init();
+    P1.init();P2.init();P3.init();P4.init();P5.init();P6.init();P7.init();
+    P8.init();P9.init();P10.init();P11.init();init();
   };
 })();
 })();

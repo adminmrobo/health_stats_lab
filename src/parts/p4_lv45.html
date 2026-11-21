@@ -160,6 +160,28 @@
       <div><b class="name">조수 하루</b><p>민감도 99%인데 양성의 83%가 거짓이라는 게 이상해 보이지만, 아닌 사람이 99배 많아서 그렇습니다. 5%의 작은 비율이 큰 집단에 걸리면 절대 수가 커집니다.</p></div>
     </div>
 
+
+    <section class="panel">
+      <h3>1,000명 모형 — 양성 중에서 실제 환자는 몇 명인가</h3>
+      <div class="cwrap"><canvas id="c10" height="270" aria-label="1,000명을 점 1,000개로 늘어놓은 그림. 실제 환자이면서 양성, 환자가 아닌데 양성, 음성이 서로 다른 색으로 칠해져 있다."></canvas></div>
+      <div class="ctrl">
+        <div class="group">
+          <span class="glabel">유병률 (1,000명 중) <span class="val" id="v10p">10명</span></span>
+          <input type="range" id="s10p" min="1" max="300" step="1" value="10">
+        </div>
+        <div class="group">
+          <span class="glabel">민감도 <span class="val" id="v10s">99%</span></span>
+          <input type="range" id="s10s" min="50" max="100" step="1" value="99">
+        </div>
+        <div class="group">
+          <span class="glabel">특이도 <span class="val" id="v10t">95%</span></span>
+          <input type="range" id="s10t" min="50" max="100" step="1" value="95">
+        </div>
+      </div>
+      <section class="kpis" id="k10"></section>
+      <p class="pnote">민감도·특이도를 그대로 둔 채 유병률만 올려 보세요. 검사 성능은 하나도 바뀌지 않았는데 양성의 뜻이 달라집니다. 바탕 비율이 답을 정합니다.</p>
+    </section>
+
     <div class="quiz" data-quiz="lv4b"></div>
   </div>
 </section>
@@ -489,6 +511,23 @@
 
 <div class="rest"><img data-who="moa" data-mood="cheer" alt="">
   <p><b>모아</b> — 열 단계 모두 지나셨어요. 수고하셨습니다!</p></div>
+
+    <section class="panel">
+      <h3>기간 모형 — 어디를 줄여야 전체가 줄어드나</h3>
+      <div class="cwrap"><canvas id="c11" height="270" aria-label="단계별 소요 기간을 가로 막대로 그린 그림. AI를 적용한 단계는 줄어든 만큼이 따로 표시된다."></canvas></div>
+      <div class="ctrl">
+        <div class="group"><button class="bt" id="b11a" aria-pressed="false">후보 발굴에 AI</button></div>
+        <div class="group"><button class="bt" id="b11b" aria-pressed="false">전임상에 AI</button></div>
+        <div class="group"><button class="bt" id="b11c" aria-pressed="false">1상에 AI</button></div>
+        <div class="group">
+          <span class="glabel">3상 기간 (개월) <span class="val" id="v11t">36</span></span>
+          <input type="range" id="s11t" min="12" max="60" step="1" value="36">
+        </div>
+      </div>
+      <section class="kpis" id="k11"></section>
+      <p class="pnote">세 단추를 모두 켜 보세요. 앞쪽은 눈에 띄게 줄지만 전체는 조금만 줄어듭니다. 가장 긴 막대가 3상이고, 사람에게서 사건이 쌓이기를 기다리는 그 시간은 계산으로 줄지 않기 때문입니다.</p>
+    </section>
+
 <div class="quiz" data-quiz="lv5b"></div>
   </div>
 </section>
