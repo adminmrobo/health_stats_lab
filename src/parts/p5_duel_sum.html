@@ -154,153 +154,2313 @@
   </div>
 </section>
 
-<script type="application/json" id="kg-raw">
-{
- "version":"1.1","page":"01_clinical_stats_ai","domain":["stats","ai"],
- "nodes":[
-  {"id":"lab:question/how-approved","type":"Question","label":{"ko":"신약은 어떤 숫자로 허가받는가","en":"what numbers approve a drug"},"page":"01_clinical_stats_ai","anchor":"#first","domain":["stats"],"status":"known","confidence":"high"},
-  {"id":"lab:concept/clinical-phases","type":"Concept","label":{"ko":"임상시험 단계","en":"clinical trial phases"},"definition":{"ko":"전임상·1상·2상·3상·허가 후 4상으로 나뉘어, 단계마다 다른 질문에 답하는 개발 과정."},"page":"01_clinical_stats_ai","anchor":"#lv1","level":1,"family":"design","domain":["stats"],"anchorType":"B","flyStrength":"none","status":"known","confidence":"high","evidence":["F01"]},
-  {"id":"lab:concept/stage-product","type":"Concept","label":{"ko":"단계 통과율의 곱","en":"product of stage success rates"},"definition":{"ko":"전체 성공 확률은 각 단계 통과율을 모두 곱한 값이므로, 가장 낮은 단계가 전체를 좌우한다."},"page":"01_clinical_stats_ai","anchor":"#lv1","level":1,"family":"probability","domain":["stats"],"status":"known","confidence":"high"},
-  {"id":"lab:limitation/phase2-bottleneck","type":"Limitation","label":{"ko":"2상 병목","en":"phase 2 bottleneck"},"definition":{"ko":"앞단계를 개선해도 2상 통과율이 그대로면 전체 기대 성공 수가 거의 움직이지 않는다."},"page":"01_clinical_stats_ai","anchor":"#lv1","domain":["stats","ai"],"status":"known","confidence":"high","evidence":["F02","F03"]},
-  {"id":"lab:method/hypothesis-test","type":"Method","label":{"ko":"통계적 가설검정","en":"statistical hypothesis test"},"definition":{"ko":"차이가 없다는 가정을 세우고, 그 가정 아래에서 관측 결과가 얼마나 드문지를 계산해 가정을 버릴지 정하는 절차."},"page":"01_clinical_stats_ai","anchor":"#lv2a","level":2,"family":"testing","domain":["stats"],"anchorType":"B","status":"known","confidence":"high"},
-  {"id":"lab:concept/null-hypothesis","type":"Concept","label":{"ko":"귀무가설","en":"null hypothesis"},"definition":{"ko":"차이가 없다는 기본 가정. 검정은 이것을 버릴 증거가 있는지 묻는다."},"page":"01_clinical_stats_ai","anchor":"#lv2a","level":2,"family":"testing","domain":["stats"],"status":"known","confidence":"high"},
-  {"id":"lab:metric/p-value","type":"Metric","label":{"ko":"p값","en":"p-value"},"definition":{"ko":"귀무가설이 참이라고 할 때, 관측된 결과만큼 또는 더 극단적인 결과가 나올 확률."},"page":"01_clinical_stats_ai","anchor":"#lv2a","level":2,"family":"testing","domain":["stats"],"status":"known","confidence":"high"},
-  {"id":"lab:concept/type1-error","type":"Concept","label":{"ko":"제1종 오류","en":"type I error"},"definition":{"ko":"차이가 없는데 있다고 판정하는 잘못. 확률은 유의수준 α로 통제한다."},"page":"01_clinical_stats_ai","anchor":"#lv2a","level":2,"family":"testing","domain":["stats"],"status":"known","confidence":"high"},
-  {"id":"lab:concept/type2-error","type":"Concept","label":{"ko":"제2종 오류","en":"type II error"},"definition":{"ko":"차이가 있는데 없다고 판정하는 잘못. 1에서 검정력을 뺀 값이다."},"page":"01_clinical_stats_ai","anchor":"#lv2a","level":2,"family":"testing","domain":["stats"],"status":"known","confidence":"high"},
-  {"id":"lab:metric/power","type":"Metric","label":{"ko":"검정력","en":"statistical power"},"definition":{"ko":"참 효과가 있을 때 그것을 유의하다고 판정할 확률."},"page":"01_clinical_stats_ai","anchor":"#lv2a","level":2,"family":"testing","domain":["stats"],"status":"known","confidence":"high","evidence":["F04"]},
-  {"id":"lab:concept/sample-size","type":"Concept","label":{"ko":"표본 크기 정하기","en":"sample size determination"},"definition":{"ko":"원하는 검정력과 효과 크기를 정하면 필요한 인원이나 사건 수가 계산된다."},"page":"01_clinical_stats_ai","anchor":"#lv2a","level":2,"family":"testing","domain":["stats"],"status":"known","confidence":"high"},
-  {"id":"lab:limitation/test-yes-no","type":"Limitation","label":{"ko":"검정은 크기를 말하지 않는다","en":"tests do not give magnitude"},"definition":{"ko":"가설검정은 차이의 유무만 판정하고 효과가 얼마인지는 알려 주지 않는다."},"page":"01_clinical_stats_ai","anchor":"#lv2a","domain":["stats"],"status":"known","confidence":"high"},
-  {"id":"lab:method/t-interval","type":"Method","label":{"ko":"t 분포 신뢰구간","en":"t confidence interval"},"altLabel":{"ko":["단일표본 t 구간"],"en":["one-sample t interval"]},"definition":{"ko":"모분산을 모르고 표본이 작을 때, 표본표준편차와 t 분포 기준값으로 모평균의 구간을 만드는 방법."},"page":"01_clinical_stats_ai","anchor":"#lv3a","level":2,"family":"estimation","domain":["stats"],"anchorType":"B","status":"known","confidence":"high","evidence":["F05"]},
-  {"id":"lab:distribution/t","type":"Distribution","label":{"ko":"t 분포","en":"Student's t distribution"},"definition":{"ko":"표본표준편차를 쓸 때의 흔들림을 반영해 정규분포보다 꼬리가 두꺼운 분포. 자유도가 커지면 정규분포에 가까워진다."},"page":"01_clinical_stats_ai","anchor":"#lv3a","level":2,"family":"distributions","domain":["stats"],"status":"known","confidence":"high"},
-  {"id":"lab:concept/standard-error","type":"Concept","label":{"ko":"표준오차","en":"standard error"},"definition":{"ko":"표본평균이 표본마다 흔들리는 폭. 표본표준편차를 표본 크기의 제곱근으로 나눈 값."},"page":"01_clinical_stats_ai","anchor":"#lv3a","level":2,"family":"estimation","domain":["stats"],"status":"known","confidence":"high"},
-  {"id":"lab:concept/degrees-of-freedom","type":"Concept","label":{"ko":"자유도","en":"degrees of freedom"},"definition":{"ko":"표본표준편차를 계산할 때 평균을 이미 썼으므로 자유롭게 움직이는 값이 하나 줄어 n−1이 된다."},"page":"01_clinical_stats_ai","anchor":"#lv3a","level":2,"family":"estimation","domain":["stats"],"status":"known","confidence":"high"},
-  {"id":"lab:assumption/normality","type":"Assumption","label":{"ko":"정규성 가정","en":"normality assumption"},"definition":{"ko":"모집단이 정규분포를 따른다는 가정. 작은 표본의 t 구간은 이 가정에 기댄다."},"page":"01_clinical_stats_ai","anchor":"#lv3a","level":2,"family":"estimation","domain":["stats"],"status":"known","confidence":"high"},
-  {"id":"lab:claim/aluminium-ci","type":"Claim","label":{"ko":"예시의 95% 신뢰구간은 (32.59, 42.73)","en":"worked example 95% CI is (32.59, 42.73)"},"definition":{"ko":"n=10, 표본평균 37.66, 표본표준편차 7.09에서 t(0.025,9)=2.262를 써서 얻은 구간."},"page":"01_clinical_stats_ai","anchor":"#lv3a","level":2,"family":"estimation","domain":["stats"],"status":"known","confidence":"high","evidence":["F05"],"source":[{"cite":"저자 계산","loc":"③단계 손계산"}]},
-  {"id":"lab:concept/ci-misreading","type":"Concept","label":{"ko":"신뢰구간의 흔한 오독","en":"common CI misinterpretation"},"definition":{"ko":"‘이 구간에 모수가 있을 확률 95%’는 틀린 해석이다. 같은 방법을 반복할 때 약 95%가 모수를 포함한다는 뜻이다."},"page":"01_clinical_stats_ai","anchor":"#lv3a","level":2,"family":"estimation","domain":["stats"],"status":"known","confidence":"high"},
-  {"id":"lab:limitation/single-group","type":"Limitation","label":{"ko":"집단 하나에서만 성립","en":"holds for a single group only"},"definition":{"ko":"구간의 95%라는 성질은 집단을 쪼개 여러 번 추정하면 유지되지 않는다."},"page":"01_clinical_stats_ai","anchor":"#lv3a","domain":["stats"],"status":"known","confidence":"high"},
-  {"id":"lab:concept/multiple-comparisons","type":"Concept","label":{"ko":"다중 비교","en":"multiple comparisons"},"definition":{"ko":"같은 자료에 검정을 여러 번 하면 거짓 양성이 쌓여, 한 번용으로 설계한 유의수준이 지켜지지 않는다."},"page":"01_clinical_stats_ai","anchor":"#lv4a","level":3,"family":"testing","domain":["stats"],"status":"known","confidence":"high","evidence":["F06"]},
-  {"id":"lab:method/bonferroni","type":"Method","label":{"ko":"본페로니 보정","en":"Bonferroni correction"},"definition":{"ko":"검정 횟수 k로 유의수준을 나눠 기준을 좁히는 가장 단순한 다중 비교 보정."},"page":"01_clinical_stats_ai","anchor":"#lv4a","level":3,"family":"testing","domain":["stats"],"status":"known","confidence":"high"},
-  {"id":"lab:concept/subgroup-trap","type":"Concept","label":{"ko":"하위집단 함정","en":"subgroup analysis trap"},"definition":{"ko":"여러 하위집단을 들여다본 뒤 가장 좋은 결과만 보고하면 우연한 발견을 결론으로 삼게 된다."},"page":"01_clinical_stats_ai","anchor":"#lv4a","level":3,"family":"testing","domain":["stats"],"status":"known","confidence":"high"},
-  {"id":"lab:concept/base-rate","type":"Concept","label":{"ko":"바탕 비율","en":"base rate"},"altLabel":{"ko":["기저율"],"en":["prior prevalence"]},"definition":{"ko":"드문 병에서는 검사 성능이 좋아도 양성의 다수가 거짓 양성이 될 수 있다."},"page":"01_clinical_stats_ai","anchor":"#lv4a","level":3,"family":"bayes","domain":["stats"],"status":"known","confidence":"high"},
-  {"id":"lab:method/unsupervised-clustering","type":"Method","label":{"ko":"비지도 군집화","en":"unsupervised clustering"},"definition":{"ko":"정답표 없이 자료 사이의 거리만으로 무리를 묶는 방법."},"page":"01_clinical_stats_ai","anchor":"#lv4a","level":3,"family":"multivariate","domain":["stats","ai"],"anchorType":"B","status":"known","confidence":"high"},
-  {"id":"lab:method/self-supervised-plm","type":"Method","label":{"ko":"자기지도 단백질 언어모델","en":"self-supervised protein language model"},"definition":{"ko":"서열의 일부를 가리고 복원하는 과제로 라벨 없이 학습해, 있을 수 있는 서열의 분포를 배우는 모델."},"page":"01_clinical_stats_ai","anchor":"#lv4a","level":4,"family":"multivariate","domain":["ai"],"status":"known","confidence":"high","evidence":["F09"]},
-  {"id":"lab:concept/combinatorial-explosion","type":"Concept","label":{"ko":"조합 폭발","en":"combinatorial explosion"},"definition":{"ko":"자리 수와 동시 변이 수가 늘면 가능한 조합이 기하급수로 늘어 전수 실험이 불가능해진다."},"page":"01_clinical_stats_ai","anchor":"#lv4a","level":3,"family":"probability","domain":["stats","ai"],"status":"known","confidence":"high"},
-  {"id":"lab:limitation/cluster-not-prediction","type":"Limitation","label":{"ko":"무리를 찾는 것과 맞히는 것은 다르다","en":"finding clusters is not predicting"},"definition":{"ko":"새 무리를 탐지했다는 사실만으로 그 무리가 면역을 회피한다고 말할 수 없다."},"page":"01_clinical_stats_ai","anchor":"#lv4a","domain":["stats","ai"],"status":"known","confidence":"high"},
-  {"id":"lab:method/prepandemic-validation","type":"Method","label":{"ko":"사전 정보 봉인 검증","en":"pre-pandemic held-out validation"},"definition":{"ko":"특정 시점 이후의 정보를 차단한 상태로 모델을 돌려, 그 이후 실제로 나타난 결과를 얼마나 앞서 지목하는지 채점하는 방식."},"page":"01_clinical_stats_ai","anchor":"#lv5a","level":4,"family":"design","domain":["stats","ai"],"anchorType":"B","status":"known","confidence":"high","evidence":["F07","F08"]},
-  {"id":"lab:method/three-factor-escape-score","type":"Method","label":{"ko":"세 요소 결합 회피 점수","en":"three-factor escape score"},"definition":{"ko":"변이가 기능을 유지할 확률, 항체가 닿는 자리일 확률, 결합을 깨뜨릴 확률을 결합해 회피 가능성을 점수화하는 방식."},"page":"01_clinical_stats_ai","anchor":"#lv5a","level":4,"family":"multivariate","domain":["ai"],"status":"known","confidence":"high","evidence":["F07"],"source":[{"cite":"thadani2023evescape","loc":"Fig. 1"}]},
-  {"id":"lab:method/semantic-change-only","type":"Method","label":{"ko":"의미 변화만 쓰는 점수","en":"semantic-change-only score"},"definition":{"ko":"서열 표현의 변화량만으로 면역 회피를 짚으려는 접근."},"page":"01_clinical_stats_ai","anchor":"#lv5a","level":4,"family":"multivariate","domain":["ai"],"status":"known","confidence":"mid","evidence":["F10"]},
-  {"id":"lab:metric/recall-at-top","type":"Metric","label":{"ko":"상위 비율 적중률","en":"recall at top k%"},"definition":{"ko":"점수 상위 몇 퍼센트 안에 실제 대상이 몇 개 들어왔는지의 비율. 무작위로 고르면 그 비율 자체가 기준선이 된다."},"page":"01_clinical_stats_ai","anchor":"#lv5a","level":3,"family":"testing","domain":["stats","ai"],"status":"known","confidence":"high"},
-  {"id":"lab:concept/surveillance-bias","type":"Concept","label":{"ko":"감시 자료 편향","en":"surveillance data bias"},"definition":{"ko":"서열 제출량이 지역·시기마다 달라, 자료가 적은 곳의 변화는 늦게 보인다."},"page":"01_clinical_stats_ai","anchor":"#lv5a","level":3,"family":"survey","domain":["stats"],"status":"known","confidence":"high"},
-  {"id":"lab:claim/ai-phase1-high","type":"Claim","label":{"ko":"AI 발굴 분자의 1상 성공률이 높게 보고됐다","en":"AI-discovered molecules report high phase 1 success"},"page":"01_clinical_stats_ai","anchor":"#lv5a","domain":["ai"],"status":"known","confidence":"high","evidence":["F02"],"source":[{"cite":"bcg2024aipipeline","loc":"1상 완료 24개 중 21개"}]},
-  {"id":"lab:claim/ai-phase2-similar","type":"Claim","label":{"ko":"AI 발굴 약물의 2상 실패율은 비AI와 비슷하다","en":"phase 2 failure similar to non-AI drugs"},"page":"01_clinical_stats_ai","anchor":"#lv5a","domain":["ai"],"status":"known","confidence":"high","evidence":["F03"],"source":[{"cite":"insilico2025rentosertib","loc":"논의"}]},
-  {"id":"lab:claim/lineardesign-11min","type":"Claim","label":{"ko":"서열 최적화 알고리즘이 스파이크 기준 약 11분에 답을 낸다","en":"optimization algorithm finds spike design in about 11 minutes"},"page":"01_clinical_stats_ai","anchor":"#lv5a","domain":["ai"],"status":"known","confidence":"high","evidence":["F11"],"source":[{"cite":"zhang2023lineardesign","loc":"본문"}]},
-  {"id":"lab:limitation/clinical-time-remains","type":"Limitation","label":{"ko":"사람에서 사건을 세는 시간은 남는다","en":"time to accrue events remains"},"definition":{"ko":"설계와 최적화가 빨라져도 필요한 사건 수가 쌓이기를 기다리는 기간은 계산으로 줄지 않는다."},"page":"01_clinical_stats_ai","anchor":"#lv5a","domain":["stats","ai"],"status":"known","confidence":"high"},
-  {"id":"lab:analogy/courtroom","type":"Analogy","label":{"ko":"재판정 ↔ 가설검정","en":"courtroom ↔ hypothesis test"},"page":"01_clinical_stats_ai","anchor":"#lv2a","domain":["stats"],"status":"known","confidence":"high"},
-  {"id":"lab:analogy/ring-toss","type":"Analogy","label":{"ko":"고리 던지기 ↔ 신뢰구간","en":"ring toss ↔ confidence interval"},"page":"01_clinical_stats_ai","anchor":"#lv3a","domain":["stats"],"status":"known","confidence":"high"},
-  {"id":"lab:analogy/darts","type":"Analogy","label":{"ko":"다트 ↔ 다중 비교","en":"darts ↔ multiple comparisons"},"page":"01_clinical_stats_ai","anchor":"#lv4a","domain":["stats"],"status":"known","confidence":"high"},
-  {"id":"lab:analogy/sealed-exam","type":"Analogy","label":{"ko":"봉인된 시험지 ↔ 사전 정보 검증","en":"sealed exam ↔ held-out validation"},"page":"01_clinical_stats_ai","anchor":"#lv5a","domain":["stats","ai"],"status":"known","confidence":"high"},
-  {"id":"lab:simulation/funnel","type":"Simulation","label":{"ko":"관문 통과 모형","en":"stage funnel simulation"},"page":"01_clinical_stats_ai","anchor":"#lv1","domain":["stats"],"status":"known","confidence":"high"},
-  {"id":"lab:simulation/test-panel","type":"Simulation","label":{"ko":"판정 모형","en":"hypothesis test simulation"},"page":"01_clinical_stats_ai","anchor":"#lv2a","domain":["stats"],"status":"known","confidence":"high"},
-  {"id":"lab:simulation/ci-coverage","type":"Simulation","label":{"ko":"고리 던지기 모형","en":"CI coverage simulation"},"page":"01_clinical_stats_ai","anchor":"#lv3a","domain":["stats"],"status":"known","confidence":"high"},
-  {"id":"lab:simulation/darts","type":"Simulation","label":{"ko":"다트 모형","en":"multiple comparison simulation"},"page":"01_clinical_stats_ai","anchor":"#lv4a","domain":["stats"],"status":"known","confidence":"high"},
-  {"id":"lab:simulation/sequence-map","type":"Simulation","label":{"ko":"서열 지도 모형","en":"sequence map simulation"},"page":"01_clinical_stats_ai","anchor":"#lv4a","domain":["ai"],"status":"known","confidence":"high"},
-  {"id":"lab:simulation/sealed-scoring","type":"Simulation","label":{"ko":"봉인 채점 모형","en":"sealed scoring simulation"},"page":"01_clinical_stats_ai","anchor":"#lv5a","domain":["stats","ai"],"status":"known","confidence":"high"},
-  {"id":"lab:question/predict-then-design","type":"Question","label":{"ko":"앞서 지목하는 것과 그것으로 설계하는 것 사이는 어떻게 이어지나","en":"from early flagging to actual design"},"page":"01_clinical_stats_ai","anchor":"#outro","domain":["stats","ai"],"status":"known","confidence":"mid"},
-  {"id":"lab:question/bias-correction","type":"Question","label":{"ko":"감시 자료의 지역 편향을 통계적으로 어디까지 보정할 수 있나","en":"how far can surveillance bias be corrected"},"page":"01_clinical_stats_ai","anchor":"#lv5a","domain":["stats"],"status":"known","confidence":"mid"},
-  {"id":"lab:work/thadani2023evescape","type":"Work","label":{"ko":"사전 자료로 회피를 예측한 연구 (2023)","en":"Learning from prepandemic data to forecast viral escape"},"page":"01_clinical_stats_ai","anchor":"#export","domain":["ai"],"status":"known","confidence":"high"},
-  {"id":"lab:work/zhang2023lineardesign","type":"Work","label":{"ko":"서열 최적화 알고리즘 연구 (2023)","en":"Algorithm for optimized mRNA design"},"page":"01_clinical_stats_ai","anchor":"#export","domain":["ai"],"status":"known","confidence":"high"},
-  {"id":"lab:work/revaluation2025","type":"Work","label":{"ko":"의미 변화 지표 재평가 연구 (2025)","en":"systematic evaluation of the language-of-viral-escape model"},"page":"01_clinical_stats_ai","anchor":"#export","domain":["ai"],"status":"known","confidence":"high"},
-  {"id":"lab:work/pagano2000","type":"Work","label":{"ko":"Principles of Biostatistics (2000)","en":"Principles of Biostatistics, 2nd ed."},"page":"01_clinical_stats_ai","anchor":"#export","domain":["stats"],"status":"known","confidence":"high"},
-  {"id":"lab:work/jayatunga2024","type":"Work","label":{"ko":"AI 발굴 약물의 임상 성적 분석 (2024)","en":"How successful are AI-discovered drugs in clinical trials?"},"page":"01_clinical_stats_ai","anchor":"#export","domain":["ai"],"status":"known","confidence":"high"},
-  {"id":"lab:method/masked-token-recovery","type":"Method","label":{"ko":"가린 자리 복원","en":"masked token recovery"},"definition":{"ko":"서열의 한 자리를 가리고 그 자리를 맞히게 하는 과제. 정답이 가려진 글자 자신이므로 사람이 라벨을 달지 않는다."},"page":"01_clinical_stats_ai","anchor":"#lv4a","level":4,"family":"multivariate","domain":["ai"],"anchorType":"B","status":"known","confidence":"high"},
-  {"id":"lab:simulation/masked-recovery","type":"Simulation","label":{"ko":"가린 자리 복원 모형","en":"masked recovery simulation"},"page":"01_clinical_stats_ai","anchor":"#lv4a","domain":["ai"],"status":"known","confidence":"high"}
+<script type="application/json" id="kg-raw">{
+ "version": "1.1",
+ "page": "01_clinical_stats_ai",
+ "domain": [
+  "stats",
+  "ai"
  ],
- "edges":[
-  {"s":"lab:question/how-approved","p":"lab:raises","o":"lab:concept/clinical-phases","anchor":"#lv1","confidence":"high"},
-  {"s":"lab:concept/clinical-phases","p":"lab:prerequisiteOf","o":"lab:method/hypothesis-test","anchor":"#lv2a","confidence":"high"},
-  {"s":"lab:method/hypothesis-test","p":"lab:prerequisiteOf","o":"lab:method/t-interval","anchor":"#lv3a","confidence":"high"},
-  {"s":"lab:method/t-interval","p":"lab:prerequisiteOf","o":"lab:concept/multiple-comparisons","anchor":"#lv4a","confidence":"high"},
-  {"s":"lab:concept/multiple-comparisons","p":"lab:prerequisiteOf","o":"lab:method/prepandemic-validation","anchor":"#lv5a","confidence":"high"},
-  {"s":"lab:concept/clinical-phases","p":"lab:hasLimitation","o":"lab:limitation/phase2-bottleneck","anchor":"#lv1","confidence":"high"},
-  {"s":"lab:limitation/phase2-bottleneck","p":"lab:addressedBy","o":"lab:method/hypothesis-test","anchor":"#lv2a","confidence":"mid"},
-  {"s":"lab:method/hypothesis-test","p":"lab:hasLimitation","o":"lab:limitation/test-yes-no","anchor":"#lv2a","confidence":"high"},
-  {"s":"lab:limitation/test-yes-no","p":"lab:addressedBy","o":"lab:method/t-interval","anchor":"#lv3a","confidence":"high"},
-  {"s":"lab:method/t-interval","p":"lab:hasLimitation","o":"lab:limitation/single-group","anchor":"#lv3a","confidence":"high"},
-  {"s":"lab:limitation/single-group","p":"lab:addressedBy","o":"lab:concept/multiple-comparisons","anchor":"#lv4a","confidence":"high"},
-  {"s":"lab:method/unsupervised-clustering","p":"lab:hasLimitation","o":"lab:limitation/cluster-not-prediction","anchor":"#lv4a","confidence":"high"},
-  {"s":"lab:limitation/cluster-not-prediction","p":"lab:addressedBy","o":"lab:method/prepandemic-validation","anchor":"#lv5a","confidence":"high"},
-  {"s":"lab:method/prepandemic-validation","p":"lab:hasLimitation","o":"lab:limitation/clinical-time-remains","anchor":"#lv5a","confidence":"high"},
-  {"s":"lab:concept/stage-product","p":"lab:explainedIn","o":"lab:simulation/funnel","anchor":"#lv1","confidence":"high"},
-  {"s":"lab:concept/clinical-phases","p":"lab:partOf","o":"lab:concept/stage-product","anchor":"#lv1","confidence":"mid"},
-  {"s":"lab:concept/null-hypothesis","p":"lab:partOf","o":"lab:method/hypothesis-test","anchor":"#lv2a","confidence":"high"},
-  {"s":"lab:metric/p-value","p":"lab:partOf","o":"lab:method/hypothesis-test","anchor":"#lv2a","confidence":"high"},
-  {"s":"lab:method/hypothesis-test","p":"lab:evaluatedBy","o":"lab:metric/p-value","anchor":"#lv2a","confidence":"high"},
-  {"s":"lab:concept/type1-error","p":"lab:contrastsWith","o":"lab:concept/type2-error","anchor":"#lv2a","confidence":"high"},
-  {"s":"lab:metric/power","p":"lab:derivedFrom","o":"lab:concept/type2-error","anchor":"#lv2a","confidence":"high"},
-  {"s":"lab:concept/sample-size","p":"lab:derivedFrom","o":"lab:metric/power","anchor":"#lv2a","confidence":"high"},
-  {"s":"lab:method/hypothesis-test","p":"lab:demonstratedBy","o":"lab:simulation/test-panel","anchor":"#lv2a","confidence":"high"},
-  {"s":"lab:method/t-interval","p":"lab:assumes","o":"lab:assumption/normality","anchor":"#lv3a","confidence":"high"},
-  {"s":"lab:method/t-interval","p":"lab:derivedFrom","o":"lab:distribution/t","anchor":"#lv3a","confidence":"high"},
-  {"s":"lab:method/t-interval","p":"lab:partOf","o":"lab:concept/standard-error","anchor":"#lv3a","confidence":"mid"},
-  {"s":"lab:concept/standard-error","p":"lab:prerequisiteOf","o":"lab:method/t-interval","anchor":"#lv3a","confidence":"high"},
-  {"s":"lab:concept/degrees-of-freedom","p":"lab:prerequisiteOf","o":"lab:distribution/t","anchor":"#lv3a","confidence":"high"},
-  {"s":"lab:claim/aluminium-ci","p":"lab:supports","o":"lab:method/t-interval","anchor":"#lv3a","confidence":"high"},
-  {"s":"lab:concept/ci-misreading","p":"lab:contrastsWith","o":"lab:method/t-interval","anchor":"#lv3a","confidence":"high"},
-  {"s":"lab:method/t-interval","p":"lab:demonstratedBy","o":"lab:simulation/ci-coverage","anchor":"#lv3a","confidence":"high"},
-  {"s":"lab:concept/multiple-comparisons","p":"lab:addressedBy","o":"lab:method/bonferroni","anchor":"#lv4a","confidence":"high"},
-  {"s":"lab:concept/subgroup-trap","p":"lab:broader","o":"lab:concept/multiple-comparisons","anchor":"#lv4a","confidence":"high"},
-  {"s":"lab:concept/multiple-comparisons","p":"lab:demonstratedBy","o":"lab:simulation/darts","anchor":"#lv4a","confidence":"high"},
-  {"s":"lab:concept/base-rate","p":"lab:relatedTo","o":"lab:concept/subgroup-trap","anchor":"#lv4a","confidence":"mid"},
-  {"s":"lab:concept/combinatorial-explosion","p":"lab:raises","o":"lab:method/unsupervised-clustering","anchor":"#lv4a","confidence":"high"},
-  {"s":"lab:method/unsupervised-clustering","p":"lab:contrastsWith","o":"lab:method/self-supervised-plm","anchor":"#lv4a","confidence":"high"},
-  {"s":"lab:method/unsupervised-clustering","p":"lab:demonstratedBy","o":"lab:simulation/sequence-map","anchor":"#lv4a","confidence":"high"},
-  {"s":"lab:method/three-factor-escape-score","p":"lab:contrastsWith","o":"lab:method/semantic-change-only","anchor":"#lv5a","confidence":"high"},
-  {"s":"lab:method/three-factor-escape-score","p":"lab:evaluatedBy","o":"lab:metric/recall-at-top","anchor":"#lv5a","confidence":"high"},
-  {"s":"lab:method/semantic-change-only","p":"lab:evaluatedBy","o":"lab:metric/recall-at-top","anchor":"#lv5a","confidence":"high"},
-  {"s":"lab:method/prepandemic-validation","p":"lab:demonstratedBy","o":"lab:simulation/sealed-scoring","anchor":"#lv5a","confidence":"high"},
-  {"s":"lab:method/three-factor-escape-score","p":"lab:assertedIn","o":"lab:work/thadani2023evescape","anchor":"#export","confidence":"high"},
-  {"s":"lab:method/semantic-change-only","p":"lab:assertedIn","o":"lab:work/revaluation2025","anchor":"#export","confidence":"high"},
-  {"s":"lab:claim/lineardesign-11min","p":"lab:assertedIn","o":"lab:work/zhang2023lineardesign","anchor":"#export","confidence":"high"},
-  {"s":"lab:claim/ai-phase1-high","p":"lab:supports","o":"lab:concept/clinical-phases","anchor":"#lv5a","confidence":"high"},
-  {"s":"lab:claim/ai-phase2-similar","p":"lab:supports","o":"lab:limitation/phase2-bottleneck","anchor":"#lv5a","confidence":"high"},
-  {"s":"lab:concept/surveillance-bias","p":"lab:hasLimitation","o":"lab:limitation/clinical-time-remains","anchor":"#lv5a","confidence":"mid"},
-  {"s":"lab:concept/surveillance-bias","p":"lab:raises","o":"lab:question/bias-correction","anchor":"#lv5a","confidence":"high"},
-  {"s":"lab:limitation/cluster-not-prediction","p":"lab:raises","o":"lab:question/predict-then-design","anchor":"#outro","confidence":"high"},
-  {"s":"lab:analogy/courtroom","p":"lab:analogyOf","o":"lab:method/hypothesis-test","anchor":"#lv2a","confidence":"high"},
-  {"s":"lab:analogy/ring-toss","p":"lab:analogyOf","o":"lab:method/t-interval","anchor":"#lv3a","confidence":"high"},
-  {"s":"lab:analogy/darts","p":"lab:analogyOf","o":"lab:concept/multiple-comparisons","anchor":"#lv4a","confidence":"high"},
-  {"s":"lab:analogy/sealed-exam","p":"lab:analogyOf","o":"lab:method/prepandemic-validation","anchor":"#lv5a","confidence":"high"},
-  {"s":"lab:concept/stage-product","p":"lab:prerequisiteOf","o":"lab:limitation/phase2-bottleneck","anchor":"#lv1","confidence":"high"},
-  {"s":"lab:assumption/normality","p":"lab:relatedTo","o":"lab:distribution/t","anchor":"#lv3a","confidence":"mid"},
-  {"s":"lab:metric/recall-at-top","p":"lab:derivedFrom","o":"lab:method/prepandemic-validation","anchor":"#lv5a","confidence":"high"},
-  {"s":"lab:method/self-supervised-plm","p":"lab:prerequisiteOf","o":"lab:method/three-factor-escape-score","anchor":"#lv5a","confidence":"mid"},
-  {"s":"lab:concept/combinatorial-explosion","p":"lab:explainedIn","o":"lab:simulation/sequence-map","anchor":"#lv4a","confidence":"high"},
-  {"s":"lab:question/how-approved","p":"lab:raises","o":"lab:method/hypothesis-test","anchor":"#lv2a","confidence":"high"},
-  {"s":"lab:claim/aluminium-ci","p":"lab:assertedIn","o":"lab:work/pagano2000","anchor":"#export","confidence":"high"},
-  {"s":"lab:claim/ai-phase1-high","p":"lab:assertedIn","o":"lab:work/jayatunga2024","anchor":"#export","confidence":"high"},
-  {"s":"lab:claim/ai-phase2-similar","p":"lab:assertedIn","o":"lab:work/jayatunga2024","anchor":"#export","confidence":"high"},
-  {"s":"lab:method/masked-token-recovery","p":"lab:broader","o":"lab:method/self-supervised-plm","anchor":"#lv4a","confidence":"high"},
-  {"s":"lab:method/masked-token-recovery","p":"lab:demonstratedBy","o":"lab:simulation/masked-recovery","anchor":"#lv4a","confidence":"high"},
-  {"s":"lab:method/masked-token-recovery","p":"lab:prerequisiteOf","o":"lab:method/three-factor-escape-score","anchor":"#lv5a","confidence":"mid"}
+ "nodes": [
+  {
+   "id": "lab:question/how-approved",
+   "type": "Question",
+   "label": {
+    "ko": "신약은 어떤 숫자로 허가받는가",
+    "en": "what numbers approve a drug"
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#first",
+   "domain": [
+    "stats"
+   ],
+   "status": "known",
+   "confidence": "high"
+  },
+  {
+   "id": "lab:concept/clinical-phases",
+   "type": "Concept",
+   "label": {
+    "ko": "임상시험 단계",
+    "en": "clinical trial phases"
+   },
+   "definition": {
+    "ko": "전임상·1상·2상·3상·허가 후 4상으로 나뉘어, 단계마다 다른 질문에 답하는 개발 과정."
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv1",
+   "level": 1,
+   "family": "design",
+   "domain": [
+    "stats"
+   ],
+   "anchorType": "B",
+   "flyStrength": "none",
+   "status": "known",
+   "confidence": "high",
+   "evidence": [
+    "F01"
+   ]
+  },
+  {
+   "id": "lab:concept/stage-product",
+   "type": "Concept",
+   "label": {
+    "ko": "단계 통과율의 곱",
+    "en": "product of stage success rates"
+   },
+   "definition": {
+    "ko": "전체 성공 확률은 각 단계 통과율을 모두 곱한 값이므로, 가장 낮은 단계가 전체를 좌우한다."
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv1",
+   "level": 1,
+   "family": "probability",
+   "domain": [
+    "stats"
+   ],
+   "status": "known",
+   "confidence": "high"
+  },
+  {
+   "id": "lab:limitation/phase2-bottleneck",
+   "type": "Limitation",
+   "label": {
+    "ko": "2상 병목",
+    "en": "phase 2 bottleneck"
+   },
+   "definition": {
+    "ko": "앞단계를 개선해도 2상 통과율이 그대로면 전체 기대 성공 수가 거의 움직이지 않는다."
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv1",
+   "domain": [
+    "stats",
+    "ai"
+   ],
+   "status": "known",
+   "confidence": "high",
+   "evidence": [
+    "F02",
+    "F03"
+   ]
+  },
+  {
+   "id": "lab:method/hypothesis-test",
+   "type": "Method",
+   "label": {
+    "ko": "통계적 가설검정",
+    "en": "statistical hypothesis test"
+   },
+   "definition": {
+    "ko": "차이가 없다는 가정을 세우고, 그 가정 아래에서 관측 결과가 얼마나 드문지를 계산해 가정을 버릴지 정하는 절차."
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv2a",
+   "level": 2,
+   "family": "testing",
+   "domain": [
+    "stats"
+   ],
+   "anchorType": "B",
+   "status": "known",
+   "confidence": "high"
+  },
+  {
+   "id": "lab:concept/null-hypothesis",
+   "type": "Concept",
+   "label": {
+    "ko": "귀무가설",
+    "en": "null hypothesis"
+   },
+   "definition": {
+    "ko": "차이가 없다는 기본 가정. 검정은 이것을 버릴 증거가 있는지 묻는다."
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv2a",
+   "level": 2,
+   "family": "testing",
+   "domain": [
+    "stats"
+   ],
+   "status": "known",
+   "confidence": "high"
+  },
+  {
+   "id": "lab:metric/p-value",
+   "type": "Metric",
+   "label": {
+    "ko": "p값",
+    "en": "p-value"
+   },
+   "definition": {
+    "ko": "귀무가설이 참이라고 할 때, 관측된 결과만큼 또는 더 극단적인 결과가 나올 확률."
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv2a",
+   "level": 2,
+   "family": "testing",
+   "domain": [
+    "stats"
+   ],
+   "status": "known",
+   "confidence": "high"
+  },
+  {
+   "id": "lab:concept/type1-error",
+   "type": "Concept",
+   "label": {
+    "ko": "제1종 오류",
+    "en": "type I error"
+   },
+   "definition": {
+    "ko": "차이가 없는데 있다고 판정하는 잘못. 확률은 유의수준 α로 통제한다."
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv2a",
+   "level": 2,
+   "family": "testing",
+   "domain": [
+    "stats"
+   ],
+   "status": "known",
+   "confidence": "high"
+  },
+  {
+   "id": "lab:concept/type2-error",
+   "type": "Concept",
+   "label": {
+    "ko": "제2종 오류",
+    "en": "type II error"
+   },
+   "definition": {
+    "ko": "차이가 있는데 없다고 판정하는 잘못. 1에서 검정력을 뺀 값이다."
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv2a",
+   "level": 2,
+   "family": "testing",
+   "domain": [
+    "stats"
+   ],
+   "status": "known",
+   "confidence": "high"
+  },
+  {
+   "id": "lab:metric/power",
+   "type": "Metric",
+   "label": {
+    "ko": "검정력",
+    "en": "statistical power"
+   },
+   "definition": {
+    "ko": "참 효과가 있을 때 그것을 유의하다고 판정할 확률."
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv2a",
+   "level": 2,
+   "family": "testing",
+   "domain": [
+    "stats"
+   ],
+   "status": "known",
+   "confidence": "high",
+   "evidence": [
+    "F04"
+   ]
+  },
+  {
+   "id": "lab:concept/sample-size",
+   "type": "Concept",
+   "label": {
+    "ko": "표본 크기 정하기",
+    "en": "sample size determination"
+   },
+   "definition": {
+    "ko": "원하는 검정력과 효과 크기를 정하면 필요한 인원이나 사건 수가 계산된다."
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv2a",
+   "level": 2,
+   "family": "testing",
+   "domain": [
+    "stats"
+   ],
+   "status": "known",
+   "confidence": "high"
+  },
+  {
+   "id": "lab:limitation/test-yes-no",
+   "type": "Limitation",
+   "label": {
+    "ko": "검정은 크기를 말하지 않는다",
+    "en": "tests do not give magnitude"
+   },
+   "definition": {
+    "ko": "가설검정은 차이의 유무만 판정하고 효과가 얼마인지는 알려 주지 않는다."
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv2a",
+   "domain": [
+    "stats"
+   ],
+   "status": "known",
+   "confidence": "high"
+  },
+  {
+   "id": "lab:method/t-interval",
+   "type": "Method",
+   "label": {
+    "ko": "t 분포 신뢰구간",
+    "en": "t confidence interval"
+   },
+   "altLabel": {
+    "ko": [
+     "단일표본 t 구간"
+    ],
+    "en": [
+     "one-sample t interval"
+    ]
+   },
+   "definition": {
+    "ko": "모분산을 모르고 표본이 작을 때, 표본표준편차와 t 분포 기준값으로 모평균의 구간을 만드는 방법."
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv3a",
+   "level": 2,
+   "family": "estimation",
+   "domain": [
+    "stats"
+   ],
+   "anchorType": "B",
+   "status": "known",
+   "confidence": "high",
+   "evidence": [
+    "F05"
+   ]
+  },
+  {
+   "id": "lab:distribution/t",
+   "type": "Distribution",
+   "label": {
+    "ko": "t 분포",
+    "en": "Student's t distribution"
+   },
+   "definition": {
+    "ko": "표본표준편차를 쓸 때의 흔들림을 반영해 정규분포보다 꼬리가 두꺼운 분포. 자유도가 커지면 정규분포에 가까워진다."
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv3a",
+   "level": 2,
+   "family": "distributions",
+   "domain": [
+    "stats"
+   ],
+   "status": "known",
+   "confidence": "high"
+  },
+  {
+   "id": "lab:concept/standard-error",
+   "type": "Concept",
+   "label": {
+    "ko": "표준오차",
+    "en": "standard error"
+   },
+   "definition": {
+    "ko": "표본평균이 표본마다 흔들리는 폭. 표본표준편차를 표본 크기의 제곱근으로 나눈 값."
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv3a",
+   "level": 2,
+   "family": "estimation",
+   "domain": [
+    "stats"
+   ],
+   "status": "known",
+   "confidence": "high"
+  },
+  {
+   "id": "lab:concept/degrees-of-freedom",
+   "type": "Concept",
+   "label": {
+    "ko": "자유도",
+    "en": "degrees of freedom"
+   },
+   "definition": {
+    "ko": "표본표준편차를 계산할 때 평균을 이미 썼으므로 자유롭게 움직이는 값이 하나 줄어 n−1이 된다."
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv3a",
+   "level": 2,
+   "family": "estimation",
+   "domain": [
+    "stats"
+   ],
+   "status": "known",
+   "confidence": "high"
+  },
+  {
+   "id": "lab:assumption/normality",
+   "type": "Assumption",
+   "label": {
+    "ko": "정규성 가정",
+    "en": "normality assumption"
+   },
+   "definition": {
+    "ko": "모집단이 정규분포를 따른다는 가정. 작은 표본의 t 구간은 이 가정에 기댄다."
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv3a",
+   "level": 2,
+   "family": "estimation",
+   "domain": [
+    "stats"
+   ],
+   "status": "known",
+   "confidence": "high"
+  },
+  {
+   "id": "lab:claim/aluminium-ci",
+   "type": "Claim",
+   "label": {
+    "ko": "예시의 95% 신뢰구간은 (32.59, 42.73)",
+    "en": "worked example 95% CI is (32.59, 42.73)"
+   },
+   "definition": {
+    "ko": "n=10, 표본평균 37.66, 표본표준편차 7.09에서 t(0.025,9)=2.262를 써서 얻은 구간."
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv3a",
+   "level": 2,
+   "family": "estimation",
+   "domain": [
+    "stats"
+   ],
+   "status": "known",
+   "confidence": "high",
+   "evidence": [
+    "F05"
+   ],
+   "source": [
+    {
+     "cite": "저자 계산",
+     "loc": "③단계 손계산"
+    }
+   ]
+  },
+  {
+   "id": "lab:concept/ci-misreading",
+   "type": "Concept",
+   "label": {
+    "ko": "신뢰구간의 흔한 오독",
+    "en": "common CI misinterpretation"
+   },
+   "definition": {
+    "ko": "‘이 구간에 모수가 있을 확률 95%’는 틀린 해석이다. 같은 방법을 반복할 때 약 95%가 모수를 포함한다는 뜻이다."
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv3a",
+   "level": 2,
+   "family": "estimation",
+   "domain": [
+    "stats"
+   ],
+   "status": "known",
+   "confidence": "high"
+  },
+  {
+   "id": "lab:limitation/single-group",
+   "type": "Limitation",
+   "label": {
+    "ko": "집단 하나에서만 성립",
+    "en": "holds for a single group only"
+   },
+   "definition": {
+    "ko": "구간의 95%라는 성질은 집단을 쪼개 여러 번 추정하면 유지되지 않는다."
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv3a",
+   "domain": [
+    "stats"
+   ],
+   "status": "known",
+   "confidence": "high"
+  },
+  {
+   "id": "lab:concept/multiple-comparisons",
+   "type": "Concept",
+   "label": {
+    "ko": "다중 비교",
+    "en": "multiple comparisons"
+   },
+   "definition": {
+    "ko": "같은 자료에 검정을 여러 번 하면 거짓 양성이 쌓여, 한 번용으로 설계한 유의수준이 지켜지지 않는다."
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv4a",
+   "level": 3,
+   "family": "testing",
+   "domain": [
+    "stats"
+   ],
+   "status": "known",
+   "confidence": "high",
+   "evidence": [
+    "F06"
+   ]
+  },
+  {
+   "id": "lab:method/bonferroni",
+   "type": "Method",
+   "label": {
+    "ko": "본페로니 보정",
+    "en": "Bonferroni correction"
+   },
+   "definition": {
+    "ko": "검정 횟수 k로 유의수준을 나눠 기준을 좁히는 가장 단순한 다중 비교 보정."
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv4a",
+   "level": 3,
+   "family": "testing",
+   "domain": [
+    "stats"
+   ],
+   "status": "known",
+   "confidence": "high"
+  },
+  {
+   "id": "lab:concept/subgroup-trap",
+   "type": "Concept",
+   "label": {
+    "ko": "하위집단 함정",
+    "en": "subgroup analysis trap"
+   },
+   "definition": {
+    "ko": "여러 하위집단을 들여다본 뒤 가장 좋은 결과만 보고하면 우연한 발견을 결론으로 삼게 된다."
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv4a",
+   "level": 3,
+   "family": "testing",
+   "domain": [
+    "stats"
+   ],
+   "status": "known",
+   "confidence": "high"
+  },
+  {
+   "id": "lab:concept/base-rate",
+   "type": "Concept",
+   "label": {
+    "ko": "바탕 비율",
+    "en": "base rate"
+   },
+   "altLabel": {
+    "ko": [
+     "기저율"
+    ],
+    "en": [
+     "prior prevalence"
+    ]
+   },
+   "definition": {
+    "ko": "드문 병에서는 검사 성능이 좋아도 양성의 다수가 거짓 양성이 될 수 있다."
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv4a",
+   "level": 3,
+   "family": "bayes",
+   "domain": [
+    "stats"
+   ],
+   "status": "known",
+   "confidence": "high"
+  },
+  {
+   "id": "lab:method/unsupervised-clustering",
+   "type": "Method",
+   "label": {
+    "ko": "비지도 군집화",
+    "en": "unsupervised clustering"
+   },
+   "definition": {
+    "ko": "정답표 없이 자료 사이의 거리만으로 무리를 묶는 방법."
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv4a",
+   "level": 3,
+   "family": "multivariate",
+   "domain": [
+    "stats",
+    "ai"
+   ],
+   "anchorType": "B",
+   "status": "known",
+   "confidence": "high"
+  },
+  {
+   "id": "lab:method/self-supervised-plm",
+   "type": "Method",
+   "label": {
+    "ko": "자기지도 단백질 언어모델",
+    "en": "self-supervised protein language model"
+   },
+   "definition": {
+    "ko": "서열의 일부를 가리고 복원하는 과제로 라벨 없이 학습해, 있을 수 있는 서열의 분포를 배우는 모델."
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv4a",
+   "level": 4,
+   "family": "multivariate",
+   "domain": [
+    "ai"
+   ],
+   "status": "known",
+   "confidence": "high",
+   "evidence": [
+    "F09"
+   ]
+  },
+  {
+   "id": "lab:concept/combinatorial-explosion",
+   "type": "Concept",
+   "label": {
+    "ko": "조합 폭발",
+    "en": "combinatorial explosion"
+   },
+   "definition": {
+    "ko": "자리 수와 동시 변이 수가 늘면 가능한 조합이 기하급수로 늘어 전수 실험이 불가능해진다."
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv4a",
+   "level": 3,
+   "family": "probability",
+   "domain": [
+    "stats",
+    "ai"
+   ],
+   "status": "known",
+   "confidence": "high"
+  },
+  {
+   "id": "lab:limitation/cluster-not-prediction",
+   "type": "Limitation",
+   "label": {
+    "ko": "무리를 찾는 것과 맞히는 것은 다르다",
+    "en": "finding clusters is not predicting"
+   },
+   "definition": {
+    "ko": "새 무리를 탐지했다는 사실만으로 그 무리가 면역을 회피한다고 말할 수 없다."
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv4a",
+   "domain": [
+    "stats",
+    "ai"
+   ],
+   "status": "known",
+   "confidence": "high"
+  },
+  {
+   "id": "lab:method/prepandemic-validation",
+   "type": "Method",
+   "label": {
+    "ko": "사전 정보 봉인 검증",
+    "en": "pre-pandemic held-out validation"
+   },
+   "definition": {
+    "ko": "특정 시점 이후의 정보를 차단한 상태로 모델을 돌려, 그 이후 실제로 나타난 결과를 얼마나 앞서 지목하는지 채점하는 방식."
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv5a",
+   "level": 4,
+   "family": "design",
+   "domain": [
+    "stats",
+    "ai"
+   ],
+   "anchorType": "B",
+   "status": "known",
+   "confidence": "high",
+   "evidence": [
+    "F07",
+    "F08"
+   ]
+  },
+  {
+   "id": "lab:method/three-factor-escape-score",
+   "type": "Method",
+   "label": {
+    "ko": "세 요소 결합 회피 점수",
+    "en": "three-factor escape score"
+   },
+   "definition": {
+    "ko": "변이가 기능을 유지할 확률, 항체가 닿는 자리일 확률, 결합을 깨뜨릴 확률을 결합해 회피 가능성을 점수화하는 방식."
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv5a",
+   "level": 4,
+   "family": "multivariate",
+   "domain": [
+    "ai"
+   ],
+   "status": "known",
+   "confidence": "high",
+   "evidence": [
+    "F07"
+   ],
+   "source": [
+    {
+     "cite": "thadani2023evescape",
+     "loc": "Fig. 1"
+    }
+   ]
+  },
+  {
+   "id": "lab:method/semantic-change-only",
+   "type": "Method",
+   "label": {
+    "ko": "의미 변화만 쓰는 점수",
+    "en": "semantic-change-only score"
+   },
+   "definition": {
+    "ko": "서열 표현의 변화량만으로 면역 회피를 짚으려는 접근."
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv5a",
+   "level": 4,
+   "family": "multivariate",
+   "domain": [
+    "ai"
+   ],
+   "status": "known",
+   "confidence": "mid",
+   "evidence": [
+    "F10"
+   ]
+  },
+  {
+   "id": "lab:metric/recall-at-top",
+   "type": "Metric",
+   "label": {
+    "ko": "상위 비율 적중률",
+    "en": "recall at top k%"
+   },
+   "definition": {
+    "ko": "점수 상위 몇 퍼센트 안에 실제 대상이 몇 개 들어왔는지의 비율. 무작위로 고르면 그 비율 자체가 기준선이 된다."
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv5a",
+   "level": 3,
+   "family": "testing",
+   "domain": [
+    "stats",
+    "ai"
+   ],
+   "status": "known",
+   "confidence": "high"
+  },
+  {
+   "id": "lab:concept/surveillance-bias",
+   "type": "Concept",
+   "label": {
+    "ko": "감시 자료 편향",
+    "en": "surveillance data bias"
+   },
+   "definition": {
+    "ko": "서열 제출량이 지역·시기마다 달라, 자료가 적은 곳의 변화는 늦게 보인다."
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv5a",
+   "level": 3,
+   "family": "survey",
+   "domain": [
+    "stats"
+   ],
+   "status": "known",
+   "confidence": "high"
+  },
+  {
+   "id": "lab:claim/ai-phase1-high",
+   "type": "Claim",
+   "label": {
+    "ko": "AI 발굴 분자의 1상 성공률이 높게 보고됐다",
+    "en": "AI-discovered molecules report high phase 1 success"
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv5a",
+   "domain": [
+    "ai"
+   ],
+   "status": "known",
+   "confidence": "high",
+   "evidence": [
+    "F02"
+   ],
+   "source": [
+    {
+     "cite": "bcg2024aipipeline",
+     "loc": "1상 완료 24개 중 21개"
+    }
+   ]
+  },
+  {
+   "id": "lab:claim/ai-phase2-similar",
+   "type": "Claim",
+   "label": {
+    "ko": "AI 발굴 약물의 2상 실패율은 비AI와 비슷하다",
+    "en": "phase 2 failure similar to non-AI drugs"
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv5a",
+   "domain": [
+    "ai"
+   ],
+   "status": "known",
+   "confidence": "high",
+   "evidence": [
+    "F03"
+   ],
+   "source": [
+    {
+     "cite": "insilico2025rentosertib",
+     "loc": "논의"
+    }
+   ]
+  },
+  {
+   "id": "lab:claim/lineardesign-11min",
+   "type": "Claim",
+   "label": {
+    "ko": "서열 최적화 알고리즘이 스파이크 기준 약 11분에 답을 낸다",
+    "en": "optimization algorithm finds spike design in about 11 minutes"
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv5a",
+   "domain": [
+    "ai"
+   ],
+   "status": "known",
+   "confidence": "high",
+   "evidence": [
+    "F11"
+   ],
+   "source": [
+    {
+     "cite": "zhang2023lineardesign",
+     "loc": "본문"
+    }
+   ]
+  },
+  {
+   "id": "lab:limitation/clinical-time-remains",
+   "type": "Limitation",
+   "label": {
+    "ko": "사람에서 사건을 세는 시간은 남는다",
+    "en": "time to accrue events remains"
+   },
+   "definition": {
+    "ko": "설계와 최적화가 빨라져도 필요한 사건 수가 쌓이기를 기다리는 기간은 계산으로 줄지 않는다."
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv5a",
+   "domain": [
+    "stats",
+    "ai"
+   ],
+   "status": "known",
+   "confidence": "high"
+  },
+  {
+   "id": "lab:analogy/courtroom",
+   "type": "Analogy",
+   "label": {
+    "ko": "재판정 ↔ 가설검정",
+    "en": "courtroom ↔ hypothesis test"
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv2a",
+   "domain": [
+    "stats"
+   ],
+   "status": "known",
+   "confidence": "high"
+  },
+  {
+   "id": "lab:analogy/ring-toss",
+   "type": "Analogy",
+   "label": {
+    "ko": "고리 던지기 ↔ 신뢰구간",
+    "en": "ring toss ↔ confidence interval"
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv3a",
+   "domain": [
+    "stats"
+   ],
+   "status": "known",
+   "confidence": "high"
+  },
+  {
+   "id": "lab:analogy/darts",
+   "type": "Analogy",
+   "label": {
+    "ko": "다트 ↔ 다중 비교",
+    "en": "darts ↔ multiple comparisons"
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv4a",
+   "domain": [
+    "stats"
+   ],
+   "status": "known",
+   "confidence": "high"
+  },
+  {
+   "id": "lab:analogy/sealed-exam",
+   "type": "Analogy",
+   "label": {
+    "ko": "봉인된 시험지 ↔ 사전 정보 검증",
+    "en": "sealed exam ↔ held-out validation"
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv5a",
+   "domain": [
+    "stats",
+    "ai"
+   ],
+   "status": "known",
+   "confidence": "high"
+  },
+  {
+   "id": "lab:simulation/funnel",
+   "type": "Simulation",
+   "label": {
+    "ko": "관문 통과 모형",
+    "en": "stage funnel simulation"
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv1",
+   "domain": [
+    "stats"
+   ],
+   "status": "known",
+   "confidence": "high"
+  },
+  {
+   "id": "lab:simulation/test-panel",
+   "type": "Simulation",
+   "label": {
+    "ko": "판정 모형",
+    "en": "hypothesis test simulation"
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv2a",
+   "domain": [
+    "stats"
+   ],
+   "status": "known",
+   "confidence": "high"
+  },
+  {
+   "id": "lab:simulation/ci-coverage",
+   "type": "Simulation",
+   "label": {
+    "ko": "고리 던지기 모형",
+    "en": "CI coverage simulation"
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv3a",
+   "domain": [
+    "stats"
+   ],
+   "status": "known",
+   "confidence": "high"
+  },
+  {
+   "id": "lab:simulation/darts",
+   "type": "Simulation",
+   "label": {
+    "ko": "다트 모형",
+    "en": "multiple comparison simulation"
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv4a",
+   "domain": [
+    "stats"
+   ],
+   "status": "known",
+   "confidence": "high"
+  },
+  {
+   "id": "lab:simulation/sequence-map",
+   "type": "Simulation",
+   "label": {
+    "ko": "서열 지도 모형",
+    "en": "sequence map simulation"
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv4a",
+   "domain": [
+    "ai"
+   ],
+   "status": "known",
+   "confidence": "high"
+  },
+  {
+   "id": "lab:simulation/sealed-scoring",
+   "type": "Simulation",
+   "label": {
+    "ko": "봉인 채점 모형",
+    "en": "sealed scoring simulation"
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv5a",
+   "domain": [
+    "stats",
+    "ai"
+   ],
+   "status": "known",
+   "confidence": "high"
+  },
+  {
+   "id": "lab:question/predict-then-design",
+   "type": "Question",
+   "label": {
+    "ko": "앞서 지목하는 것과 그것으로 설계하는 것 사이는 어떻게 이어지나",
+    "en": "from early flagging to actual design"
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#outro",
+   "domain": [
+    "stats",
+    "ai"
+   ],
+   "status": "known",
+   "confidence": "mid"
+  },
+  {
+   "id": "lab:question/bias-correction",
+   "type": "Question",
+   "label": {
+    "ko": "감시 자료의 지역 편향을 통계적으로 어디까지 보정할 수 있나",
+    "en": "how far can surveillance bias be corrected"
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv5a",
+   "domain": [
+    "stats"
+   ],
+   "status": "known",
+   "confidence": "mid"
+  },
+  {
+   "id": "lab:work/thadani2023evescape",
+   "type": "Work",
+   "label": {
+    "ko": "사전 자료로 회피를 예측한 연구 (2023)",
+    "en": "Learning from prepandemic data to forecast viral escape"
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#export",
+   "domain": [
+    "ai"
+   ],
+   "status": "known",
+   "confidence": "high"
+  },
+  {
+   "id": "lab:work/zhang2023lineardesign",
+   "type": "Work",
+   "label": {
+    "ko": "서열 최적화 알고리즘 연구 (2023)",
+    "en": "Algorithm for optimized mRNA design"
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#export",
+   "domain": [
+    "ai"
+   ],
+   "status": "known",
+   "confidence": "high"
+  },
+  {
+   "id": "lab:work/revaluation2025",
+   "type": "Work",
+   "label": {
+    "ko": "의미 변화 지표 재평가 연구 (2025)",
+    "en": "systematic evaluation of the language-of-viral-escape model"
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#export",
+   "domain": [
+    "ai"
+   ],
+   "status": "known",
+   "confidence": "high"
+  },
+  {
+   "id": "lab:work/pagano2000",
+   "type": "Work",
+   "label": {
+    "ko": "Principles of Biostatistics (2000)",
+    "en": "Principles of Biostatistics, 2nd ed."
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#export",
+   "domain": [
+    "stats"
+   ],
+   "status": "known",
+   "confidence": "high"
+  },
+  {
+   "id": "lab:work/jayatunga2024",
+   "type": "Work",
+   "label": {
+    "ko": "AI 발굴 약물의 임상 성적 분석 (2024)",
+    "en": "How successful are AI-discovered drugs in clinical trials?"
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#export",
+   "domain": [
+    "ai"
+   ],
+   "status": "known",
+   "confidence": "high"
+  },
+  {
+   "id": "lab:method/masked-token-recovery",
+   "type": "Method",
+   "label": {
+    "ko": "가린 자리 복원",
+    "en": "masked token recovery"
+   },
+   "definition": {
+    "ko": "서열의 한 자리를 가리고 그 자리를 맞히게 하는 과제. 정답이 가려진 글자 자신이므로 사람이 라벨을 달지 않는다."
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv4a",
+   "level": 4,
+   "family": "multivariate",
+   "domain": [
+    "ai"
+   ],
+   "anchorType": "B",
+   "status": "known",
+   "confidence": "high"
+  },
+  {
+   "id": "lab:simulation/masked-recovery",
+   "type": "Simulation",
+   "label": {
+    "ko": "가린 자리 복원 모형",
+    "en": "masked recovery simulation"
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#lv4a",
+   "domain": [
+    "ai"
+   ],
+   "status": "known",
+   "confidence": "high"
+  },
+  {
+   "id": "lab:topic/bayes-theorem",
+   "type": "Topic",
+   "label": {
+    "ko": "베이즈 정리",
+    "en": "Bayes' theorem"
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#kg",
+   "domain": [
+    "stats"
+   ],
+   "status": "known",
+   "confidence": "high",
+   "level": 1,
+   "via": "rehang-2026-11-24"
+  },
+  {
+   "id": "lab:topic/ci-interpretation",
+   "type": "Topic",
+   "label": {
+    "ko": "신뢰구간 해석",
+    "en": "Interpreting confidence intervals"
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#kg",
+   "domain": [
+    "stats"
+   ],
+   "status": "known",
+   "confidence": "high",
+   "level": 2,
+   "via": "rehang-2026-11-24"
+  },
+  {
+   "id": "lab:topic/clinical-trial-phases",
+   "type": "Topic",
+   "label": {
+    "ko": "임상시험 단계",
+    "en": "Clinical trial phases"
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#kg",
+   "domain": [
+    "stats"
+   ],
+   "status": "known",
+   "confidence": "high",
+   "level": 3,
+   "via": "rehang-2026-11-24"
+  },
+  {
+   "id": "lab:topic/clustering",
+   "type": "Topic",
+   "label": {
+    "ko": "군집화",
+    "en": "Clustering"
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#kg",
+   "domain": [
+    "ai"
+   ],
+   "status": "known",
+   "confidence": "high",
+   "level": 2,
+   "via": "rehang-2026-11-24"
+  },
+  {
+   "id": "lab:topic/confidence-interval",
+   "type": "Topic",
+   "label": {
+    "ko": "신뢰구간",
+    "en": "Confidence interval"
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#kg",
+   "domain": [
+    "stats"
+   ],
+   "status": "known",
+   "confidence": "high",
+   "level": 2,
+   "via": "rehang-2026-11-24"
+  },
+  {
+   "id": "lab:topic/multiple-comparisons",
+   "type": "Topic",
+   "label": {
+    "ko": "다중 비교",
+    "en": "Multiple comparisons"
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#kg",
+   "domain": [
+    "stats"
+   ],
+   "status": "known",
+   "confidence": "high",
+   "level": 2,
+   "via": "rehang-2026-11-24"
+  },
+  {
+   "id": "lab:topic/null-alternative",
+   "type": "Topic",
+   "label": {
+    "ko": "귀무·대립가설",
+    "en": "Null and alternative hypotheses"
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#kg",
+   "domain": [
+    "stats"
+   ],
+   "status": "known",
+   "confidence": "high",
+   "level": 2,
+   "via": "rehang-2026-11-24"
+  },
+  {
+   "id": "lab:topic/p-value",
+   "type": "Topic",
+   "label": {
+    "ko": "p값",
+    "en": "p-value"
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#kg",
+   "domain": [
+    "stats"
+   ],
+   "status": "known",
+   "confidence": "high",
+   "level": 2,
+   "via": "rehang-2026-11-24"
+  },
+  {
+   "id": "lab:topic/sample-size",
+   "type": "Topic",
+   "label": {
+    "ko": "표본 크기 정하기",
+    "en": "Sample size determination"
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#kg",
+   "domain": [
+    "stats"
+   ],
+   "status": "known",
+   "confidence": "high",
+   "level": 2,
+   "via": "rehang-2026-11-24"
+  },
+  {
+   "id": "lab:topic/sampling-distribution-mean",
+   "type": "Topic",
+   "label": {
+    "ko": "표본평균의 분포",
+    "en": "Sampling distribution of the mean"
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#kg",
+   "domain": [
+    "stats"
+   ],
+   "status": "known",
+   "confidence": "high",
+   "level": 2,
+   "via": "rehang-2026-11-24"
+  },
+  {
+   "id": "lab:topic/statistical-power",
+   "type": "Topic",
+   "label": {
+    "ko": "검정력",
+    "en": "Statistical power"
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#kg",
+   "domain": [
+    "stats"
+   ],
+   "status": "known",
+   "confidence": "high",
+   "level": 2,
+   "via": "rehang-2026-11-24"
+  },
+  {
+   "id": "lab:topic/t-chi2-f",
+   "type": "Topic",
+   "label": {
+    "ko": "t·카이제곱·F 분포",
+    "en": "t, chi-square and F distributions"
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#kg",
+   "domain": [
+    "stats"
+   ],
+   "status": "known",
+   "confidence": "high",
+   "level": 2,
+   "via": "rehang-2026-11-24"
+  },
+  {
+   "id": "lab:topic/type-i-ii-errors",
+   "type": "Topic",
+   "label": {
+    "ko": "오류 두 종류",
+    "en": "Type I and type II errors"
+   },
+   "page": "01_clinical_stats_ai",
+   "anchor": "#kg",
+   "domain": [
+    "stats"
+   ],
+   "status": "known",
+   "confidence": "high",
+   "level": 2,
+   "via": "rehang-2026-11-24"
+  }
+ ],
+ "edges": [
+  {
+   "s": "lab:question/how-approved",
+   "p": "lab:raises",
+   "o": "lab:concept/clinical-phases",
+   "anchor": "#lv1",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/clinical-phases",
+   "p": "lab:prerequisiteOf",
+   "o": "lab:method/hypothesis-test",
+   "anchor": "#lv2a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/hypothesis-test",
+   "p": "lab:prerequisiteOf",
+   "o": "lab:method/t-interval",
+   "anchor": "#lv3a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/t-interval",
+   "p": "lab:prerequisiteOf",
+   "o": "lab:concept/multiple-comparisons",
+   "anchor": "#lv4a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/multiple-comparisons",
+   "p": "lab:prerequisiteOf",
+   "o": "lab:method/prepandemic-validation",
+   "anchor": "#lv5a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/clinical-phases",
+   "p": "lab:hasLimitation",
+   "o": "lab:limitation/phase2-bottleneck",
+   "anchor": "#lv1",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:limitation/phase2-bottleneck",
+   "p": "lab:addressedBy",
+   "o": "lab:method/hypothesis-test",
+   "anchor": "#lv2a",
+   "confidence": "mid"
+  },
+  {
+   "s": "lab:method/hypothesis-test",
+   "p": "lab:hasLimitation",
+   "o": "lab:limitation/test-yes-no",
+   "anchor": "#lv2a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:limitation/test-yes-no",
+   "p": "lab:addressedBy",
+   "o": "lab:method/t-interval",
+   "anchor": "#lv3a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/t-interval",
+   "p": "lab:hasLimitation",
+   "o": "lab:limitation/single-group",
+   "anchor": "#lv3a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:limitation/single-group",
+   "p": "lab:addressedBy",
+   "o": "lab:concept/multiple-comparisons",
+   "anchor": "#lv4a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/unsupervised-clustering",
+   "p": "lab:hasLimitation",
+   "o": "lab:limitation/cluster-not-prediction",
+   "anchor": "#lv4a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:limitation/cluster-not-prediction",
+   "p": "lab:addressedBy",
+   "o": "lab:method/prepandemic-validation",
+   "anchor": "#lv5a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/prepandemic-validation",
+   "p": "lab:hasLimitation",
+   "o": "lab:limitation/clinical-time-remains",
+   "anchor": "#lv5a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/stage-product",
+   "p": "lab:explainedIn",
+   "o": "lab:simulation/funnel",
+   "anchor": "#lv1",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/clinical-phases",
+   "p": "lab:partOf",
+   "o": "lab:concept/stage-product",
+   "anchor": "#lv1",
+   "confidence": "mid"
+  },
+  {
+   "s": "lab:concept/null-hypothesis",
+   "p": "lab:partOf",
+   "o": "lab:method/hypothesis-test",
+   "anchor": "#lv2a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:metric/p-value",
+   "p": "lab:partOf",
+   "o": "lab:method/hypothesis-test",
+   "anchor": "#lv2a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/hypothesis-test",
+   "p": "lab:evaluatedBy",
+   "o": "lab:metric/p-value",
+   "anchor": "#lv2a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/type1-error",
+   "p": "lab:contrastsWith",
+   "o": "lab:concept/type2-error",
+   "anchor": "#lv2a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:metric/power",
+   "p": "lab:derivedFrom",
+   "o": "lab:concept/type2-error",
+   "anchor": "#lv2a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/sample-size",
+   "p": "lab:derivedFrom",
+   "o": "lab:metric/power",
+   "anchor": "#lv2a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/hypothesis-test",
+   "p": "lab:demonstratedBy",
+   "o": "lab:simulation/test-panel",
+   "anchor": "#lv2a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/t-interval",
+   "p": "lab:assumes",
+   "o": "lab:assumption/normality",
+   "anchor": "#lv3a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/t-interval",
+   "p": "lab:derivedFrom",
+   "o": "lab:distribution/t",
+   "anchor": "#lv3a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/t-interval",
+   "p": "lab:partOf",
+   "o": "lab:concept/standard-error",
+   "anchor": "#lv3a",
+   "confidence": "mid"
+  },
+  {
+   "s": "lab:concept/standard-error",
+   "p": "lab:prerequisiteOf",
+   "o": "lab:method/t-interval",
+   "anchor": "#lv3a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/degrees-of-freedom",
+   "p": "lab:prerequisiteOf",
+   "o": "lab:distribution/t",
+   "anchor": "#lv3a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:claim/aluminium-ci",
+   "p": "lab:supports",
+   "o": "lab:method/t-interval",
+   "anchor": "#lv3a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/ci-misreading",
+   "p": "lab:contrastsWith",
+   "o": "lab:method/t-interval",
+   "anchor": "#lv3a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/t-interval",
+   "p": "lab:demonstratedBy",
+   "o": "lab:simulation/ci-coverage",
+   "anchor": "#lv3a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/multiple-comparisons",
+   "p": "lab:addressedBy",
+   "o": "lab:method/bonferroni",
+   "anchor": "#lv4a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/subgroup-trap",
+   "p": "lab:broader",
+   "o": "lab:concept/multiple-comparisons",
+   "anchor": "#lv4a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/multiple-comparisons",
+   "p": "lab:demonstratedBy",
+   "o": "lab:simulation/darts",
+   "anchor": "#lv4a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/base-rate",
+   "p": "lab:relatedTo",
+   "o": "lab:concept/subgroup-trap",
+   "anchor": "#lv4a",
+   "confidence": "mid"
+  },
+  {
+   "s": "lab:concept/combinatorial-explosion",
+   "p": "lab:raises",
+   "o": "lab:method/unsupervised-clustering",
+   "anchor": "#lv4a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/unsupervised-clustering",
+   "p": "lab:contrastsWith",
+   "o": "lab:method/self-supervised-plm",
+   "anchor": "#lv4a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/unsupervised-clustering",
+   "p": "lab:demonstratedBy",
+   "o": "lab:simulation/sequence-map",
+   "anchor": "#lv4a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/three-factor-escape-score",
+   "p": "lab:contrastsWith",
+   "o": "lab:method/semantic-change-only",
+   "anchor": "#lv5a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/three-factor-escape-score",
+   "p": "lab:evaluatedBy",
+   "o": "lab:metric/recall-at-top",
+   "anchor": "#lv5a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/semantic-change-only",
+   "p": "lab:evaluatedBy",
+   "o": "lab:metric/recall-at-top",
+   "anchor": "#lv5a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/prepandemic-validation",
+   "p": "lab:demonstratedBy",
+   "o": "lab:simulation/sealed-scoring",
+   "anchor": "#lv5a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/three-factor-escape-score",
+   "p": "lab:assertedIn",
+   "o": "lab:work/thadani2023evescape",
+   "anchor": "#export",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/semantic-change-only",
+   "p": "lab:assertedIn",
+   "o": "lab:work/revaluation2025",
+   "anchor": "#export",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:claim/lineardesign-11min",
+   "p": "lab:assertedIn",
+   "o": "lab:work/zhang2023lineardesign",
+   "anchor": "#export",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:claim/ai-phase1-high",
+   "p": "lab:supports",
+   "o": "lab:concept/clinical-phases",
+   "anchor": "#lv5a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:claim/ai-phase2-similar",
+   "p": "lab:supports",
+   "o": "lab:limitation/phase2-bottleneck",
+   "anchor": "#lv5a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/surveillance-bias",
+   "p": "lab:hasLimitation",
+   "o": "lab:limitation/clinical-time-remains",
+   "anchor": "#lv5a",
+   "confidence": "mid"
+  },
+  {
+   "s": "lab:concept/surveillance-bias",
+   "p": "lab:raises",
+   "o": "lab:question/bias-correction",
+   "anchor": "#lv5a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:limitation/cluster-not-prediction",
+   "p": "lab:raises",
+   "o": "lab:question/predict-then-design",
+   "anchor": "#outro",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:analogy/courtroom",
+   "p": "lab:analogyOf",
+   "o": "lab:method/hypothesis-test",
+   "anchor": "#lv2a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:analogy/ring-toss",
+   "p": "lab:analogyOf",
+   "o": "lab:method/t-interval",
+   "anchor": "#lv3a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:analogy/darts",
+   "p": "lab:analogyOf",
+   "o": "lab:concept/multiple-comparisons",
+   "anchor": "#lv4a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:analogy/sealed-exam",
+   "p": "lab:analogyOf",
+   "o": "lab:method/prepandemic-validation",
+   "anchor": "#lv5a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:concept/stage-product",
+   "p": "lab:prerequisiteOf",
+   "o": "lab:limitation/phase2-bottleneck",
+   "anchor": "#lv1",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:assumption/normality",
+   "p": "lab:relatedTo",
+   "o": "lab:distribution/t",
+   "anchor": "#lv3a",
+   "confidence": "mid"
+  },
+  {
+   "s": "lab:metric/recall-at-top",
+   "p": "lab:derivedFrom",
+   "o": "lab:method/prepandemic-validation",
+   "anchor": "#lv5a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/self-supervised-plm",
+   "p": "lab:prerequisiteOf",
+   "o": "lab:method/three-factor-escape-score",
+   "anchor": "#lv5a",
+   "confidence": "mid"
+  },
+  {
+   "s": "lab:concept/combinatorial-explosion",
+   "p": "lab:explainedIn",
+   "o": "lab:simulation/sequence-map",
+   "anchor": "#lv4a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:question/how-approved",
+   "p": "lab:raises",
+   "o": "lab:method/hypothesis-test",
+   "anchor": "#lv2a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:claim/aluminium-ci",
+   "p": "lab:assertedIn",
+   "o": "lab:work/pagano2000",
+   "anchor": "#export",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:claim/ai-phase1-high",
+   "p": "lab:assertedIn",
+   "o": "lab:work/jayatunga2024",
+   "anchor": "#export",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:claim/ai-phase2-similar",
+   "p": "lab:assertedIn",
+   "o": "lab:work/jayatunga2024",
+   "anchor": "#export",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/masked-token-recovery",
+   "p": "lab:broader",
+   "o": "lab:method/self-supervised-plm",
+   "anchor": "#lv4a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/masked-token-recovery",
+   "p": "lab:demonstratedBy",
+   "o": "lab:simulation/masked-recovery",
+   "anchor": "#lv4a",
+   "confidence": "high"
+  },
+  {
+   "s": "lab:method/masked-token-recovery",
+   "p": "lab:prerequisiteOf",
+   "o": "lab:method/three-factor-escape-score",
+   "anchor": "#lv5a",
+   "confidence": "mid"
+  },
+  {
+   "s": "lab:concept/base-rate",
+   "p": "lab:broader",
+   "o": "lab:topic/bayes-theorem",
+   "anchor": "#lv4a",
+   "confidence": "high",
+   "via": "rehang-2026-11-24"
+  },
+  {
+   "s": "lab:concept/ci-misreading",
+   "p": "lab:broader",
+   "o": "lab:topic/ci-interpretation",
+   "anchor": "#lv3a",
+   "confidence": "high",
+   "via": "rehang-2026-11-24"
+  },
+  {
+   "s": "lab:concept/clinical-phases",
+   "p": "lab:broader",
+   "o": "lab:topic/clinical-trial-phases",
+   "anchor": "#lv1",
+   "confidence": "high",
+   "via": "rehang-2026-11-24"
+  },
+  {
+   "s": "lab:concept/multiple-comparisons",
+   "p": "lab:broader",
+   "o": "lab:topic/multiple-comparisons",
+   "anchor": "#lv4a",
+   "confidence": "high",
+   "via": "rehang-2026-11-24"
+  },
+  {
+   "s": "lab:concept/null-hypothesis",
+   "p": "lab:broader",
+   "o": "lab:topic/null-alternative",
+   "anchor": "#lv2a",
+   "confidence": "high",
+   "via": "rehang-2026-11-24"
+  },
+  {
+   "s": "lab:concept/sample-size",
+   "p": "lab:broader",
+   "o": "lab:topic/sample-size",
+   "anchor": "#lv2a",
+   "confidence": "high",
+   "via": "rehang-2026-11-24"
+  },
+  {
+   "s": "lab:concept/stage-product",
+   "p": "lab:broader",
+   "o": "lab:topic/clinical-trial-phases",
+   "anchor": "#lv1",
+   "confidence": "high",
+   "via": "rehang-2026-11-24"
+  },
+  {
+   "s": "lab:concept/standard-error",
+   "p": "lab:broader",
+   "o": "lab:topic/sampling-distribution-mean",
+   "anchor": "#lv3a",
+   "confidence": "high",
+   "via": "rehang-2026-11-24"
+  },
+  {
+   "s": "lab:concept/subgroup-trap",
+   "p": "lab:broader",
+   "o": "lab:topic/multiple-comparisons",
+   "anchor": "#lv4a",
+   "confidence": "high",
+   "via": "rehang-2026-11-24"
+  },
+  {
+   "s": "lab:concept/type1-error",
+   "p": "lab:broader",
+   "o": "lab:topic/type-i-ii-errors",
+   "anchor": "#lv2a",
+   "confidence": "high",
+   "via": "rehang-2026-11-24"
+  },
+  {
+   "s": "lab:concept/type2-error",
+   "p": "lab:broader",
+   "o": "lab:topic/type-i-ii-errors",
+   "anchor": "#lv2a",
+   "confidence": "high",
+   "via": "rehang-2026-11-24"
+  },
+  {
+   "s": "lab:distribution/t",
+   "p": "lab:broader",
+   "o": "lab:topic/t-chi2-f",
+   "anchor": "#lv3a",
+   "confidence": "high",
+   "via": "rehang-2026-11-24"
+  },
+  {
+   "s": "lab:method/bonferroni",
+   "p": "lab:broader",
+   "o": "lab:topic/multiple-comparisons",
+   "anchor": "#lv4a",
+   "confidence": "high",
+   "via": "rehang-2026-11-24"
+  },
+  {
+   "s": "lab:method/hypothesis-test",
+   "p": "lab:broader",
+   "o": "lab:topic/null-alternative",
+   "anchor": "#lv2a",
+   "confidence": "high",
+   "via": "rehang-2026-11-24"
+  },
+  {
+   "s": "lab:method/t-interval",
+   "p": "lab:broader",
+   "o": "lab:topic/confidence-interval",
+   "anchor": "#lv3a",
+   "confidence": "mid",
+   "via": "rehang-2026-11-24"
+  },
+  {
+   "s": "lab:method/unsupervised-clustering",
+   "p": "lab:broader",
+   "o": "lab:topic/clustering",
+   "anchor": "#lv4a",
+   "confidence": "mid",
+   "via": "rehang-2026-11-24"
+  },
+  {
+   "s": "lab:metric/p-value",
+   "p": "lab:broader",
+   "o": "lab:topic/p-value",
+   "anchor": "#lv2a",
+   "confidence": "high",
+   "via": "rehang-2026-11-24"
+  },
+  {
+   "s": "lab:metric/power",
+   "p": "lab:broader",
+   "o": "lab:topic/statistical-power",
+   "anchor": "#lv2a",
+   "confidence": "high",
+   "via": "rehang-2026-11-24"
+  }
  ]
-}
-</script>
+}</script>
 
-<script type="application/ld+json" id="kg-ld">
-{
- "@context":{"skos":"http://www.w3.org/2004/02/skos/core#","schema":"https://schema.org/","dct":"http://purl.org/dc/terms/","prov":"http://www.w3.org/ns/prov#","lab":"urn:lab:"},
- "@graph":[
-  {"@id":"urn:lab:method/t-interval","@type":["skos:Concept","schema:DefinedTerm"],"skos:prefLabel":[{"@value":"t 분포 신뢰구간","@language":"ko"},{"@value":"t confidence interval","@language":"en"}],"skos:definition":{"@value":"모분산을 모르고 표본이 작을 때 모평균의 구간을 만드는 방법.","@language":"ko"},"lab:family":"estimation","lab:domain":["stats"]},
-  {"@id":"urn:lab:method/hypothesis-test","@type":["skos:Concept","schema:DefinedTerm"],"skos:prefLabel":[{"@value":"통계적 가설검정","@language":"ko"},{"@value":"statistical hypothesis test","@language":"en"}],"lab:family":"testing","lab:domain":["stats"]},
-  {"@id":"urn:lab:concept/multiple-comparisons","@type":["skos:Concept","schema:DefinedTerm"],"skos:prefLabel":[{"@value":"다중 비교","@language":"ko"},{"@value":"multiple comparisons","@language":"en"}],"lab:family":"testing","lab:domain":["stats"]},
-  {"@id":"urn:lab:method/prepandemic-validation","@type":["skos:Concept","schema:DefinedTerm"],"skos:prefLabel":[{"@value":"사전 정보 봉인 검증","@language":"ko"},{"@value":"pre-pandemic held-out validation","@language":"en"}],"lab:family":"design","lab:domain":["stats","ai"]},
-  {"@id":"urn:lab:claim/aluminium-ci","@type":"schema:Claim","schema:name":{"@value":"예시의 95% 신뢰구간은 (32.59, 42.73)","@language":"ko"},"prov:wasDerivedFrom":{"@id":"urn:lab:method/t-interval"}},
-  {"@id":"urn:lab:work/thadani2023evescape","@type":"schema:ScholarlyArticle","schema:name":"Learning from prepandemic data to forecast viral escape","dct:bibliographicCitation":"Nature 622:818-825 (2023)"},
-  {"@id":"urn:lab:work/zhang2023lineardesign","@type":"schema:ScholarlyArticle","schema:name":"Algorithm for optimized mRNA design improves stability and immunogenicity","dct:bibliographicCitation":"Nature 621:396-403 (2023)"},
-  {"@id":"urn:lab:work/revaluation2025","@type":"schema:ScholarlyArticle","schema:name":"A systematic evaluation of the language-of-viral-escape model using multiple machine learning frameworks","dct:bibliographicCitation":"2025"}
+<script type="application/ld+json" id="kg-ld">{
+ "@context": {
+  "skos": "http://www.w3.org/2004/02/skos/core#",
+  "schema": "https://schema.org/",
+  "dct": "http://purl.org/dc/terms/",
+  "prov": "http://www.w3.org/ns/prov#",
+  "lab": "urn:lab:"
+ },
+ "@graph": [
+  {
+   "@id": "urn:lab:method/t-interval",
+   "@type": [
+    "skos:Concept",
+    "schema:DefinedTerm"
+   ],
+   "skos:prefLabel": [
+    {
+     "@value": "t 분포 신뢰구간",
+     "@language": "ko"
+    },
+    {
+     "@value": "t confidence interval",
+     "@language": "en"
+    }
+   ],
+   "skos:definition": {
+    "@value": "모분산을 모르고 표본이 작을 때 모평균의 구간을 만드는 방법.",
+    "@language": "ko"
+   },
+   "lab:family": "estimation",
+   "lab:domain": [
+    "stats"
+   ]
+  },
+  {
+   "@id": "urn:lab:method/hypothesis-test",
+   "@type": [
+    "skos:Concept",
+    "schema:DefinedTerm"
+   ],
+   "skos:prefLabel": [
+    {
+     "@value": "통계적 가설검정",
+     "@language": "ko"
+    },
+    {
+     "@value": "statistical hypothesis test",
+     "@language": "en"
+    }
+   ],
+   "lab:family": "testing",
+   "lab:domain": [
+    "stats"
+   ]
+  },
+  {
+   "@id": "urn:lab:concept/multiple-comparisons",
+   "@type": [
+    "skos:Concept",
+    "schema:DefinedTerm"
+   ],
+   "skos:prefLabel": [
+    {
+     "@value": "다중 비교",
+     "@language": "ko"
+    },
+    {
+     "@value": "multiple comparisons",
+     "@language": "en"
+    }
+   ],
+   "lab:family": "testing",
+   "lab:domain": [
+    "stats"
+   ]
+  },
+  {
+   "@id": "urn:lab:method/prepandemic-validation",
+   "@type": [
+    "skos:Concept",
+    "schema:DefinedTerm"
+   ],
+   "skos:prefLabel": [
+    {
+     "@value": "사전 정보 봉인 검증",
+     "@language": "ko"
+    },
+    {
+     "@value": "pre-pandemic held-out validation",
+     "@language": "en"
+    }
+   ],
+   "lab:family": "design",
+   "lab:domain": [
+    "stats",
+    "ai"
+   ]
+  },
+  {
+   "@id": "urn:lab:claim/aluminium-ci",
+   "@type": "schema:Claim",
+   "schema:name": {
+    "@value": "예시의 95% 신뢰구간은 (32.59, 42.73)",
+    "@language": "ko"
+   },
+   "prov:wasDerivedFrom": {
+    "@id": "urn:lab:method/t-interval"
+   }
+  },
+  {
+   "@id": "urn:lab:work/thadani2023evescape",
+   "@type": "schema:ScholarlyArticle",
+   "schema:name": "Learning from prepandemic data to forecast viral escape",
+   "dct:bibliographicCitation": "Nature 622:818-825 (2023)"
+  },
+  {
+   "@id": "urn:lab:work/zhang2023lineardesign",
+   "@type": "schema:ScholarlyArticle",
+   "schema:name": "Algorithm for optimized mRNA design improves stability and immunogenicity",
+   "dct:bibliographicCitation": "Nature 621:396-403 (2023)"
+  },
+  {
+   "@id": "urn:lab:work/revaluation2025",
+   "@type": "schema:ScholarlyArticle",
+   "schema:name": "A systematic evaluation of the language-of-viral-escape model using multiple machine learning frameworks",
+   "dct:bibliographicCitation": "2025"
+  },
+  {
+   "@id": "lab:topic/bayes-theorem",
+   "@type": [
+    "skos:Concept",
+    "lab:Topic"
+   ],
+   "lab:via": "rehang-2026-11-24",
+   "skos:prefLabel": [
+    {
+     "@value": "베이즈 정리",
+     "@language": "ko"
+    },
+    {
+     "@value": "Bayes' theorem",
+     "@language": "en"
+    }
+   ]
+  },
+  {
+   "@id": "lab:topic/ci-interpretation",
+   "@type": [
+    "skos:Concept",
+    "lab:Topic"
+   ],
+   "lab:via": "rehang-2026-11-24",
+   "skos:prefLabel": [
+    {
+     "@value": "신뢰구간 해석",
+     "@language": "ko"
+    },
+    {
+     "@value": "Interpreting confidence intervals",
+     "@language": "en"
+    }
+   ]
+  },
+  {
+   "@id": "lab:topic/clinical-trial-phases",
+   "@type": [
+    "skos:Concept",
+    "lab:Topic"
+   ],
+   "lab:via": "rehang-2026-11-24",
+   "skos:prefLabel": [
+    {
+     "@value": "임상시험 단계",
+     "@language": "ko"
+    },
+    {
+     "@value": "Clinical trial phases",
+     "@language": "en"
+    }
+   ]
+  },
+  {
+   "@id": "lab:topic/clustering",
+   "@type": [
+    "skos:Concept",
+    "lab:Topic"
+   ],
+   "lab:via": "rehang-2026-11-24",
+   "skos:prefLabel": [
+    {
+     "@value": "군집화",
+     "@language": "ko"
+    },
+    {
+     "@value": "Clustering",
+     "@language": "en"
+    }
+   ]
+  },
+  {
+   "@id": "lab:topic/confidence-interval",
+   "@type": [
+    "skos:Concept",
+    "lab:Topic"
+   ],
+   "lab:via": "rehang-2026-11-24",
+   "skos:prefLabel": [
+    {
+     "@value": "신뢰구간",
+     "@language": "ko"
+    },
+    {
+     "@value": "Confidence interval",
+     "@language": "en"
+    }
+   ]
+  },
+  {
+   "@id": "lab:topic/multiple-comparisons",
+   "@type": [
+    "skos:Concept",
+    "lab:Topic"
+   ],
+   "lab:via": "rehang-2026-11-24",
+   "skos:prefLabel": [
+    {
+     "@value": "다중 비교",
+     "@language": "ko"
+    },
+    {
+     "@value": "Multiple comparisons",
+     "@language": "en"
+    }
+   ]
+  },
+  {
+   "@id": "lab:topic/null-alternative",
+   "@type": [
+    "skos:Concept",
+    "lab:Topic"
+   ],
+   "lab:via": "rehang-2026-11-24",
+   "skos:prefLabel": [
+    {
+     "@value": "귀무·대립가설",
+     "@language": "ko"
+    },
+    {
+     "@value": "Null and alternative hypotheses",
+     "@language": "en"
+    }
+   ]
+  },
+  {
+   "@id": "lab:topic/p-value",
+   "@type": [
+    "skos:Concept",
+    "lab:Topic"
+   ],
+   "lab:via": "rehang-2026-11-24",
+   "skos:prefLabel": [
+    {
+     "@value": "p값",
+     "@language": "ko"
+    },
+    {
+     "@value": "p-value",
+     "@language": "en"
+    }
+   ]
+  },
+  {
+   "@id": "lab:topic/sample-size",
+   "@type": [
+    "skos:Concept",
+    "lab:Topic"
+   ],
+   "lab:via": "rehang-2026-11-24",
+   "skos:prefLabel": [
+    {
+     "@value": "표본 크기 정하기",
+     "@language": "ko"
+    },
+    {
+     "@value": "Sample size determination",
+     "@language": "en"
+    }
+   ]
+  },
+  {
+   "@id": "lab:topic/sampling-distribution-mean",
+   "@type": [
+    "skos:Concept",
+    "lab:Topic"
+   ],
+   "lab:via": "rehang-2026-11-24",
+   "skos:prefLabel": [
+    {
+     "@value": "표본평균의 분포",
+     "@language": "ko"
+    },
+    {
+     "@value": "Sampling distribution of the mean",
+     "@language": "en"
+    }
+   ]
+  },
+  {
+   "@id": "lab:topic/statistical-power",
+   "@type": [
+    "skos:Concept",
+    "lab:Topic"
+   ],
+   "lab:via": "rehang-2026-11-24",
+   "skos:prefLabel": [
+    {
+     "@value": "검정력",
+     "@language": "ko"
+    },
+    {
+     "@value": "Statistical power",
+     "@language": "en"
+    }
+   ]
+  },
+  {
+   "@id": "lab:topic/t-chi2-f",
+   "@type": [
+    "skos:Concept",
+    "lab:Topic"
+   ],
+   "lab:via": "rehang-2026-11-24",
+   "skos:prefLabel": [
+    {
+     "@value": "t·카이제곱·F 분포",
+     "@language": "ko"
+    },
+    {
+     "@value": "t, chi-square and F distributions",
+     "@language": "en"
+    }
+   ]
+  },
+  {
+   "@id": "lab:topic/type-i-ii-errors",
+   "@type": [
+    "skos:Concept",
+    "lab:Topic"
+   ],
+   "lab:via": "rehang-2026-11-24",
+   "skos:prefLabel": [
+    {
+     "@value": "오류 두 종류",
+     "@language": "ko"
+    },
+    {
+     "@value": "Type I and type II errors",
+     "@language": "en"
+    }
+   ]
+  }
  ]
-}
-</script>
+}</script>
 
 <script type="application/json" id="refs-csl">
 [

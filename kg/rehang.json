@@ -1,0 +1,227 @@
+{
+ "version": "1.0",
+ "made": "2026-11-24",
+ "via": "rehang-2026-11-24",
+ "domains": [
+  "stats",
+  "ml"
+ ],
+ "note": "분야 뼈대 주제에 다시 걸기(ai-lab-retrofit 15장). links는 자동 후보이며 틀린 줄은 지우면 된다. 빌드 스크립트가 있는 저장소는 빌드 끝에 rehang.apply_overlay()가 이 파일을 적용한다.",
+ "topics": {
+  "lab:topic/bayes-theorem": {
+   "ko": "베이즈 정리",
+   "en": "Bayes' theorem",
+   "domain": [
+    "stats"
+   ],
+   "level": 1
+  },
+  "lab:topic/ci-interpretation": {
+   "ko": "신뢰구간 해석",
+   "en": "Interpreting confidence intervals",
+   "domain": [
+    "stats"
+   ],
+   "level": 2
+  },
+  "lab:topic/clinical-trial-phases": {
+   "ko": "임상시험 단계",
+   "en": "Clinical trial phases",
+   "domain": [
+    "stats"
+   ],
+   "level": 3
+  },
+  "lab:topic/clustering": {
+   "ko": "군집화",
+   "en": "Clustering",
+   "domain": [
+    "ai",
+    "ml"
+   ],
+   "level": 2
+  },
+  "lab:topic/confidence-interval": {
+   "ko": "신뢰구간",
+   "en": "Confidence interval",
+   "domain": [
+    "stats"
+   ],
+   "level": 2
+  },
+  "lab:topic/multiple-comparisons": {
+   "ko": "다중 비교",
+   "en": "Multiple comparisons",
+   "domain": [
+    "stats"
+   ],
+   "level": 2
+  },
+  "lab:topic/null-alternative": {
+   "ko": "귀무·대립가설",
+   "en": "Null and alternative hypotheses",
+   "domain": [
+    "stats"
+   ],
+   "level": 2
+  },
+  "lab:topic/p-value": {
+   "ko": "p값",
+   "en": "p-value",
+   "domain": [
+    "stats"
+   ],
+   "level": 2
+  },
+  "lab:topic/sample-size": {
+   "ko": "표본 크기 정하기",
+   "en": "Sample size determination",
+   "domain": [
+    "stats"
+   ],
+   "level": 2
+  },
+  "lab:topic/sampling-distribution-mean": {
+   "ko": "표본평균의 분포",
+   "en": "Sampling distribution of the mean",
+   "domain": [
+    "stats"
+   ],
+   "level": 2
+  },
+  "lab:topic/statistical-power": {
+   "ko": "검정력",
+   "en": "Statistical power",
+   "domain": [
+    "stats"
+   ],
+   "level": 2
+  },
+  "lab:topic/t-chi2-f": {
+   "ko": "t·카이제곱·F 분포",
+   "en": "t, chi-square and F distributions",
+   "domain": [
+    "stats"
+   ],
+   "level": 2
+  },
+  "lab:topic/type-i-ii-errors": {
+   "ko": "오류 두 종류",
+   "en": "Type I and type II errors",
+   "domain": [
+    "stats"
+   ],
+   "level": 2
+  }
+ },
+ "links": {
+  "lab:concept/base-rate": {
+   "topic": "lab:topic/bayes-theorem",
+   "score": 3,
+   "why": "사람이 고름",
+   "ko": "바탕 비율"
+  },
+  "lab:concept/ci-misreading": {
+   "topic": "lab:topic/ci-interpretation",
+   "score": 3,
+   "why": "사람이 고름",
+   "ko": "신뢰구간의 흔한 오독"
+  },
+  "lab:concept/clinical-phases": {
+   "topic": "lab:topic/clinical-trial-phases",
+   "score": 3,
+   "why": "이름 같음",
+   "ko": "임상시험 단계"
+  },
+  "lab:concept/multiple-comparisons": {
+   "topic": "lab:topic/multiple-comparisons",
+   "score": 3,
+   "why": "이름 같음",
+   "ko": "다중 비교"
+  },
+  "lab:concept/null-hypothesis": {
+   "topic": "lab:topic/null-alternative",
+   "score": 3,
+   "why": "사람이 고름",
+   "ko": "귀무가설"
+  },
+  "lab:concept/sample-size": {
+   "topic": "lab:topic/sample-size",
+   "score": 3,
+   "why": "이름 같음",
+   "ko": "표본 크기 정하기"
+  },
+  "lab:concept/stage-product": {
+   "topic": "lab:topic/clinical-trial-phases",
+   "score": 3,
+   "why": "사람이 고름",
+   "ko": "단계 통과율의 곱"
+  },
+  "lab:concept/standard-error": {
+   "topic": "lab:topic/sampling-distribution-mean",
+   "score": 3,
+   "why": "사람이 고름",
+   "ko": "표준오차"
+  },
+  "lab:concept/subgroup-trap": {
+   "topic": "lab:topic/multiple-comparisons",
+   "score": 3,
+   "why": "사람이 고름",
+   "ko": "하위집단 함정"
+  },
+  "lab:concept/type1-error": {
+   "topic": "lab:topic/type-i-ii-errors",
+   "score": 3,
+   "why": "사람이 고름",
+   "ko": "제1종 오류"
+  },
+  "lab:concept/type2-error": {
+   "topic": "lab:topic/type-i-ii-errors",
+   "score": 3,
+   "why": "사람이 고름",
+   "ko": "제2종 오류"
+  },
+  "lab:distribution/t": {
+   "topic": "lab:topic/t-chi2-f",
+   "score": 3,
+   "why": "사람이 고름",
+   "ko": "t 분포"
+  },
+  "lab:method/bonferroni": {
+   "topic": "lab:topic/multiple-comparisons",
+   "score": 3,
+   "why": "사람이 고름",
+   "ko": "본페로니 보정"
+  },
+  "lab:method/hypothesis-test": {
+   "topic": "lab:topic/null-alternative",
+   "score": 3,
+   "why": "사람이 고름",
+   "ko": "통계적 가설검정"
+  },
+  "lab:method/t-interval": {
+   "topic": "lab:topic/confidence-interval",
+   "score": 2,
+   "why": "주제 이름이 개념 이름에 들어 있음",
+   "ko": "t 분포 신뢰구간"
+  },
+  "lab:method/unsupervised-clustering": {
+   "topic": "lab:topic/clustering",
+   "score": 2,
+   "why": "주제 이름이 개념 이름에 들어 있음",
+   "ko": "비지도 군집화"
+  },
+  "lab:metric/p-value": {
+   "topic": "lab:topic/p-value",
+   "score": 3,
+   "why": "이름 같음",
+   "ko": "p값"
+  },
+  "lab:metric/power": {
+   "topic": "lab:topic/statistical-power",
+   "score": 3,
+   "why": "이름 같음",
+   "ko": "검정력"
+  }
+ }
+}
